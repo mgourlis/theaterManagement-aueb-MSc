@@ -1,11 +1,8 @@
 package gr.aueb.mscis.theater.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "plays")
@@ -18,95 +15,71 @@ public class Play {
 	@Column(name = "title", length = 512, nullable = false)
 	private String title;
 
-	@Column(name = "year", nullable = false)
-	private int year;
+	@Column(name = "description", length = 5000, nullable = true)
+	private String description;
 
-	@Column(name = "writer", length = 100, nullable = false)
-	private String writer;
-	
-	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "play")
+	private Set<Role> roles = new HashSet<Role>();
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "play")
+	private Set<Show> shows = new HashSet<Show>();
+
+	/**
+	 *
+	 */
 	public Play() {
 	}
 
-	public Play(String title, int year, String writer) {
+	/**
+	 *
+	 * @param title
+	 */
+	public Play(String title) {
 		super();
 		this.title = title;
-		this.year = year;
-		this.writer = writer;
 	}
 
-	public int getId() {
-		return id;
+	/**
+	 *
+	 * @param title
+	 * @param description
+	 */
+	public Play(String title, String description) {
+		super();
+		this.title = title;
+		this.description = description;
 	}
 
-	public void setId(int id) {
-		this.id = id;
-	}
-
+	/**
+	 *
+	 * @return
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 *
+	 * @param title
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	public int getYear() {
-		return year;
+
+	public String getDescription() {
+		return description;
 	}
 
-	public void setYear(int year) {
-		this.year = year;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public String getWriter() {
-		return writer;
+	public Set<Role> getRoles() {
+		return new HashSet<Role>(roles);
 	}
 
-	public void setWriter(String writer) {
-		this.writer = writer;
+	public void setRoles(Set<Role> roles) {
+		this.roles = new HashSet<Role>(roles);
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((writer == null) ? 0 : writer.hashCode());
-		result = prime * result + ((title == null) ? 0 : title.hashCode());
-		result = prime * result + year;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Play other = (Play) obj;
-		if (writer == null) {
-			if (other.writer != null)
-				return false;
-		} else if (!writer.equals(other.writer))
-			return false;
-		if (title == null) {
-			if (other.title != null)
-				return false;
-		} else if (!title.equals(other.title))
-			return false;
-		if (year != other.year)
-			return false;
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Play [id=" + id + ", title=" + title + ", year=" + year + ", director=" + writer + "]";
-	}
-
-	
-	
 }

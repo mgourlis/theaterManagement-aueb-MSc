@@ -13,7 +13,7 @@ import gr.aueb.mscis.theater.persistence.JPAUtil;
 public class theaterServicePublisher {
 
     // Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://localhost:8080/theater/";
+    public static final String BASE_URI = "http://localhost:8585/theater/";
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this

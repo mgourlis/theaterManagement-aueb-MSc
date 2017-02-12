@@ -1,6 +1,9 @@
 package gr.aueb.mscis.theater.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Created by Myron on 11/2/2017.
@@ -16,46 +19,60 @@ public class Hall {
     @Column(name = "name", length = 512, nullable = false)
     private String name;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "hall")
+    private Set<Sector> sectors = new HashSet<Sector>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "hall")
+    private Set<Show> shows = new HashSet<Show>();
+
+    /**
+     *
+     */
     public Hall(){
 
     }
 
+    /**
+     *
+     * @param name
+     */
     public Hall(String name){
         super();
         this.name = name;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result
-                + ((name == null) ? 0 : name.hashCode());
-        return result;
+    /**
+     *
+     * @return
+     */
+    public Set<Sector> getSectors() {
+        return new HashSet<Sector>(sectors);
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Hall other = (Hall) obj;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        return true;
+    public void addSector(Sector tempSector){
+        Sector sector = new Sector(tempSector.getName(), tempSector.getPriceFactor());
+        sector.setLines(tempSector.getLines());
+        sectors.add(sector);
     }
+
+    public boolean removeSector(Sector tempSector){
+        return this.sectors.remove(tempSector);
+    }
+
 }
