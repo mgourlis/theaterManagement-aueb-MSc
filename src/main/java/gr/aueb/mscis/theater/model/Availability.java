@@ -23,8 +23,6 @@ public class Availability {
     @JoinColumn(name="seat_id", nullable = false)
     private Seat seat;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "play")
-    private Set<Role> roles = new HashSet<Role>();
 
     /**
      *

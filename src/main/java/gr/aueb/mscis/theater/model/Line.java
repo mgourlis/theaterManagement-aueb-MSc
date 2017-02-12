@@ -65,4 +65,9 @@ public class Line {
     public void setSeats(Set<Seat> seats) {
         this.seats = new HashSet<Seat>(seats);
     }
+
+    public void addLine(){
+        Seat s = new Seat(this.seats.size()+1);
+
+    }
 }
