@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Zarodimos Github
+ * Zarodimos Github Myron Push
  * Created by Myron on 11/2/2017.
  */
 @Entity
