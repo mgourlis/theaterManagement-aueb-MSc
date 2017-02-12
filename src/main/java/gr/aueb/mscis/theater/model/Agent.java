@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Zarodimos Github
  * Created by Myron on 11/2/2017.
  */
 @Entity
