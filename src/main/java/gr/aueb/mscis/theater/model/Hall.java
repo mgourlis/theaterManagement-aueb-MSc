@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "halls")
 public class Hall {
-
+//elt
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
