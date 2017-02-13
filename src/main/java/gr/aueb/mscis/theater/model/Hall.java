@@ -1,6 +1,7 @@
 package gr.aueb.mscis.theater.model;
 
 import javax.persistence.*;
+import java.util.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,11 +17,12 @@ public class Hall {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "name", length = 512, nullable = false)
+    @Column(name = "name", length = 255, nullable = false)
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "hall")
-    private Set<Sector> sectors = new HashSet<Sector>();
+    @JoinColumn(name="seat_id")
+    private List<Seat> seats = new ArrayList<Seat>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "hall")
     private Set<Show> shows = new HashSet<Show>();

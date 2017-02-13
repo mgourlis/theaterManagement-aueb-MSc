@@ -21,9 +21,11 @@ public class Seat {
     @Column(name = "seatNumber", nullable = false)
     private int seatNumber;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
-    @JoinColumn(name="line_id", nullable = false)
-    private Line line;
+    @Column(name = "line", nullable = false)
+    private int line;
+
+    @Column(name = "sector", length = 255, nullable = false)
+    private int line;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "seat")
     private Set<Availability> availabilities = new HashSet<Availability>();
