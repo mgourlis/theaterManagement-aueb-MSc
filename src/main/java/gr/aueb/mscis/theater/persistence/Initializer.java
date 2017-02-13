@@ -1,10 +1,10 @@
 package gr.aueb.mscis.theater.persistence;
 
+import gr.aueb.mscis.theater.model.Play;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-
-import gr.aueb.mscis.theater.model.Play;
 
 
 public class Initializer  {
@@ -37,8 +37,8 @@ public class Initializer  {
 
         eraseData();                      
 
-        Play amlet = new Play("Amlet", 1603, "William Shakespeare");
-        Play tgm = new Play("The Glass Menagerie", 1944, "Tennessee Williams");
+        Play amlet = new Play("Amlet", "William Shakespeare");
+        Play tgm = new Play("The Glass Menagerie", "Tennessee Williams");
 
        
         EntityManager em = JPAUtil.getCurrentEntityManager();

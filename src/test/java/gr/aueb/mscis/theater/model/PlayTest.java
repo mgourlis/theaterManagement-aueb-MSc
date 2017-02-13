@@ -5,8 +5,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by Myron on 11/2/2017.
  */
@@ -23,7 +21,7 @@ public class PlayTest {
 
     @Test
     public void getId() throws Exception {
-        Play a= new Play("Test",1997,"test Writer");
+        Play a= new Play("Test","test Writer");
         a.setId(1);
         Assert.assertEquals(1,a.getId());
     }

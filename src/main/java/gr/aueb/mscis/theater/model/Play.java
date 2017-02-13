@@ -12,7 +12,7 @@ public class Play {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@Column(name = "title", length = 512, nullable = false)
+	@Column(name = "title", length = 255, nullable = false)
 	private String title;
 
 	@Column(name = "description", length = 5000, nullable = true)
@@ -35,7 +35,6 @@ public class Play {
 	 * @param title
 	 */
 	public Play(String title) {
-		super();
 		this.title = title;
 	}
 
@@ -45,9 +44,16 @@ public class Play {
 	 * @param description
 	 */
 	public Play(String title, String description) {
-		super();
 		this.title = title;
 		this.description = description;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	/**

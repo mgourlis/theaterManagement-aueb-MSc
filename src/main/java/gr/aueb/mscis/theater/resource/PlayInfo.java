@@ -15,25 +15,21 @@ public class PlayInfo {
 
     private Integer id;
     private String title;
-    private Integer year;
-    private String writer;
+    private String description;
 
     public PlayInfo() {
 
     }
 
-    public PlayInfo(String title, int year, String writer) {
-        super();
+    public PlayInfo(String title, String description) {
         this.title = title;
-        this.year = year;
-        this.writer = writer;
+        this.description = description;
     }
 
     public PlayInfo(Play play) {
         this.id = play.getId();
         this.title = play.getTitle();
-        this.year = play.getYear();
-        this.writer = play.getWriter();
+        this.description = play.getDescription();
     }
 
     public int getId() {
@@ -52,20 +48,12 @@ public class PlayInfo {
         this.title = title;
     }
 
-    public int getYear() {
-        return year;
+    public String getDescription() {
+        return description;
     }
 
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public static PlayInfo wrap(Play b) {
@@ -84,7 +72,7 @@ public class PlayInfo {
 
     }
 
-    public Play getMovie(EntityManager em) {
+    public Play getPlay(EntityManager em) {
 
         Play play = null;
 
@@ -95,8 +83,7 @@ public class PlayInfo {
         }
 
         play.setTitle(title);
-        play.setYear(year);
-        play.setWriter(writer);
+        play.setDescription(description);
 
 
         return play;
