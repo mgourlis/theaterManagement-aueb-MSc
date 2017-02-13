@@ -1,9 +1,7 @@
 package gr.aueb.mscis.theater.model;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Myron on 11/2/2017.
@@ -27,7 +25,8 @@ public class Sector {
     private Hall hall;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "sector")
-    private Set<Line> lines = new HashSet<Line>();
+    @OrderBy("lineNumber asc")
+    private List<Line> lines = new ArrayList<Line>();
 
     /**
      *
@@ -41,7 +40,6 @@ public class Sector {
      * @param name
      */
     public Sector(String name, double priceFactor){
-        super();
         this.name = name;
         this.priceFactor = priceFactor;
     }
@@ -78,16 +76,14 @@ public class Sector {
         return hall;
     }
 
-    public void setHall(Hall hall) {
-        this.hall = hall;
+    public List<Line> getLines() {
+        return new ArrayList<Line>(lines);
     }
 
-    public Set<Line> getLines() {
-        return new HashSet<Line>(lines);
-    }
-
-    public void setLines(Set<Line> lines) {
-        this.lines = new HashSet<Line>(lines);
+    public void addLine(Line templine){
+        Line line = new Line(templine.getLineNumber());
+        line.
+        this.lines.add(line);
     }
 
     public boolean isAvailable(Date date){

@@ -19,7 +19,7 @@ public class Availability {
     @Column(name = "date", nullable = false)
     private Date date;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name="seat_id", nullable = false)
     private Seat seat;
 

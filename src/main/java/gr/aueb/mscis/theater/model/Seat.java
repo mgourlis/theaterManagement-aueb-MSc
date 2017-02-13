@@ -70,12 +70,22 @@ public class Seat {
         this.seatNumber = seatNumber;
     }
 
-    public Set<Availability> getAvailabilities() {
-        return availabilities;
+    /**
+     *
+     * @param date
+     */
+    public void makeUnavailable(Date date){
+        if(isAvailable(date))
+            this.availabilities.add(new Availability(date));
     }
 
-    public void setAvailabilities(Set<Availability> availabilities) {
-        this.availabilities = availabilities;
+    /**
+     *
+     * @param date
+     */
+    public void makeAvailable(Date date){
+        if(!isAvailable(date))
+            this.availabilities.remove(new Availability(date));
     }
 
     /**
@@ -83,7 +93,7 @@ public class Seat {
      * @param date
      * @return
      */
-    public boolean hasTicket(Date date){
+    public boolean isBooked(Date date){
         for(Ticket ticket : tickets){
             if(ticket.getShow().getDate().equals(date))
                 return true;

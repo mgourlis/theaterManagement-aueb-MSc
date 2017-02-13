@@ -1,9 +1,7 @@
 package gr.aueb.mscis.theater.model;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Myron on 11/2/2017.
@@ -24,7 +22,8 @@ public class Line {
     private Sector sector;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "line")
-    private Set<Seat> seats = new HashSet<Seat>();
+    @OrderBy("seatNumber asc")
+    private List<Seat> seats = new ArrayList<Seat>();
 
     /**
      *
@@ -38,7 +37,6 @@ public class Line {
      * @param lineNumber
      */
     public Line(int lineNumber) {
-        super();
         this.lineNumber = lineNumber;
     }
 
@@ -58,17 +56,22 @@ public class Line {
         this.lineNumber = lineNumber;
     }
 
-
-    public Set<Seat> getSeats() {
-        return new HashSet<Seat>(seats);
+    public List<Seat> getSeats() {
+        return new ArrayList<Seat>(seats);
     }
 
-    public void setSeats(Set<Seat> seats) {
-        this.seats = new HashSet<Seat>(seats);
-    }
-
-    public void addLine(){
+    public void addSeat(){
         Seat s = new Seat(this.seats.size()+1);
+    }
+
+    public void removeSeat(Seat seat){
+        ListIterator<Seat> lit = this.seats.listIterator();
+        while (lit.hasNext()){
+            if(lit.next().equals((seat))) {
+                reorderSeats(seat);
+                lit.remove();
+            }
+        }
     }
 
     public boolean isAvailable(Date date){
@@ -87,5 +90,14 @@ public class Line {
                 av = true;
         }
         return av;
+    }
+
+    private void reorderSeats(Seat seat){
+        ListIterator<Seat> lit = this.seats.listIterator(this.seats.indexOf(seat));
+        int seatNumber = seat.getSeatNumber();
+        while (lit.hasNext()){
+            lit.next().setSeatNumber(seatNumber);
+            seatNumber++;
+        }
     }
 }
