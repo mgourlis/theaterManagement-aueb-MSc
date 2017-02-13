@@ -22,8 +22,16 @@ public class Agent {
     @Column(name = "cv", length = 5000, nullable = true)
     private String cv;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "agent")
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.REFRESH}, mappedBy = "agent")
     private Set<Role> roles = new HashSet<Role>();
+
+    @PreRemove
+    private void removeAssociationsWithChilds() {
+        for (Role role : roles) {
+            role.setAgent(null);
+        }
+    }
 
     public int getId() {
         return id;
@@ -49,4 +57,15 @@ public class Agent {
         this.cv = cv;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
+    public boolean removeRole(Role role){
+        return this.roles.remove(role);
+    }
 }

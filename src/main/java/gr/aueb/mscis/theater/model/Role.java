@@ -28,6 +28,11 @@ public class Role {
     @JoinColumn(name="agent_id", nullable = true)
     private Agent agent;
 
+    public Role(String name, RoleType roleType) {
+        this.name = name;
+        this.roleType = roleType;
+    }
+
     public int getId() {
         return id;
     }
@@ -50,6 +55,14 @@ public class Role {
 
     public void setRoleType(RoleType roleType) {
         this.roleType = roleType;
+    }
+
+    public Play getPlay() {
+        return play;
+    }
+
+    public void setPlay(Play play) {
+        this.play = play;
     }
 
     public Agent getAgent() {

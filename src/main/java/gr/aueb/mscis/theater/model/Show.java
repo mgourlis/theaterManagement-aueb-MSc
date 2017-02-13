@@ -22,6 +22,9 @@ public class Show {
     @Column(name = "price", nullable = false)
     private double price;
 
+    @Column(name = "canceled", nullable = false)
+    private boolean canceled;
+
     @ManyToOne(optional = false, fetch=FetchType.LAZY)
     @JoinColumn(name="play_id", nullable = false)
     private Play play;
@@ -32,6 +35,18 @@ public class Show {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "show")
     private Set<Ticket> tickets = new HashSet<Ticket>();
+
+    public Show(){
+
+    }
+
+    public Show(Date date, double price, Play play, Hall hall) {
+        this.date = date;
+        this.price = price;
+        this.play = play;
+        this.hall = hall;
+        this.canceled = false;
+    }
 
     public int getId() {
         return id;

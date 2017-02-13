@@ -25,11 +25,67 @@ public class Ticket {
     @Column(name = "active", nullable = false)
     private boolean active;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name="show_id", nullable = false)
     private Show show;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(optional = false, fetch=FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name="seat_id", nullable = false)
     private Seat seat;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public boolean isMoneyReturn() {
+        return moneyReturn;
+    }
+
+    public void setMoneyReturn(boolean moneyReturn) {
+        this.moneyReturn = moneyReturn;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Show getShow() {
+        return show;
+    }
+
+    public void setShow(Show show) {
+        this.show = show;
+    }
+
+    public Seat getSeat() {
+        return seat;
+    }
+
+    public void setSeat(Seat seat) {
+        this.seat = seat;
+    }
 }

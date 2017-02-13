@@ -1,5 +1,6 @@
 package gr.aueb.mscis.theater.model;
 
+
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
@@ -80,6 +81,19 @@ public class Seat {
     /**
      *
      * @param date
+     * @return
+     */
+    public boolean hasTicket(Date date){
+        for(Ticket ticket : tickets){
+            if(ticket.getShow().getDate().equals(date))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param date
      * @return boolean
      */
     public boolean isAvailable(Date date){
@@ -94,7 +108,7 @@ public class Seat {
      * @return boo
      */
     public boolean isAvailable(Date startDate, Date endDate){
-        endDate = startDate.after(endDate) ? startDate : endDate;
+        if(endDate.before(startDate)) throw new IllegalArgumentException("startdate is after enddate");
 
         Calendar start = Calendar.getInstance();
         start.setTime(startDate);

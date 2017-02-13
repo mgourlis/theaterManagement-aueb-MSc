@@ -21,7 +21,8 @@ public class Play {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "play")
 	private Set<Role> roles = new HashSet<Role>();
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "play")
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE,
+			CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval = true, mappedBy = "play")
 	private Set<Show> shows = new HashSet<Show>();
 
 	/**
@@ -87,5 +88,15 @@ public class Play {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = new HashSet<Role>(roles);
+	}
+
+	public void addRole(Role temprole){
+		Role role = new Role(temprole.getName(), temprole.getRoleType());
+		role.setPlay(this);
+		this.roles.add(role);
+	}
+
+	public boolean removeRole(Role role){
+		return this.roles.remove(role);
 	}
 }

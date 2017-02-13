@@ -1,8 +1,8 @@
 package gr.aueb.mscis.theater.model;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -37,7 +37,6 @@ public class Hall {
      * @param name
      */
     public Hall(String name){
-        super();
         this.name = name;
     }
 
@@ -73,6 +72,24 @@ public class Hall {
 
     public boolean removeSector(Sector tempSector){
         return this.sectors.remove(tempSector);
+    }
+    
+    public boolean isAvailable(Date date){
+        boolean av = false;
+        for (Sector sector : sectors) {
+            if(sector.isAvailable(date))
+                av = true;
+        }
+        return av;
+    }
+
+    public boolean isAvailable(Date startdate, Date enddate){
+        boolean av = false;
+        for (Sector sector : sectors) {
+            if(sector.isAvailable(startdate,enddate))
+                av = true;
+        }
+        return av;
     }
 
 }

@@ -1,6 +1,7 @@
 package gr.aueb.mscis.theater.model;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -68,6 +69,23 @@ public class Line {
 
     public void addLine(){
         Seat s = new Seat(this.seats.size()+1);
+    }
 
+    public boolean isAvailable(Date date){
+        boolean av = false;
+        for (Seat seat : seats) {
+            if(seat.isAvailable(date))
+                av = true;
+        }
+        return av;
+    }
+
+    public boolean isAvailable(Date startdate, Date enddate){
+        boolean av = false;
+        for (Seat seat : seats) {
+            if(seat.isAvailable(startdate,enddate))
+                av = true;
+        }
+        return av;
     }
 }

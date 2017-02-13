@@ -1,6 +1,7 @@
 package gr.aueb.mscis.theater.model;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -89,4 +90,21 @@ public class Sector {
         this.lines = new HashSet<Line>(lines);
     }
 
+    public boolean isAvailable(Date date){
+        boolean av = false;
+        for (Line line : lines) {
+            if(line.isAvailable(date))
+                av = true;
+        }
+        return av;
+    }
+
+    public boolean isAvailable(Date startdate, Date enddate){
+        boolean av = false;
+        for (Line line : lines) {
+            if(line.isAvailable(startdate,enddate))
+                av = true;
+        }
+        return av;
+    }
 }
