@@ -18,15 +18,14 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @Column(name = "lineNumber", nullable = false)
+    private int lineNumber;
+
     @Column(name = "seatNumber", nullable = false)
     private int seatNumber;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
-    @JoinColumn(name="line_id", nullable = false)
-    private Line line;
-
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "seat")
-    private Set<Availability> availabilities = new HashSet<Availability>();
+    @Column(name = "availability", nullable = false)
+    private boolean availability;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "seat")
     private Set<Ticket> tickets = new HashSet<Ticket>();
@@ -42,8 +41,10 @@ public class Seat {
      *
      * @param seatNumber
      */
-    public Seat(int seatNumber) {
+    public Seat(int lineNumber, int seatNumber) {
+        this.lineNumber = lineNumber;
         this.seatNumber = seatNumber;
+        this.availability =true;
     }
 
     public int getId() {
@@ -62,30 +63,25 @@ public class Seat {
         return seatNumber;
     }
 
-    /**
-     *
-     * @param seatNumber
-     */
     public void setSeatNumber(int seatNumber) {
         this.seatNumber = seatNumber;
     }
 
-    /**
-     *
-     * @param date
-     */
-    public void makeUnavailable(Date date){
-        if(isAvailable(date))
-            this.availabilities.add(new Availability(date));
+    public int getLineNumber() {
+        return lineNumber;
     }
 
-    /**
-     *
-     * @param date
-     */
-    public void makeAvailable(Date date){
-        if(!isAvailable(date))
-            this.availabilities.remove(new Availability(date));
+    public void setLineNumber(int lineNumber) {
+        this.lineNumber = lineNumber;
+    }
+
+    public boolean isBooked(){
+        Date currentDate = Calendar.getInstance().getTime();
+        for(Ticket ticket : tickets){
+            if(ticket.getShow().getDate().after(currentDate) || ticket.getShow().getDate().equals(currentDate))
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -101,35 +97,14 @@ public class Seat {
         return false;
     }
 
+
+
     /**
      *
-     * @param date
      * @return boolean
      */
-    public boolean isAvailable(Date date){
-        Availability a = new Availability(date);
-        return availabilities.contains(a);
+    public boolean isAvailable(){
+        return availability;
     }
 
-    /**
-     *
-     * @param startDate
-     * @param endDate
-     * @return boo
-     */
-    public boolean isAvailable(Date startDate, Date endDate){
-        if(endDate.before(startDate)) throw new IllegalArgumentException("startdate is after enddate");
-
-        Calendar start = Calendar.getInstance();
-        start.setTime(startDate);
-
-        Calendar end = Calendar.getInstance();
-        end.setTime(endDate);
-
-        for (Date date = start.getTime(); start.compareTo(end) > 0; start.add(Calendar.DATE, 1), date = start.getTime()) {
-            if(!isAvailable(date)) return false;
-        }
-
-        return true;
-    }
 }

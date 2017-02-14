@@ -65,9 +65,7 @@ public class Hall {
     }
 
     public void addSector(Sector tempSector){
-        Sector sector = new Sector(tempSector.getName(), tempSector.getPriceFactor());
-        sector.setLines(tempSector.getLines());
-        sectors.add(sector);
+
     }
 
     public boolean removeSector(Sector tempSector){
@@ -77,16 +75,7 @@ public class Hall {
     public boolean isAvailable(Date date){
         boolean av = false;
         for (Sector sector : sectors) {
-            if(sector.isAvailable(date))
-                av = true;
-        }
-        return av;
-    }
-
-    public boolean isAvailable(Date startdate, Date enddate){
-        boolean av = false;
-        for (Sector sector : sectors) {
-            if(sector.isAvailable(startdate,enddate))
+            if(sector.isAvailable())
                 av = true;
         }
         return av;

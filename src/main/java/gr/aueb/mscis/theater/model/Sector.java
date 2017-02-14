@@ -25,8 +25,8 @@ public class Sector {
     private Hall hall;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "sector")
-    @OrderBy("lineNumber asc")
-    private List<Line> lines = new ArrayList<Line>();
+    @OrderBy("lineNumber, seatNumber asc")
+    private List<Seat> seats = new ArrayList<Seat>();
 
     /**
      *
@@ -42,6 +42,7 @@ public class Sector {
     public Sector(String name, double priceFactor){
         this.name = name;
         this.priceFactor = priceFactor;
+
     }
 
     /**
@@ -76,31 +77,78 @@ public class Sector {
         return hall;
     }
 
-    public List<Line> getLines() {
-        return new ArrayList<Line>(lines);
+    public void addLine() {
+        this.seats.add(new Seat(seats.size()+1,1));
     }
 
-    public void addLine(Line templine){
-        Line line = new Line(templine.getLineNumber());
-        line.
-        this.lines.add(line);
-    }
-
-    public boolean isAvailable(Date date){
-        boolean av = false;
-        for (Line line : lines) {
-            if(line.isAvailable(date))
-                av = true;
+    public boolean removeLine(){
+        if(seats.isEmpty())
+            return false;
+        int size = seats.size();
+        ListIterator<Seat> lit = seats.listIterator(size);
+        Seat s = seats.get(size - 1);
+        int lineNumber = s.getLineNumber();
+        boolean removeFlag = true;
+        while (lit.hasPrevious()){
+            s = lit.previous();
+            if(s.isBooked())
+                removeFlag = false;
+            if(s.getLineNumber() != lineNumber && removeFlag)
+                break;
+            if(s.getLineNumber() != lineNumber && !removeFlag){
+                lineNumber = s.getLineNumber();
+                removeFlag = true;
+            }
         }
-        return av;
+        while (lit.hasNext() && removeFlag){
+            s = lit.next();
+            if(s.getLineNumber() == lineNumber)
+                lit.remove();
+            else
+                s.setLineNumber(s.getLineNumber()-1);
+        }
+        return removeFlag;
     }
 
-    public boolean isAvailable(Date startdate, Date enddate){
-        boolean av = false;
-        for (Line line : lines) {
-            if(line.isAvailable(startdate,enddate))
-                av = true;
+    public void addSeat(int line){
+        int seatNumber = lineLength(line);
+        if(seatNumber != 0){
+            seats.add(new Seat(line, seatNumber+1));
+        }else{
+            throw new IllegalArgumentException("line from sector addSeat");
         }
-        return av;
     }
+
+    public boolean removeSeat(int line){
+        int seatNumber = lineLength(line);
+        if(seatNumber != 0){
+
+        }else{
+            throw new IllegalArgumentException("line from sector addSeat");
+        }
+    }
+
+    public boolean isAvailable(){
+        boolean av = false;
+        for (Seat seat : seats) {
+            if(seat.isAvailable())
+                return true;
+        }
+        return false;
+    }
+
+    private int lineLength(int line){
+        int lineLength = 0;
+        ListIterator<Seat> lit = seats.listIterator();
+        while (lit.hasNext()){
+            Seat s = lit.next();
+            if(s.getLineNumber() == line){
+                lineLength++;
+            }
+            if(s.getLineNumber() > line)
+                break;
+        }
+        return lineLength;
+    }
+
 }
