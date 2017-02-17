@@ -1,7 +1,9 @@
 package gr.aueb.mscis.theater.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name="purchases")
@@ -24,8 +26,12 @@ public class Purchase {
     @Column(name="wayOfPurchase", length=50, nullable = false)
     private String wayOfPurchase;
 
-//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "")
-//    private Set<Ticket> tickets = new HashSet<Ticket>();
+    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+	@JoinColumn(name="user_id", nullable = false)
+	private User user;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "purchase")
+	private Set<Ticket> tickets = new HashSet<Ticket>();
     
     /**
      * Προκαθορισμένος κατασκευαστής.

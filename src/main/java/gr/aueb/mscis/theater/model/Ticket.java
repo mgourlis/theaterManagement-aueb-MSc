@@ -33,6 +33,10 @@ public class Ticket {
     @JoinColumn(name="seat_id", nullable = false)
     private Seat seat;
 
+	@ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @JoinColumn(name="purchase_id", nullable = false)
+    private Purchase purchase;
+    
     public int getId() {
         return id;
     }

@@ -1,6 +1,8 @@
 package gr.aueb.mscis.theater.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="users")
@@ -31,6 +33,8 @@ public class User {
 //    @Column(name="userType")
 //    private UserType userType;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private Set<Purchase> purchases = new HashSet<Purchase>();
     
     /**
      * Προκαθορισμένος κατασκευαστής.
