@@ -43,12 +43,10 @@ public class User {
 
     /**
      * Βοηθητικός κατασκευαστής.
-     * ....
-     * @param
-     * @param
-     * @param
-     * @param
-     * @param
+     * @param firstname Το όνομα χρήστη
+     * @param lastName Το επώνυμο του χρήστη
+     * @param email Το e-mail του χρήστη
+     * @param password Ο κωδικός πρόσβασης του χρήστη
      */
     public User(String firstname,
     		    String lastName,

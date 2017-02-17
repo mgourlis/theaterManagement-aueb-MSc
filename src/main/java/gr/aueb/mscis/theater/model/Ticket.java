@@ -1,5 +1,7 @@
 package gr.aueb.mscis.theater.model;
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 /**
@@ -37,6 +39,11 @@ public class Ticket {
     @JoinColumn(name="purchase_id", nullable = false)
     private Purchase purchase;
     
+    /**
+     * Προκαθορισμένος κατασκευαστής.
+     */
+    public Ticket() { }
+	
     public int getId() {
         return id;
     }

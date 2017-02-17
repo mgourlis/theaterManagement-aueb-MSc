@@ -42,7 +42,7 @@ public class Purchase {
      * Βοηθητικός κατασκευαστής.
      * @param date Η ημερομηνία αγοράς
      * @param wayOfPurchase Ο τρόπος πληρωμής
-     * @param quantity Το πλήθος των εισητηρίων
+     * @param quantity Το πλήθος των εισιτηρίων
      * @param totalAmount Το συνολικό κόστος
      */
     public Purchase(Date date,
@@ -97,16 +97,16 @@ public class Purchase {
     }
 
     /**
-     * Επιστρέφει την ποσότητα των εισητηρίων.
-     * @return Η ποσότητα των εισητηρίων.
+     * Επιστρέφει την ποσότητα των εισιτηρίων.
+     * @return Η ποσότητα των εισιτηρίων.
      */
     public Integer getQuantity() {
         return quantity;
     }
 
     /**
-     * Θέτει τη συνολική τιμή των εισητηρίων.
-     * @param totalAmount Η συνολική τιμή των εισητηρίων
+     * Θέτει τη συνολική τιμή των εισιτηρίων.
+     * @param totalAmount Η συνολική τιμή των εισιτηρίων
      */
     public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;

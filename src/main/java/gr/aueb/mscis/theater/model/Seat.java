@@ -44,7 +44,7 @@ public class Seat {
     public Seat(int lineNumber, int seatNumber) {
         this.lineNumber = lineNumber;
         this.seatNumber = seatNumber;
-        this.availability =true;
+        this.availability = true;
     }
 
     public int getId() {
