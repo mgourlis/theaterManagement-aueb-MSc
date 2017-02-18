@@ -55,7 +55,15 @@ public class Purchase {
         this.quantity = quantity;
         this.totalAmount = totalAmount;
     }
-    
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     /**
      * Θέτει την ημερομηνία αγοράς.
      * @param date Η ημερομηνία αγοράς
@@ -118,5 +126,29 @@ public class Purchase {
      */
     public Double getTotalAmount() {
         return totalAmount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Purchase purchase = (Purchase) o;
+
+        if (!date.equals(purchase.date)) return false;
+        if (!quantity.equals(purchase.quantity)) return false;
+        if (!totalAmount.equals(purchase.totalAmount)) return false;
+        if (!wayOfPurchase.equals(purchase.wayOfPurchase)) return false;
+        return user.equals(purchase.user);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = date.hashCode();
+        result = 31 * result + quantity.hashCode();
+        result = 31 * result + totalAmount.hashCode();
+        result = 31 * result + wayOfPurchase.hashCode();
+        result = 31 * result + user.hashCode();
+        return result;
     }
 }

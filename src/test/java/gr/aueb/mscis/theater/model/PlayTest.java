@@ -9,28 +9,6 @@ import org.junit.Test;
  * Created by Myron on 11/2/2017.
  */
 public class PlayTest {
-    @Before
-    public void setUp() throws Exception {
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
-    }
-
-    @Test
-    public void getId() throws Exception {
-        Play a= new Play("Test","test Writer");
-        a.setId(1);
-        Assert.assertEquals(1,a.getId());
-    }
-
-    @Test
-    public void setId() throws Exception {
-
-    }
-
     @Test
     public void getTitle() throws Exception {
 
@@ -42,23 +20,44 @@ public class PlayTest {
     }
 
     @Test
-    public void getYear() throws Exception {
+    public void getDescription() throws Exception {
 
     }
 
     @Test
-    public void setYear() throws Exception {
+    public void setDescription() throws Exception {
 
     }
 
     @Test
-    public void getWriter() throws Exception {
+    public void getRoles() throws Exception {
 
     }
 
     @Test
-    public void setWriter() throws Exception {
+    public void setRoles() throws Exception {
 
     }
+
+    @Test
+    public void addRole() throws Exception {
+
+    }
+
+    @Test
+    public void removeRole() throws Exception {
+
+    }
+
+    @Test
+    public void getShows() throws Exception {
+
+    }
+
+    @Test
+    public void equals() throws Exception {
+
+    }
+
 
 }
