@@ -52,10 +52,6 @@ public class Show {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -105,6 +101,7 @@ public class Show {
     }
 
     public boolean removeTicket(Ticket ticket){
+        ticket.setShow(null);
         return this.tickets.remove(ticket);
     }
 
@@ -115,7 +112,6 @@ public class Show {
 
         Show show = (Show) o;
 
-        if (Double.compare(show.price, price) != 0) return false;
         if (canceled != show.canceled) return false;
         if (!date.equals(show.date)) return false;
         if (!play.equals(show.play)) return false;
@@ -127,8 +123,6 @@ public class Show {
         int result;
         long temp;
         result = date.hashCode();
-        temp = Double.doubleToLongBits(price);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (canceled ? 1 : 0);
         result = 31 * result + play.hashCode();
         result = 31 * result + hall.hashCode();

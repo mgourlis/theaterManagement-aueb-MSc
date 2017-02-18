@@ -44,6 +44,10 @@ public class Sector {
         this.priceFactor = priceFactor;
     }
 
+    public int getId() {
+        return id;
+    }
+
     /**
      *
      * @return
@@ -85,7 +89,7 @@ public class Sector {
     }
 
     public void addLine() {
-        Seat seat = new Seat(seats.isEmpty() ? 1 : seats.get(seats.size()-1).getLineNumber(),1);
+        Seat seat = new Seat(seats.isEmpty() ? 1 : seats.get(seats.size()-1).getLineNumber()+1,1);
         seat.setSector(this);
         this.seats.add(seat);
     }
@@ -166,7 +170,6 @@ public class Sector {
     }
 
     public boolean isAvailable(){
-        boolean av = false;
         for (Seat seat : seats) {
             if(seat.isAvailable())
                 return true;

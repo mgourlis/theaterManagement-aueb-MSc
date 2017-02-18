@@ -40,6 +40,10 @@ public class Hall {
         this.name = name;
     }
 
+    public int getId() {
+        return id;
+    }
+
     /**
      *
      * @return
@@ -75,12 +79,11 @@ public class Hall {
     }
     
     public boolean isAvailable(Date date){
-        boolean av = false;
         for (Sector sector : sectors) {
             if(sector.isAvailable())
-                av = true;
+                return true;
         }
-        return av;
+        return false;
     }
 
     @Override

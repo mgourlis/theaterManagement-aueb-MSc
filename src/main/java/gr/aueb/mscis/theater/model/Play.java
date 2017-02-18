@@ -29,6 +29,7 @@ public class Play {
 	 *
 	 */
 	public Play() {
+
 	}
 
 	/**
@@ -51,10 +52,6 @@ public class Play {
 
 	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	/**

@@ -59,10 +59,6 @@ public class Ticket {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getSerial() {
         return serial;
     }
@@ -118,7 +114,6 @@ public class Ticket {
 
         Ticket ticket = (Ticket) o;
 
-        if (Double.compare(ticket.price, price) != 0) return false;
         if (!serial.equals(ticket.serial)) return false;
         if (!show.equals(ticket.show)) return false;
         return seat.equals(ticket.seat);
@@ -129,8 +124,6 @@ public class Ticket {
         int result;
         long temp;
         result = serial.hashCode();
-        temp = Double.doubleToLongBits(price);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + show.hashCode();
         result = 31 * result + seat.hashCode();
         return result;

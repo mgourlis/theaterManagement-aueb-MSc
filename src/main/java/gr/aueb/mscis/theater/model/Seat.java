@@ -55,10 +55,6 @@ public class Seat {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     /**
      *
      * @return int seatNumber
@@ -123,6 +119,14 @@ public class Seat {
      */
     public boolean isAvailable(){
         return availability;
+    }
+
+    /**
+     *
+     * @param availability
+     */
+    public void setAvailability(boolean availability) {
+        this.availability = availability;
     }
 
     @Override

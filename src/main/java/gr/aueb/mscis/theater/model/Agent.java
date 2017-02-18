@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-/** ============ZK==============
- * Zarodimos Github Myron Push
+/**
+ *
  * Created by Myron on 11/2/2017.
  */
 @Entity
@@ -36,32 +36,61 @@ public class Agent {
         }
     }
 
+    /**
+     * Προκαθορισμένος κατασκευαστής.
+     */
     public Agent(){
 
     }
 
+    /**
+     * Κατασκευαστής της κλάσσης Agent, δημιουργεί αντικείμενο τύπου Agent
+     * @param name το όνομα του Συντελεστή
+     * @param yearOfBirth η ημερομηνία γέννησης του συντελεστή
+     * @param cv το βιογραφικό του συντελεστή (μέχρι 5000 χαρακτήρες)
+     */
     public Agent(String name, int yearOfBirth, String cv) {
         this.name = name;
         this.yearOfBirth = yearOfBirth;
         this.cv = cv;
     }
 
+    /**
+     * Accessor method
+     * @return επιστρέφει το id του αντικειμένου
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Transformer Method
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Accessor method
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Transformer Method
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Accessor method
+     * @return
+     */
     public int getYearOfBirth() {
         return yearOfBirth;
     }
@@ -70,28 +99,55 @@ public class Agent {
         this.yearOfBirth = yearOfBirth;
     }
 
+    /**
+     * Accessor method
+     * @return
+     */
     public String getCv() {
         return cv;
     }
 
+    /**
+     * Transformer Method
+     * @param cv
+     */
     public void setCv(String cv) {
         this.cv = cv;
     }
 
+    /**
+     * Accessor method
+     *
+     * @return Set με αντικείμενα Role
+     */
     public Set<Role> getRoles() {
         return roles;
     }
 
+    /**
+     *
+     * @param role
+     */
     public void addRole(Role role) {
         role.setAgent(this);
         this.roles.add(role);
     }
 
+    /**
+     *
+     * @param role
+     * @return
+     */
     public boolean removeRole(Role role){
         role.setAgent(null);
         return this.roles.remove(role);
     }
 
+    /**
+     *
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -103,6 +159,10 @@ public class Agent {
         return name.equals(agent.name);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         int result = name.hashCode();
