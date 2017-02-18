@@ -61,7 +61,7 @@ public class Hall {
      * @return
      */
     public Set<Sector> getSectors() {
-        return new HashSet<Sector>(sectors);
+        return sectors;
     }
 
     public void addSector(Sector tempSector){
@@ -70,6 +70,7 @@ public class Hall {
     }
 
     public boolean removeSector(Sector tempSector){
+        tempSector.setHall(null);
         return this.sectors.remove(tempSector);
     }
     
