@@ -28,6 +28,10 @@ public class Role {
     @JoinColumn(name="agent_id", nullable = true)
     private Agent agent;
 
+    public Role(){
+
+    }
+
     public Role(String name, RoleType roleType) {
         this.name = name;
         this.roleType = roleType;
@@ -71,5 +75,25 @@ public class Role {
 
     public void setAgent(Agent agent) {
         this.agent = agent;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Role role = (Role) o;
+
+        if (!name.equals(role.name)) return false;
+        if (roleType != role.roleType) return false;
+        return play.equals(role.play);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + roleType.hashCode();
+        result = 31 * result + play.hashCode();
+        return result;
     }
 }

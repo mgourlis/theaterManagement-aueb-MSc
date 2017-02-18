@@ -19,6 +19,9 @@ public class Agent {
     @Column(name = "name", length = 512, nullable = false)
     private String name;
 
+    @Column(name = "yearOfBirth", nullable = false)
+    private int yearOfBirth;
+
     @Column(name = "cv", length = 5000, nullable = true)
     private String cv;
 
@@ -31,6 +34,16 @@ public class Agent {
         for (Role role : roles) {
             role.setAgent(null);
         }
+    }
+
+    public Agent(){
+
+    }
+
+    public Agent(String name, int yearOfBirth, String cv) {
+        this.name = name;
+        this.yearOfBirth = yearOfBirth;
+        this.cv = cv;
     }
 
     public int getId() {
@@ -49,6 +62,14 @@ public class Agent {
         this.name = name;
     }
 
+    public int getYearOfBirth() {
+        return yearOfBirth;
+    }
+
+    public void setYearOfBirth(int yearOfBirth) {
+        this.yearOfBirth = yearOfBirth;
+    }
+
     public String getCv() {
         return cv;
     }
@@ -62,10 +83,30 @@ public class Agent {
     }
 
     public void addRole(Role role) {
+        role.setAgent(this);
         this.roles.add(role);
     }
 
     public boolean removeRole(Role role){
+        role.setAgent(null);
         return this.roles.remove(role);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Agent agent = (Agent) o;
+
+        if (yearOfBirth != agent.yearOfBirth) return false;
+        return name.equals(agent.name);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + yearOfBirth;
+        return result;
     }
 }

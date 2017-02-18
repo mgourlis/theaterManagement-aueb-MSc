@@ -42,7 +42,6 @@ public class Sector {
     public Sector(String name, double priceFactor){
         this.name = name;
         this.priceFactor = priceFactor;
-
     }
 
     /**
@@ -77,8 +76,18 @@ public class Sector {
         return hall;
     }
 
+    public void setHall(Hall hall) {
+        this.hall = hall;
+    }
+
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
     public void addLine() {
-        this.seats.add(new Seat(seats.size()+1,1));
+        Seat seat = new Seat(seats.isEmpty() ? 1 : seats.get(seats.size()-1).getLineNumber(),1);
+        seat.setSector(this);
+        this.seats.add(seat);
     }
 
     public boolean removeLine(){
@@ -115,17 +124,45 @@ public class Sector {
         if(seatNumber != 0){
             seats.add(new Seat(line, seatNumber+1));
         }else{
-            throw new IllegalArgumentException("line from sector addSeat");
+            throw new IllegalArgumentException("line from sector addSeat: line does not exist");
         }
     }
 
     public boolean removeSeat(int line){
         int seatNumber = lineLength(line);
         if(seatNumber != 0){
+            ListIterator<Seat> lit = seats.listIterator();
+            Seat s = seats.get(0);
+            while (lit.hasNext()){
+                s = lit.next();
+                if(s.getLineNumber() == line){
+                    while (s.isBooked() && lit.hasNext()){
+                        s = lit.next();
+                    }
+                    if(!lit.hasNext())
+                        return false;
+                    else
+                        break;
+                }
+            }
 
+            s.setSector(null);
+            for(Ticket ticket : s.getTickets()){
+                ticket.setSeat(null);
+            }
+            s.setTickets(new HashSet<Ticket>());
+            lit.remove();
+
+            while (lit.hasNext()){
+                s = lit.next();
+                if(s.getLineNumber() == line) {
+                    s.setSeatNumber(s.getSeatNumber() - 1);
+                }
+            }
         }else{
-            throw new IllegalArgumentException("line from sector addSeat");
+            throw new IllegalArgumentException("line from sector addSeat: line does not exist");
         }
+        return false;
     }
 
     public boolean isAvailable(){
@@ -151,4 +188,26 @@ public class Sector {
         return lineLength;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Sector sector = (Sector) o;
+
+        if (Double.compare(sector.priceFactor, priceFactor) != 0) return false;
+        if (!name.equals(sector.name)) return false;
+        return hall.equals(sector.hall);
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = name.hashCode();
+        temp = Double.doubleToLongBits(priceFactor);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + hall.hashCode();
+        return result;
+    }
 }

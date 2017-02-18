@@ -87,4 +87,51 @@ public class Show {
     public void setHall(Hall hall) {
         this.hall = hall;
     }
+
+    public boolean isCanceled() {
+        return canceled;
+    }
+
+    public void setCanceled(boolean canceled) {
+        this.canceled = canceled;
+    }
+
+    public Set<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void addTicket(Ticket ticket){
+        this.tickets.add(ticket);
+    }
+
+    public boolean removeTicket(Ticket ticket){
+        return this.tickets.remove(ticket);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Show show = (Show) o;
+
+        if (Double.compare(show.price, price) != 0) return false;
+        if (canceled != show.canceled) return false;
+        if (!date.equals(show.date)) return false;
+        if (!play.equals(show.play)) return false;
+        return hall.equals(show.hall);
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = date.hashCode();
+        temp = Double.doubleToLongBits(price);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (canceled ? 1 : 0);
+        result = 31 * result + play.hashCode();
+        result = 31 * result + hall.hashCode();
+        return result;
+    }
 }

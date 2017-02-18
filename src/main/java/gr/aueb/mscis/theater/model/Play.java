@@ -91,12 +91,30 @@ public class Play {
 	}
 
 	public void addRole(Role temprole){
-		Role role = new Role(temprole.getName(), temprole.getRoleType());
-		role.setPlay(this);
-		this.roles.add(role);
+		temprole.setPlay(this);
+		this.roles.add(temprole);
 	}
 
 	public boolean removeRole(Role role){
 		return this.roles.remove(role);
+	}
+
+	public Set<Show> getShows() {
+		return shows;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Play play = (Play) o;
+
+		return title.equals(play.title);
+	}
+
+	@Override
+	public int hashCode() {
+		return title.hashCode();
 	}
 }

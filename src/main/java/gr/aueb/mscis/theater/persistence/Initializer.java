@@ -1,15 +1,11 @@
 package gr.aueb.mscis.theater.persistence;
 
-import gr.aueb.mscis.theater.model.Sector;
-import gr.aueb.mscis.theater.model.Play;
-import gr.aueb.mscis.theater.model.Role;
-import gr.aueb.mscis.theater.model.Hall;
-import gr.aueb.mscis.theater.model.Seat;
-import gr.aueb.mscis.theater.model.RoleType;
+import gr.aueb.mscis.theater.model.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import java.util.Calendar;
 
 public class Initializer  {
 
@@ -39,51 +35,103 @@ public class Initializer  {
 
     public void prepareData() {
 
-        eraseData();                      
+//        eraseData();
 
         Play amlet = new Play("Amlet", "William Shakespeare");
         Play tgm = new Play("The Glass Menagerie", "Tennessee Williams");
 
-        Role role1 = new Role("role1", Actor);
-        Role role2 = new Role("role2", Actor);
-        Role role3 = new Role("role3", Operator);
-        Role role4 = new Role("role4", Operator);
-        
+        Agent agent1 = new Agent("Name1",1973,"");
+        Agent agent2 = new Agent("Name2",1953,"");
+
+        Role role1 = new Role("role1", RoleType.Actor);
+        Role role2 = new Role("role2", RoleType.Actor);
+        Role role3 = new Role("role3", RoleType.Operator);
+        Role role4 = new Role("role4", RoleType.Operator);
+
+        amlet.addRole(role1);
+        amlet.addRole(role3);
+
+        tgm.addRole(role2);
+        tgm.addRole(role4);
+
+        agent1.addRole(role1);
+        agent1.addRole(role3);
+
+        agent2.addRole(role2);
+
+        role2.setAgent(agent2);
+
         Hall hall1 = new Hall("hall1");
         Hall hall2 = new Hall("hall2");
         
-        Sector sector1 = new Sector("sector1", 1.5);
-        Sector sector2 = new Sector("sector2", 1.2);
-        Sector sector3 = new Sector("sector3", 1);
+        Sector hall1sector1 = new Sector("sector1", 1.5);
+        Sector hall1sector2 = new Sector("sector2", 1.2);
+        Sector hall1sector3 = new Sector("sector3", 1);
 
-        Seat seat1 = new Seat(1, 1);
-        Seat seat2 = new Seat(1, 2);
-        Seat seat3 = new Seat(1, 3);
+        hall1.addSector(hall1sector1);
+        hall1.addSector(hall1sector2);
+        hall1.addSector(hall1sector3);
+
+        Sector hall2sector1 = new Sector("sector1", 1.5);
+        Sector hall2sector2 = new Sector("sector2", 1.2);
+        Sector hall2sector3 = new Sector("sector3", 1);
+
+        hall2.addSector(hall2sector1);
+        hall2.addSector(hall2sector2);
+        hall2.addSector(hall2sector3);
+
+
+        hall1sector1.addLine();
+        hall1sector1.addLine();
+        hall1sector1.addLine();
+        hall1sector1.addLine();
+
+        hall1sector2.addLine();
+        hall1sector2.addLine();
+
+        hall1sector3.addLine();
+        hall1sector3.addLine();
+        hall1sector3.addLine();
+        hall1sector3.addLine();
+        hall1sector3.addLine();
+        hall1sector3.addLine();
+
+        hall2sector1.addLine();
+        hall2sector1.addLine();
+        hall2sector1.addLine();
+
+
+        hall2sector2.addLine();
+        hall2sector2.addLine();
+
+        hall2sector3.addLine();
+        hall2sector3.addLine();
+        hall2sector3.addLine();
+        hall2sector3.addLine();
+        hall2sector3.addLine();
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(2017, Calendar.AUGUST, 22);
+
+        Show show1 = new Show(cal.getTime(),50.0,amlet,hall1);
+
         
-//        Ticket ticket = new Ticket();
+        Ticket ticket = new Ticket(show1,hall1sector1.getSeats().get(0));
         
         EntityManager em = JPAUtil.getCurrentEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
+
+        em.persist(agent1);
+        em.persist(agent2);
         
         em.persist(amlet);
         em.persist(tgm);
         
         em.persist(hall1);
         em.persist(hall2);
-        
-        em.persist(sector1);
-        em.persist(sector2);
-        em.persist(sector3);
-        
-        em.persist(seat1);
-        em.persist(seat2);
-        em.persist(seat3);
 
-        em.persist(role1);
-        em.persist(role2);
-        em.persist(role3);
-        em.persist(role4);
+        em.persist(show1);
         
         tx.commit();
     

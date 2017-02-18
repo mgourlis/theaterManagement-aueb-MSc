@@ -65,7 +65,8 @@ public class Hall {
     }
 
     public void addSector(Sector tempSector){
-
+        tempSector.setHall(this);
+        this.sectors.add(tempSector);
     }
 
     public boolean removeSector(Sector tempSector){
@@ -81,4 +82,18 @@ public class Hall {
         return av;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Hall hall = (Hall) o;
+
+        return name.equals(hall.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
 }

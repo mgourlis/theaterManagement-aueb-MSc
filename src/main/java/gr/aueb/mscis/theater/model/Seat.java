@@ -27,6 +27,10 @@ public class Seat {
     @Column(name = "availability", nullable = false)
     private boolean availability;
 
+    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @JoinColumn(name="sector_id", nullable = false)
+    private Sector sector;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "seat")
     private Set<Ticket> tickets = new HashSet<Ticket>();
 
@@ -75,11 +79,19 @@ public class Seat {
         this.lineNumber = lineNumber;
     }
 
+    public Sector getSector() {
+        return sector;
+    }
+
+    public void setSector(Sector sector) {
+        this.sector = sector;
+    }
+
     public boolean isBooked(){
         Date currentDate = Calendar.getInstance().getTime();
         for(Ticket ticket : tickets){
             if(ticket.getShow().getDate().after(currentDate) || ticket.getShow().getDate().equals(currentDate))
-                return true;
+                if(ticket.isActive()) return true;
         }
         return false;
     }
@@ -97,7 +109,13 @@ public class Seat {
         return false;
     }
 
+    public Set<Ticket> getTickets() {
+        return tickets;
+    }
 
+    public void setTickets(Set<Ticket> tickets) {
+        this.tickets = tickets;
+    }
 
     /**
      *
@@ -107,4 +125,23 @@ public class Seat {
         return availability;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Seat seat = (Seat) o;
+
+        if (lineNumber != seat.lineNumber) return false;
+        if (seatNumber != seat.seatNumber) return false;
+        return sector.equals(seat.sector);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = lineNumber;
+        result = 31 * result + seatNumber;
+        result = 31 * result + sector.hashCode();
+        return result;
+    }
 }
