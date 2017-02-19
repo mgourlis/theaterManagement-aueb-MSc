@@ -27,16 +27,16 @@ public class Ticket {
     @Column(name = "active", nullable = false)
     private boolean active;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(optional = true, fetch=FetchType.LAZY)
     @JoinColumn(name="show_id", nullable = true)
     private Show show;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(optional = true, fetch=FetchType.LAZY)
     @JoinColumn(name="seat_id", nullable = true)
     private Seat seat;
 
-	@ManyToOne(optional = false, fetch=FetchType.LAZY)
-    @JoinColumn(name="purchase_id", nullable = false)
+	@ManyToOne(optional = true, fetch=FetchType.LAZY)
+    @JoinColumn(name="purchase_id", nullable = true)
     private Purchase purchase;
     
     /**
@@ -115,17 +115,15 @@ public class Ticket {
         Ticket ticket = (Ticket) o;
 
         if (!serial.equals(ticket.serial)) return false;
-        if (!show.equals(ticket.show)) return false;
-        return seat.equals(ticket.seat);
+        if (show != null ? !show.equals(ticket.show) : ticket.show != null) return false;
+        return seat != null ? seat.equals(ticket.seat) : ticket.seat == null;
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = serial.hashCode();
-        result = 31 * result + show.hashCode();
-        result = 31 * result + seat.hashCode();
+        int result = serial.hashCode();
+        result = 31 * result + (show != null ? show.hashCode() : 0);
+        result = 31 * result + (seat != null ? seat.hashCode() : 0);
         return result;
     }
 }

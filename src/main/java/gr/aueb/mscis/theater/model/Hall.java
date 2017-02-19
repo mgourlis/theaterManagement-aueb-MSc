@@ -14,7 +14,7 @@ public class Hall {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @Column(name = "name", length = 512, nullable = false)
     private String name;
@@ -40,7 +40,7 @@ public class Hall {
         this.name = name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -74,16 +74,21 @@ public class Hall {
     }
 
     public boolean removeSector(Sector tempSector){
-        tempSector.setHall(null);
         return this.sectors.remove(tempSector);
     }
     
-    public boolean isAvailable(Date date){
+    public boolean isAvailable(){
         for (Sector sector : sectors) {
             if(sector.isAvailable())
                 return true;
         }
         return false;
+    }
+
+    public void setAvailability(boolean availability) {
+        for (Sector sector: sectors ) {
+            sector.setAvailability(availability);
+        }
     }
 
     @Override

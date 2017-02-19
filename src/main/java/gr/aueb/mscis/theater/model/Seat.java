@@ -31,8 +31,16 @@ public class Seat {
     @JoinColumn(name="sector_id", nullable = false)
     private Sector sector;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "seat")
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,
+            CascadeType.DETACH, CascadeType.MERGE,CascadeType.REFRESH}, mappedBy = "seat")
     private Set<Ticket> tickets = new HashSet<Ticket>();
+
+    @PreRemove
+    private void removeAssociationsWithChilds() {
+        for (Ticket ticket : tickets) {
+            ticket.setSeat(null);
+        }
+    }
 
     /**
      *

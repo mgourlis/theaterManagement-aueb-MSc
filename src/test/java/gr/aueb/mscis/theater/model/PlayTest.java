@@ -1,14 +1,25 @@
 package gr.aueb.mscis.theater.model;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
+
 /**
- * Created by Myron on 11/2/2017.
+ * Created by Myron on 18/2/2017.
  */
 public class PlayTest {
+    @Before
+    public void setUp() throws Exception {
+
+    }
+
+    @After
+    public void tearDown() throws Exception {
+
+    }
+
     @Test
     public void getTitle() throws Exception {
 
@@ -58,6 +69,5 @@ public class PlayTest {
     public void equals() throws Exception {
 
     }
-
 
 }

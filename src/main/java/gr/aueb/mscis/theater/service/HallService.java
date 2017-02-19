@@ -1,6 +1,13 @@
 package gr.aueb.mscis.theater.service;
 
+import gr.aueb.mscis.theater.model.Hall;
+import gr.aueb.mscis.theater.model.Sector;
+
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
+import java.util.List;
 
 /**
  * Created by Myron on 18/2/2017.
@@ -8,4 +15,134 @@ import javax.persistence.EntityManager;
 public class HallService {
 
     EntityManager em;
+
+    public HallService(EntityManager em) { this.em = em; }
+
+
+    public List<Hall> findAllHalls() {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        List<Hall> results = null;
+
+        results = em.createQuery("select h from Hall h").getResultList();
+
+        tx.commit();
+        return results;
+    }
+
+    public Hall findHallById(int id) {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Hall hall = null;
+        try {
+            hall = em.find(Hall.class, id);
+            tx.commit();
+        } catch (NoResultException ex) {
+            tx.rollback();
+        }
+        return hall;
+    }
+
+    public List<Hall> findHallsByName(String name) {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        List<Hall> results = null;
+        try {
+            results = em.createQuery("select h from Hall h where h.name like :hallName").setParameter("hallName", name).getResultList();
+            tx.commit();
+        } catch (NoResultException ex) {
+            tx.rollback();
+        }
+        return results;
+    }
+
+    public List<Hall> findAvailableHalls() {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        List<Hall> results = null;
+        try {
+            results = em.createQuery("select h from Hall h").getResultList();
+            for(Hall hall : results){
+                if(!hall.isAvailable())
+                    results.remove(hall);
+            }
+            tx.commit();
+        } catch (NoResultException ex) {
+            tx.rollback();
+        }
+        return results;
+    }
+
+    public Hall save(Hall hall) {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        if (hall.getId() != null) {
+            hall = em.merge(hall);
+        } else {
+            em.persist(hall);
+        }
+        tx.commit();
+        return hall;
+    }
+
+    public boolean delete(int hallId) {
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        try {
+            Hall hall = em.getReference(Hall.class, hallId);
+            em.remove(hall);
+        } catch (EntityNotFoundException e) {
+            tx.rollback();
+            return false;
+        }
+
+        tx.commit();
+
+        return true;
+    }
+
+    public Sector findSectorById(int id) {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Sector sector = null;
+        try {
+            sector = em.find(Sector.class, id);
+            tx.commit();
+        } catch (NoResultException ex) {
+            tx.rollback();
+        }
+        return sector;
+    }
+
+    /**
+     *
+     * @param sectorId
+     * @return true/false - εγινε η διαγραφή / δεν έγινε η διαγραφή
+     */
+    public boolean deleteSector(int sectorId) {
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        List<Sector> results = null;
+        try {
+            Sector sector = em.getReference(Sector.class, sectorId);
+            //επαληθευση για εισιτήρια
+            if(!sector.hasBookings())
+                sector.getHall().removeSector(sector);
+            else
+                return false;
+        } catch (EntityNotFoundException e) {
+            tx.rollback();
+            return false;
+        }
+
+        tx.commit();
+
+        return true;
+    }
+
+
 }

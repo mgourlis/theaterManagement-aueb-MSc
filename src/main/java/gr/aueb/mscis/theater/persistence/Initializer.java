@@ -21,12 +21,30 @@ public class Initializer  {
         tx.begin();
         Query query = null;
 
+        query = em.createNativeQuery("delete from tickets");
+        query.executeUpdate();
+        query = em.createNativeQuery("delete from shows");
+        query.executeUpdate();
+        query = em.createNativeQuery("delete from roles");
+        query.executeUpdate();
         query = em.createNativeQuery("delete from plays");
+        query.executeUpdate();
+        query = em.createNativeQuery("delete from seats");
+        query.executeUpdate();
+        query = em.createNativeQuery("delete from sectors");
+        query.executeUpdate();
+        query = em.createNativeQuery("delete from halls");
+        query.executeUpdate();
+        query = em.createNativeQuery("delete from agents");
+        query.executeUpdate();
+        query = em.createNativeQuery("delete from purchases");
+        query.executeUpdate();
+        query = em.createNativeQuery("delete from users");
         query.executeUpdate();
 
         
-        query = em.createNativeQuery("ALTER SEQUENCE hibernate_sequence RESTART WITH 1");
-        query.executeUpdate();
+        //query = em.createNativeQuery("ALTER SEQUENCE hibernate_sequence RESTART WITH 1");
+        //query.executeUpdate();
         
         tx.commit();
         
@@ -35,7 +53,7 @@ public class Initializer  {
 
     public void prepareData() {
 
-//        eraseData();
+        eraseData();
 
         Play amlet = new Play("Amlet", "William Shakespeare");
         Play tgm = new Play("The Glass Menagerie", "Tennessee Williams");
@@ -132,6 +150,8 @@ public class Initializer  {
         em.persist(hall2);
 
         em.persist(show1);
+
+        em.persist(ticket);
         
         tx.commit();
     

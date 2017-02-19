@@ -14,7 +14,7 @@ public class Agent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @Column(name = "name", length = 512, nullable = false)
     private String name;
@@ -59,7 +59,7 @@ public class Agent {
      * Accessor method
      * @return επιστρέφει το id του αντικειμένου
      */
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

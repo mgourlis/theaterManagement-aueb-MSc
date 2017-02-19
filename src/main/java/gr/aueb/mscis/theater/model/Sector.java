@@ -94,38 +94,41 @@ public class Sector {
         this.seats.add(seat);
     }
 
-    public boolean removeLine(){
-        if(seats.isEmpty())
-            return false;
-        int size = seats.size();
-        ListIterator<Seat> lit = seats.listIterator(size);
-        Seat s = seats.get(size - 1);
-        int lineNumber = s.getLineNumber();
-        boolean removeFlag = true;
-        while (lit.hasPrevious()){
-            s = lit.previous();
-            if(s.isBooked())
-                removeFlag = false;
-            if(s.getLineNumber() != lineNumber && removeFlag)
-                break;
-            if(s.getLineNumber() != lineNumber && !removeFlag){
-                lineNumber = s.getLineNumber();
-                removeFlag = true;
+    public boolean removeLine(int line){
+        Boolean removeFlag = false;
+        int linelength = lineLength(line);
+        if(linelength > 0) {
+            ListIterator<Seat> lit = seats.listIterator(seats.size());
+            Seat seat = null;
+            removeFlag = true;
+            while (lit.hasPrevious()){
+                seat = lit.previous();
+                if (seat.getLineNumber() == line){
+                    while (seat.getLineNumber() == line && lit.hasPrevious()) {
+                        if (seat.isBooked()) removeFlag = false;
+                        seat = lit.previous();
+                    }
+                    if(lit.hasPrevious())
+                        lit.next();
+                    break;
+                }
             }
-        }
-        while (lit.hasNext() && removeFlag){
-            s = lit.next();
-            if(s.getLineNumber() == lineNumber)
-                lit.remove();
-            else
-                s.setLineNumber(s.getLineNumber()-1);
+            while (lit.hasNext() && removeFlag) {
+                seat = lit.next();
+                if(seat.getLineNumber() == line) {
+                    seat.setSector(null);
+                    lit.remove();
+                } else {
+                    seat.setLineNumber(seat.getLineNumber()-1);
+                }
+            }
         }
         return removeFlag;
     }
 
     public void addSeat(int line){
         int seatNumber = lineLength(line);
-        if(seatNumber != 0){
+        if(seatNumber > 0){
             seats.add(new Seat(line, seatNumber+1));
         }else{
             throw new IllegalArgumentException("line from sector addSeat: line does not exist");
@@ -134,37 +137,28 @@ public class Sector {
 
     public boolean removeSeat(int line){
         int seatNumber = lineLength(line);
-        if(seatNumber != 0){
+        if(seatNumber > 1) {
             ListIterator<Seat> lit = seats.listIterator();
-            Seat s = seats.get(0);
-            while (lit.hasNext()){
+            Seat s = null;
+            while (lit.hasNext()) {
                 s = lit.next();
-                if(s.getLineNumber() == line){
-                    while (s.isBooked() && lit.hasNext()){
+                if (s.getLineNumber() == line) {
+                    while (s.isBooked() && lit.hasNext() && s.getLineNumber() == line) {
                         s = lit.next();
                     }
-                    if(!lit.hasNext())
+                    if (!lit.hasNext() || s.getLineNumber() != line)
                         return false;
-                    else
-                        break;
+                    else {
+                        s.setSector(null);
+                        lit.remove();
+                        while (lit.hasNext() && s.getLineNumber() == line) {
+                            s = lit.next();
+                            s.setSeatNumber(s.getSeatNumber()-1);
+                        }
+                        return true;
+                    }
                 }
             }
-
-            s.setSector(null);
-            for(Ticket ticket : s.getTickets()){
-                ticket.setSeat(null);
-            }
-            s.setTickets(new HashSet<Ticket>());
-            lit.remove();
-
-            while (lit.hasNext()){
-                s = lit.next();
-                if(s.getLineNumber() == line) {
-                    s.setSeatNumber(s.getSeatNumber() - 1);
-                }
-            }
-        }else{
-            throw new IllegalArgumentException("line from sector addSeat: line does not exist");
         }
         return false;
     }
@@ -177,7 +171,21 @@ public class Sector {
         return false;
     }
 
-    private int lineLength(int line){
+    public void setAvailability(boolean availability) {
+        for (Seat seat : seats) {
+            seat.setAvailability(availability);
+        }
+    }
+
+    public boolean hasBookings(){
+        for (Seat seat : seats) {
+            if(seat.isBooked())
+                return true;
+        }
+        return false;
+    }
+
+    public int lineLength(int line){
         int lineLength = 0;
         ListIterator<Seat> lit = seats.listIterator();
         while (lit.hasNext()){
