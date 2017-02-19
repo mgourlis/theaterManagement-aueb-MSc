@@ -5,6 +5,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.EntityNotFoundException;
 
+import gr.aueb.mscis.theater.model.Hall;
 import gr.aueb.mscis.theater.model.User;
 
 import java.util.Date;
@@ -74,11 +75,19 @@ public class UserService {
 	{
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
-		if (user.getId() != NULL) {
+		if (user.getId() != null) {
             user = em.merge(user);
 		}
-		else
-			em.persist(user);
+		else {
+            try {
+                User existingUser = ((User) em.createQuery("select u from User u where u.email = :userEmail")
+                        .setParameter("userEmail", user.getEmail()).getSingleResult());
+                tx.rollback();
+                return null;
+            } catch (NoResultException ex) {
+                em.persist(user);
+            }
+        }
 
 		tx.commit();
         return user;

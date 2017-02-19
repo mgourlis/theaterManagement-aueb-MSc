@@ -16,7 +16,7 @@ public class Hall {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "name", length = 512, nullable = false)
+    @Column(name = "name", length = 512, nullable = false, unique = true)
     private String name;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "hall")
