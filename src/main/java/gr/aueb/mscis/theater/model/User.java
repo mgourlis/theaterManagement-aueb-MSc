@@ -64,7 +64,16 @@ public class User {
     public Integer getId() {
         return id;
     }
-    
+
+    /**
+     * Επιστρέφει το id του αντικειμένου στη Βάση Δεδομένων.
+     * Επιστρέφει Null αν το αντικείμενο δεν έχει ανασυρθεί από τη βάση.
+     * @return Integer id
+     */
+    public Integer getId() {
+        return id;
+    }
+
     /**
      * Θέτει το όνομα του χρήστη.
      * @param firstName Το όνομα του χρήστη
@@ -139,7 +148,7 @@ public class User {
 
     /**
      * θέτει το token.
-     * @param type Το token.
+     * @param token Το token.
      */
     protected void setToken(String token) {
         this.token = token;
