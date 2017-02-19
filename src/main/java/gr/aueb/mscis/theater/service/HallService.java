@@ -24,10 +24,13 @@ public class HallService {
         tx.begin();
 
         List<Hall> results = null;
-
-        results = em.createQuery("select h from Hall h").getResultList();
-
+        try {
+            results = em.createQuery("select h from Hall h").getResultList();
+        } catch (NoResultException ex) {
+            tx.rollback();
+        }
         tx.commit();
+        
         return results;
     }
 
