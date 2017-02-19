@@ -16,7 +16,9 @@ public class HallService {
 
     EntityManager em;
 
-    public HallService(EntityManager em) { this.em = em; }
+    public HallService(EntityManager em) {
+        this.em = em;
+    }
 
 
     public List<Hall> findAllHalls() {
@@ -30,7 +32,7 @@ public class HallService {
             tx.rollback();
         }
         tx.commit();
-        
+
         return results;
     }
 
@@ -66,8 +68,8 @@ public class HallService {
         List<Hall> results = null;
         try {
             results = em.createQuery("select h from Hall h").getResultList();
-            for(Hall hall : results){
-                if(!hall.isAvailable())
+            for (Hall hall : results) {
+                if (!hall.isAvailable())
                     results.remove(hall);
             }
             tx.commit();
@@ -80,10 +82,18 @@ public class HallService {
     public Hall save(Hall hall) {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
+        //Validate on same name with existing
         if (hall.getId() != null) {
             hall = em.merge(hall);
         } else {
-            em.persist(hall);
+            try {
+                Hall existingHall = ((Hall) em.createQuery("select h from Hall h where h.name = :hallName")
+                        .setParameter("hallName", hall.getName()).getSingleResult());
+                tx.rollback();
+                return null;
+            } catch (NoResultException ex) {
+                em.persist(hall);
+            }
         }
         tx.commit();
         return hall;
@@ -97,46 +107,6 @@ public class HallService {
         try {
             Hall hall = em.getReference(Hall.class, hallId);
             em.remove(hall);
-        } catch (EntityNotFoundException e) {
-            tx.rollback();
-            return false;
-        }
-
-        tx.commit();
-
-        return true;
-    }
-
-    public Sector findSectorById(int id) {
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        Sector sector = null;
-        try {
-            sector = em.find(Sector.class, id);
-            tx.commit();
-        } catch (NoResultException ex) {
-            tx.rollback();
-        }
-        return sector;
-    }
-
-    /**
-     *
-     * @param sectorId
-     * @return true/false - εγινε η διαγραφή / δεν έγινε η διαγραφή
-     */
-    public boolean deleteSector(int sectorId) {
-
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        List<Sector> results = null;
-        try {
-            Sector sector = em.getReference(Sector.class, sectorId);
-            //επαληθευση για εισιτήρια
-            if(!sector.hasBookings())
-                sector.getHall().removeSector(sector);
-            else
-                return false;
         } catch (EntityNotFoundException e) {
             tx.rollback();
             return false;

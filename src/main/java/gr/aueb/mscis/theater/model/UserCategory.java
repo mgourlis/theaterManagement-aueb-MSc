@@ -11,10 +11,11 @@ public class UserCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
 	@Column(name = "category", length = 255, nullable = false)
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private UserType category;
 	
     @Column(name = "gender", length = 255, nullable = false)
     private String gender;
@@ -42,18 +43,23 @@ public class UserCategory {
     * @param birthday Η ημερομηνία γέννησης του χρήστη
     * @param telephone Ο αριθμός τηλεφώνου του χρήστη
     */	 
-    public UserCategory(String category, String gender, Date birthday, String telephone) {
+    public UserCategory(UserType category, String gender, Date birthday, String telephone) {
 		this.category = category;
         this.gender = gender;
         this.birthday = birthday;
         this.telephone = telephone;
     }
 
-    public int getId() {
+    /**
+     * Επιστρέφει το id του αντικειμένου στη Βάση Δεδομένων.
+     * Επιστρέφει Null αν το αντικείμενο δεν έχει ανασυρθεί από τη βάση.
+     * @return Integer id
+     */
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -61,7 +67,7 @@ public class UserCategory {
     * Επιστρέφει την κατηγορία που ανήκει ο χρήστης.
     * @return Την κατηγορία που ανήκει ο χρήστης
     */
-    public String getCategory() {
+    public UserType getCategory() {
         return category;
     }
 
@@ -69,7 +75,7 @@ public class UserCategory {
     * Θέτει την κατηγορία που ανήκει ο χρήστης.
     * @param category Την κατηγορία που ανήκει ο χρήστης
     */
-    public void setCategory(String category) {
+    public void setCategory(UserType category) {
         this.category = category;
     }	
 
