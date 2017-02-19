@@ -35,6 +35,10 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Purchase> purchases = new HashSet<Purchase>();
+
+	@ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="userCategory_id", nullable = true)
+    private UserCategory userCategory;
     
     /**
      * Προκαθορισμένος κατασκευαστής.
