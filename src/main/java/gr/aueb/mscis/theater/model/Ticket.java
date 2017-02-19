@@ -1,5 +1,7 @@
 package gr.aueb.mscis.theater.model;
 
+import gr.aueb.mscis.theater.service.SerialNumberProvider;
+
 import java.util.UUID;
 
 import javax.persistence.*;
@@ -27,15 +29,15 @@ public class Ticket {
     @Column(name = "active", nullable = false)
     private boolean active;
 
-    @ManyToOne(optional = true, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="show_id", nullable = true)
     private Show show;
 
-    @ManyToOne(optional = true, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="seat_id", nullable = true)
     private Seat seat;
 
-	@ManyToOne(optional = true, fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="purchase_id", nullable = true)
     private Purchase purchase;
     
@@ -44,12 +46,12 @@ public class Ticket {
      */
     public Ticket() { }
 
-    public Ticket(Show show, Seat seat) {
+    public Ticket(Show show, Seat seat, SerialNumberProvider serial) {
         if(!show.getHall().equals(seat.getSector().getHall()))
             throw new IllegalArgumentException("Not same Hall between show and seat");
         this.show = show;
         this.seat = seat;
-        this.serial = UUID.randomUUID().toString();
+        this.serial = serial.createUniqueSerial();
         this.active = true;
         this.moneyReturn = false;
         this.price = show.getPrice()*seat.getSector().getPriceFactor();
@@ -63,8 +65,8 @@ public class Ticket {
         return serial;
     }
 
-    public void setSerial(String serial) {
-        this.serial = serial;
+    public void setSerial(SerialNumberProvider serial) {
+        this.serial = serial.createUniqueSerial();
     }
 
     public double getPrice() {

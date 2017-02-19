@@ -83,17 +83,21 @@ public class Play {
 		return new HashSet<Role>(roles);
 	}
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = new HashSet<Role>(roles);
-	}
-
 	public void addRole(Role temprole){
 		temprole.setPlay(this);
 		this.roles.add(temprole);
 	}
 
 	public boolean removeRole(Role role){
-		return this.roles.remove(role);
+		for(Role r : roles) {
+			if(r.equals(role)) {
+				Boolean delete = this.roles.remove(r);
+				r.setPlay(null);
+				r.setAgent(null);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public Set<Show> getShows() {

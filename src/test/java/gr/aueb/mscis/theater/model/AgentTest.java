@@ -5,6 +5,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
 
 /**
@@ -19,7 +21,7 @@ public class AgentTest {
 
     @Before
     public void setUp() throws Exception {
-        agent = new Agent("name",1900,"test cv");
+        agent = new Agent("name","surname",1900,"test cv");
         play = new Play("title","description");
         play.addRole(new Role("role1",RoleType.Actor));
         agent.addRole(play.getRoles().iterator().next());
@@ -31,14 +33,25 @@ public class AgentTest {
     }
 
     @Test
-    public void getName() throws Exception {
-        Assert.assertEquals("name",agent.getName());
+    public void getFirstName() throws Exception {
+        Assert.assertEquals("name",agent.getFirstName());
     }
 
     @Test
-    public void setName() throws Exception {
-        agent.setName("name2");
-        Assert.assertEquals("name2",agent.getName());
+    public void setFirstName() throws Exception {
+        agent.setFirstName("name2");
+        Assert.assertEquals("name2",agent.getFirstName());
+    }
+
+    @Test
+    public void getLastName() throws Exception {
+        Assert.assertEquals("surname",agent.getLastName());
+    }
+
+    @Test
+    public void setLastName() throws Exception {
+        agent.setLastName("surname2");
+        Assert.assertEquals("surname2",agent.getLastName());
     }
 
     @Test
@@ -79,14 +92,18 @@ public class AgentTest {
     @Test
     public void removeRole() throws Exception {
         Role role = new Role("role1", RoleType.Actor);
+        Role role2 = new Role("role2", RoleType.Actor);
         play.addRole(role);
-        agent.removeRole(role);
+        play.addRole(role2);
+        assertTrue(agent.removeRole(role));
         Assert.assertEquals(0, agent.getRoles().size());
+        Assert.assertEquals(2, play.getRoles().size());
+        assertFalse(agent.equals(play.getRoles().iterator().next().getAgent()));
     }
 
     @Test
     public void equals() throws Exception {
-        Agent agent2 = new Agent("name",1900,"");
+        Agent agent2 = new Agent("name","surname",1900,"");
         Assert.assertTrue(agent.equals(agent2));
     }
 

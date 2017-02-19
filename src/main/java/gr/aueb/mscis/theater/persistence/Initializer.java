@@ -1,6 +1,8 @@
 package gr.aueb.mscis.theater.persistence;
 
 import gr.aueb.mscis.theater.model.*;
+import gr.aueb.mscis.theater.service.SerialNumberProvider;
+import gr.aueb.mscis.theater.service.SerialNumberProviderImpl;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -58,8 +60,8 @@ public class Initializer  {
         Play amlet = new Play("Amlet", "William Shakespeare");
         Play tgm = new Play("The Glass Menagerie", "Tennessee Williams");
 
-        Agent agent1 = new Agent("Name1",1973,"");
-        Agent agent2 = new Agent("Name2",1953,"");
+        Agent agent1 = new Agent("Name1","Surname1",1973,"");
+        Agent agent2 = new Agent("Name2","Surname2",1953,"");
 
         Role role1 = new Role("role1", RoleType.Actor);
         Role role2 = new Role("role2", RoleType.Actor);
@@ -131,10 +133,6 @@ public class Initializer  {
         Calendar cal = Calendar.getInstance();
         cal.set(2017, Calendar.AUGUST, 22);
 
-        Show show1 = new Show(cal.getTime(),50.0,amlet,hall1);
-
-        
-        Ticket ticket = new Ticket(show1,hall1sector1.getSeats().get(0));
         
         EntityManager em = JPAUtil.getCurrentEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -142,12 +140,19 @@ public class Initializer  {
 
         em.persist(agent1);
         em.persist(agent2);
-        
+
+
         em.persist(amlet);
         em.persist(tgm);
-        
+
         em.persist(hall1);
         em.persist(hall2);
+
+        Show show1 = new Show(cal.getTime(),50.0,amlet,hall1);
+
+        SerialNumberProvider serial = new SerialNumberProviderImpl();
+
+        Ticket ticket = new Ticket(show1,hall1sector1.getSeats().get(0),serial);
 
         em.persist(show1);
 

@@ -20,7 +20,7 @@ public class Sector {
     @Column(name = "priceFactor", nullable = false)
     private double priceFactor;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="hall_id", nullable = false)
     private Hall hall;
 
@@ -129,7 +129,9 @@ public class Sector {
     public void addSeat(int line){
         int seatNumber = lineLength(line);
         if(seatNumber > 0){
-            seats.add(new Seat(line, seatNumber+1));
+            Seat s = new Seat(line, seatNumber+1);
+            s.setSector(this);
+            seats.add(s);
         }else{
             throw new IllegalArgumentException("line from sector addSeat: line does not exist");
         }

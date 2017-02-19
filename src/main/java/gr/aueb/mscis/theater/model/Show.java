@@ -3,6 +3,7 @@ package gr.aueb.mscis.theater.model;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -25,11 +26,11 @@ public class Show {
     @Column(name = "canceled", nullable = false)
     private boolean canceled;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="play_id", nullable = false)
     private Play play;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="hall_id", nullable = false)
     private Hall hall;
 
@@ -46,6 +47,8 @@ public class Show {
         this.play = play;
         this.hall = hall;
         this.canceled = false;
+        this.hall.getShows().add(this);
+        this.play.getShows().add(this);
     }
 
     public int getId() {
@@ -73,7 +76,20 @@ public class Show {
     }
 
     public void setPlay(Play play) {
-        this.play = play;
+        if(!play.equals(this.play) && play != null){
+            Iterator<Show> it = this.play.getShows().iterator();
+            while (it.hasNext()){
+                Show sh = it.next();
+                if(sh.getPlay().equals(this.play) && sh.getDate().equals(this.date)){
+                    it.remove();
+                    this.play = play;
+                    play.getShows().add(this);
+                    break;
+                }
+            }
+        } else {
+            this.play = play;
+        }
     }
 
     public Hall getHall() {
@@ -81,7 +97,20 @@ public class Show {
     }
 
     public void setHall(Hall hall) {
-        this.hall = hall;
+        if(!hall.equals(this.hall) && hall != null){
+            Iterator<Show> it = this.hall.getShows().iterator();
+            while (it.hasNext()){
+                Show sh = it.next();
+                if(sh.getHall().equals(this.hall) && sh.getDate().equals(this.date)){
+                    it.remove();
+                    this.hall = hall;
+                    hall.getShows().add(this);
+                    break;
+                }
+            }
+        }else {
+            this.hall = hall;
+        }
     }
 
     public boolean isCanceled() {
@@ -97,6 +126,7 @@ public class Show {
     }
 
     public void addTicket(Ticket ticket){
+        ticket.setShow(this);
         this.tickets.add(ticket);
     }
 

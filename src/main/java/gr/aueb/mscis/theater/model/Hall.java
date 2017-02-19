@@ -91,6 +91,10 @@ public class Hall {
         }
     }
 
+    public Set<Show> getShows() {
+        return shows;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

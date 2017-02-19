@@ -1,7 +1,10 @@
 package gr.aueb.mscis.theater.model;
 
+import jdk.nashorn.internal.ir.WhileNode;
+
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -57,7 +60,7 @@ public class Agent {
 		    	 String lastName,
 		    	 int yearOfBirth,
 		    	 String cv) {
-        this.firstΝame = firstName;
+        this.firstName = firstName;
         this.lastName = lastName;
         this.yearOfBirth = yearOfBirth;
         this.cv = cv;
@@ -81,7 +84,7 @@ public class Agent {
 
     /**
      * Θέτει το όνομα του συντελεστή.
-     * @param lastName Το όνομα του συντελεστή.
+     * @param firstName Το όνομα του συντελεστή.
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -155,8 +158,16 @@ public class Agent {
      * @return
      */
     public boolean removeRole(Role role){
-        role.setAgent(null);
-        return this.roles.remove(role);
+        Boolean delete = this.roles.remove(role);
+        if(delete) {
+            Iterator<Role> it = role.getPlay().getRoles().iterator();
+            while (it.hasNext()) {
+                Role r = it.next();
+                if (r.equals(role))
+                    r.setAgent(null);
+            }
+        }
+        return delete;
     }
 
     /**
@@ -184,6 +195,7 @@ public class Agent {
     public int hashCode() {
         int result = lastName.hashCode(); //firstName?
         result = 31 * result + yearOfBirth;
+        result = 31 * result + firstName.hashCode();
         return result;
     }
 }

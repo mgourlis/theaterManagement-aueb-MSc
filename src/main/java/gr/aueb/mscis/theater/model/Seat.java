@@ -27,7 +27,7 @@ public class Seat {
     @Column(name = "availability", nullable = false)
     private boolean availability;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="sector_id", nullable = false)
     private Sector sector;
 
@@ -117,8 +117,17 @@ public class Seat {
         return tickets;
     }
 
-    public void setTickets(Set<Ticket> tickets) {
-        this.tickets = tickets;
+    public void addTicket(Ticket ticket){
+        ticket.getSeat().removeTicket(ticket);
+        ticket.setSeat(this);
+        tickets.add(ticket);
+    }
+
+    public boolean removeTicket(Ticket ticket){
+        boolean delete = tickets.remove(ticket);
+        if(delete)
+            ticket.setSeat(null);
+        return delete;
     }
 
     /**

@@ -20,11 +20,11 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="play_id", nullable = false)
     private Play play;
 
-    @ManyToOne(optional = true, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="agent_id", nullable = true)
     private Agent agent;
 
@@ -82,14 +82,14 @@ public class Role {
 
         if (!name.equals(role.name)) return false;
         if (roleType != role.roleType) return false;
-        return play.equals(role.play);
+        return play != null ? play.equals(role.play) : role.play == null;
     }
 
     @Override
     public int hashCode() {
         int result = name.hashCode();
         result = 31 * result + roleType.hashCode();
-        result = 31 * result + play.hashCode();
+        result = 31 * result + (play != null ? play.hashCode() : 0);
         return result;
     }
 }

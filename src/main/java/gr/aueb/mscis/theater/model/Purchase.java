@@ -26,7 +26,7 @@ public class Purchase {
     @Column(name="wayOfPurchase", length=50, nullable = false)
     private String wayOfPurchase;
 
-    @ManyToOne(optional = false, fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id", nullable = false)
 	private User user;
 
