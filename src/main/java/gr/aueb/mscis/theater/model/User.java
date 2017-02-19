@@ -60,10 +60,6 @@ public class User {
         this.email = email;
         this.password = password;
     }
-    
-    public Integer getId() {
-        return id;
-    }
 
     /**
      * Επιστρέφει το id του αντικειμένου στη Βάση Δεδομένων.
