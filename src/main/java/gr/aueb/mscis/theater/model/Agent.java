@@ -16,9 +16,12 @@ public class Agent {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "name", length = 512, nullable = false)
-    private String name;
-
+    @Column(name="firstName", length=50, nullable = false)
+    private String firstName;
+ 
+    @Column(name="lastName", length=50, nullable = false)
+    private String lastName;
+    
     @Column(name = "yearOfBirth", nullable = false)
     private int yearOfBirth;
 
@@ -45,12 +48,17 @@ public class Agent {
 
     /**
      * Κατασκευαστής της κλάσσης Agent, δημιουργεί αντικείμενο τύπου Agent
-     * @param name το όνομα του Συντελεστή
+     * @param firstName Το όνομα συντελεστή
+     * @param lastName Το επώνυμο του συντελεστή
      * @param yearOfBirth η ημερομηνία γέννησης του συντελεστή
      * @param cv το βιογραφικό του συντελεστή (μέχρι 5000 χαρακτήρες)
      */
-    public Agent(String name, int yearOfBirth, String cv) {
-        this.name = name;
+    public Agent(String firstName,
+		    	 String lastName,
+		    	 int yearOfBirth,
+		    	 String cv) {
+        this.firstΝame = firstName;
+        this.lastName = lastName;
         this.yearOfBirth = yearOfBirth;
         this.cv = cv;
     }
@@ -64,27 +72,35 @@ public class Agent {
     }
 
     /**
-     * Transformer Method
-     * @param id
+     * Επιστρέφει το όνομα του συντελεστή.
+     * @return Το όνομα του συντελεστή.
      */
-    public void setId(int id) {
-        this.id = id;
+    public String getFirstName() {
+        return firstName;
     }
 
     /**
-     * Accessor method
-     * @return
+     * Θέτει το όνομα του συντελεστή.
+     * @param lastName Το όνομα του συντελεστή.
      */
-    public String getName() {
-        return name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     /**
-     * Transformer Method
-     * @param name
+     * Επιστρέφει το επώνυμο του συντελεστή.
+     * @return Το επώνυμο του συντελεστή.
      */
-    public void setName(String name) {
-        this.name = name;
+    public String getLastName() {
+        return lastName;
+    }
+    
+    /**
+     * Θέτει το επώνυμο του συντελεστή.
+     * @param lastName Το επώνυμο του συντελεστή.
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     /**
@@ -156,7 +172,8 @@ public class Agent {
         Agent agent = (Agent) o;
 
         if (yearOfBirth != agent.yearOfBirth) return false;
-        return name.equals(agent.name);
+        if (!lastName.equals(agent.lastName)) return false;
+        return firstName.equals(agent.firstName);
     }
 
     /**
@@ -165,7 +182,7 @@ public class Agent {
      */
     @Override
     public int hashCode() {
-        int result = name.hashCode();
+        int result = lastName.hashCode(); //firstName?
         result = 31 * result + yearOfBirth;
         return result;
     }
