@@ -4,6 +4,9 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 @Entity
 @Table(name="users")
 public class User {
@@ -27,11 +30,6 @@ public class User {
 
     @Column(name="token", length=50, nullable = true)
     private String token;
-
-//ayto telika tha to xrisimopoiisoume?
-//    @Enumerated(EnumType.STRING)
-//    @Column(name="userType")
-//    private UserType userType;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Purchase> purchases = new HashSet<Purchase>();
@@ -61,7 +59,10 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-//        this.userType = userType;
+    }
+    
+    public Integer getId() {
+        return id;
     }
     
     /**
@@ -143,21 +144,25 @@ public class User {
     protected void setToken(String token) {
         this.token = token;
     }
-    
-//    /**
-//     * Επιστρέφει τον τύπο χρήστη.
-//     * @return Ο τύπος του χρήστη
-//     */
-//    public UserType getUserType() {
-//        return userType;
-//    }
-//
-//    /**
-//     * θέτει τον τύπο του χρήστη.
-//     * @param type Ο τύπος του χρήστη.
-//     */
-//    private void setUserType(UserType type) {
-//        this.userType = type;
-//    }
 
+    public boolean isPasswordValid() {
+    	
+    	if (email.length() < 8) return false;
+
+    	Pattern p = Pattern.compile("([0-9])");
+    	Matcher m = p.matcher(email);
+    	boolean b = m.find();
+    	if (b == false) return false;
+    	
+    	return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+        return email.equals(user.email);
+    }
 }
