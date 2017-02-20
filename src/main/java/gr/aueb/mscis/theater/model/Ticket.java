@@ -109,6 +109,14 @@ public class Ticket {
         this.seat = seat;
     }
 
+    public Purchase getPurchase() {
+    	return purchase;
+    }
+    
+    public void setPurchase(Purchase purchase) {
+    	this.purchase = purchase;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

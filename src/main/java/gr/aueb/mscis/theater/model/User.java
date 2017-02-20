@@ -133,6 +133,14 @@ public class User {
     public String getEmail() {
         return email;
     }
+
+    /**
+     * Θέτει το token.
+     * @param token Το token.
+     */
+    protected void setToken(String token) {
+        this.token = token;
+    }
     
     /**
      * Επιστρέφει το token.
@@ -143,13 +151,21 @@ public class User {
     }
 
     /**
-     * θέτει το token.
-     * @param token Το token.
+     * Προσθέτει την αγορά του χρήστη.
+     * @param purchase H αγορά του χρήστη
      */
-    protected void setToken(String token) {
-        this.token = token;
+    public void setPurchase(Purchase purchase) {
+    	purchases.add(purchase);
     }
 
+    /**
+     * Επιστρέφει τις αγορές του χρήστη.
+     * @return Οι αγορές του χρήστη.
+     */
+    public Set<Purchase> getPurchases() {
+        return purchases;
+    }
+    
     public boolean isPasswordValid() {
     	
     	if (email.length() < 8) return false;

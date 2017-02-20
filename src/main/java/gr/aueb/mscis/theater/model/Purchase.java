@@ -128,6 +128,40 @@ public class Purchase {
         return totalAmount;
     }
 
+    /**
+     * Προσθέτει εισιτήριο στην αγορά.
+     * @param newTicket Το εισιτήριο που θα προστεθεί στην αγορά.
+     */
+    public void setTicket(Ticket newTicket) {
+        this.tickets.add(newTicket);
+        newTicket.setPurchase(this);
+    }
+
+    /**
+     * Επιστρέφει τα εισιτήρια της αγοράς.
+     * @return Τα εισιτήρια της αγοράς.
+     */
+    public Set<Ticket> getTickets() {
+        return tickets;
+    }
+    
+    /**
+     * Θέτει τον χρήστη που συνδέεται με την αγορά.
+     * @param userOfPurchase Ο χρήστης που έκανε την αγορά
+     */
+    public void setUser(User userOfPurchase) {
+        this.user = userOfPurchase;
+        userOfPurchase.setPurchase(this);
+    }
+
+    /**
+     * Επιστρέφει τον χρήστη που έκανε την αγορά.
+     * @return Ο χρήστης της αγοράς.
+     */
+    public User getUser() {
+        return user;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
