@@ -82,24 +82,4 @@ public class HallServiceTest {
         Assert.assertEquals(1,hserv.findAllHalls().size());
     }
 
-    @Test
-    public void findSectorById() throws Exception {
-        Hall hall = hserv.findHallById(hserv.findAllHalls().get(0).getId());
-        Sector sector = hall.getSectors().iterator().next();
-        assertEquals(sector.getName(), hserv.findSectorById(sector.getId()).getName());
-    }
-
-    @Test
-    public void deleteSector() throws Exception {
-        List<Hall> halls = hserv.findAllHalls();
-        Set<Sector> sectors = new HashSet<Sector>(halls.get(0).getSectors());
-        Iterator<Sector> it = sectors.iterator();
-        while (it.hasNext()) {
-            Sector sector = it.next();
-            hserv.deleteSector(sector.getId());
-        }
-        //1 διότι στον πρώτο τομέα υπάρχει εισητίριο.
-        Assert.assertEquals(1,halls.get(0).getSectors().size());
-    }
-
 }
