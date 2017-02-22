@@ -138,12 +138,11 @@ public class Initializer  {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-        em.persist(agent1);
-        em.persist(agent2);
-
-
         em.persist(amlet);
         em.persist(tgm);
+
+        em.persist(agent1);
+        em.persist(agent2);
 
         em.persist(hall1);
         em.persist(hall2);

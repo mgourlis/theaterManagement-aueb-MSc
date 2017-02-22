@@ -11,7 +11,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @Column(name = "name", length = 512, nullable = false)
     private String name;
@@ -20,13 +20,19 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private RoleType roleType;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="play_id", nullable = false)
     private Play play;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH,
+            CascadeType.MERGE, CascadeType.DETACH} )
     @JoinColumn(name="agent_id", nullable = true)
     private Agent agent;
+
+    @PreRemove
+    private void removeAssociationWithParent() {
+        agent.removeRole(this);
+    }
 
     public Role(){
 
@@ -37,7 +43,7 @@ public class Role {
         this.roleType = roleType;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

@@ -31,7 +31,7 @@ public class Agent {
     @Column(name = "cv", length = 5000, nullable = true)
     private String cv;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE,
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.REFRESH}, mappedBy = "agent")
     private Set<Role> roles = new HashSet<Role>();
 

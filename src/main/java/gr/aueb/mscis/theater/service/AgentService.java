@@ -69,6 +69,8 @@ public class AgentService {
         //Validate on same name with existing
         if (agent.getId() != null) {
             agent = em.merge(agent);
+            em.flush();
+            em.refresh(agent);
         } else {
             em.persist(agent);
         }

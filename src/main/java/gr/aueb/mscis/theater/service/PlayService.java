@@ -56,8 +56,8 @@ public class PlayService {
 		tx.begin();
 		List<Play> results = null;
 		try {
-			results = em.createQuery("select h from Hall h where h.name like %:title%")
-					.setParameter("title", title).getResultList();
+			results = em.createQuery("select p from Play p where p.title like :title")
+					.setParameter("title", "%"+title+"%").getResultList();
 			tx.commit();
 		} catch (NoResultException ex) {
 			tx.rollback();
@@ -68,9 +68,10 @@ public class PlayService {
 	public Play save(Play play) {
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
-		//Validate on same name with existing
 		if (play.getId() != null) {
 			play = em.merge(play);
+			em.flush();
+			em.refresh(play);
 		} else {
 			em.persist(play);
 		}
@@ -85,6 +86,7 @@ public class PlayService {
 		try {
 			Play play = em.getReference(Play.class, playId);
 			em.remove(play);
+			em.flush();
 		} catch (EntityNotFoundException e) {
 			tx.rollback();
 			return false;

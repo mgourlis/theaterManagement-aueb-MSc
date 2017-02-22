@@ -83,6 +83,14 @@ public class Play {
 		return new HashSet<Role>(roles);
 	}
 
+	public Role getRole(String roleName, RoleType type) throws IllegalArgumentException {
+		for(Role role :roles){
+			if(role.getName().equals(roleName) && role.getRoleType().equals(type))
+				return role;
+		}
+		throw new IllegalArgumentException("role not found");
+	}
+
 	public void addRole(Role temprole){
 		temprole.setPlay(this);
 		this.roles.add(temprole);
