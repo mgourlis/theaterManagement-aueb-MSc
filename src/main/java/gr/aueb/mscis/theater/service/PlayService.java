@@ -4,7 +4,10 @@ import gr.aueb.mscis.theater.model.Play;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
+import java.util.List;
 
 /**
  * CRUD operations and other functionality related to movies
@@ -19,26 +22,77 @@ public class PlayService {
 	public PlayService() {
 		em = JPAUtil.getCurrentEntityManager();
 	}
-	
-	public Play createPlay(String title, String description){
-		
-		if (title == null){
-			return null;
-		}
-		
-		Play newPlay = new Play(title, description);
-		
+
+	public List<Play> findAllPlays() {
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
-		em.persist(newPlay);
+
+		List<Play> results = null;
+		try {
+			results = em.createQuery("select p from Play p").getResultList();
+		} catch (NoResultException ex) {
+			tx.rollback();
+		}
 		tx.commit();
-		
-		return newPlay;
-		
+
+		return results;
 	}
 
 	public Play findPlayById(int id) {
-		return em.find(Play.class, id);
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		Play play = null;
+		try {
+			play = em.find(Play.class, id);
+			tx.commit();
+		} catch (NoResultException ex) {
+			tx.rollback();
+		}
+		return play;
+	}
+
+	public List<Play> findPlaysByTitle(String title) {
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		List<Play> results = null;
+		try {
+			results = em.createQuery("select h from Hall h where h.name like %:title%")
+					.setParameter("title", title).getResultList();
+			tx.commit();
+		} catch (NoResultException ex) {
+			tx.rollback();
+		}
+		return results;
+	}
+
+	public Play save(Play play) {
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		//Validate on same name with existing
+		if (play.getId() != null) {
+			play = em.merge(play);
+		} else {
+			em.persist(play);
+		}
+		tx.commit();
+		return play;
+	}
+
+	public boolean delete(int playId) {
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+
+		try {
+			Play play = em.getReference(Play.class, playId);
+			em.remove(play);
+		} catch (EntityNotFoundException e) {
+			tx.rollback();
+			return false;
+		}
+
+		tx.commit();
+
+		return true;
 	}
 	
 }

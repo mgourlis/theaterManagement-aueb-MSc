@@ -165,4 +165,6 @@ public class Seat {
         result = 31 * result + sector.hashCode();
         return result;
     }
+
+
 }

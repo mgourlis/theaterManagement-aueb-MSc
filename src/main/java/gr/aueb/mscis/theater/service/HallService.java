@@ -1,7 +1,6 @@
 package gr.aueb.mscis.theater.service;
 
 import gr.aueb.mscis.theater.model.Hall;
-import gr.aueb.mscis.theater.model.Sector;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -54,12 +53,27 @@ public class HallService {
         tx.begin();
         List<Hall> results = null;
         try {
-            results = em.createQuery("select h from Hall h where h.name like :hallName").setParameter("hallName", name).getResultList();
+            results = em.createQuery("select h from Hall h where h.name like :hallName")
+                    .setParameter("hallName", "%"+name+"%").getResultList();
             tx.commit();
         } catch (NoResultException ex) {
             tx.rollback();
         }
         return results;
+    }
+
+    public Hall findHallByName(String name) {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Hall hall = null;
+        try {
+            hall = ((Hall) em.createQuery("select h from Hall h where h.name = :hallName")
+                    .setParameter("hallName", name).getSingleResult());
+            tx.commit();
+        } catch (NoResultException ex) {
+            tx.rollback();
+        }
+        return hall;
     }
 
     public List<Hall> findAvailableHalls() {
@@ -85,6 +99,10 @@ public class HallService {
         //Validate on same name with existing
         if (hall.getId() != null) {
             hall = em.merge(hall);
+            //Flush to make a refresh of the Entity
+            em.flush();
+            //Refresh for correct ordering in seats
+            em.refresh(hall);
         } else {
             try {
                 Hall existingHall = ((Hall) em.createQuery("select h from Hall h where h.name = :hallName")
@@ -96,6 +114,7 @@ public class HallService {
             }
         }
         tx.commit();
+
         return hall;
     }
 

@@ -64,6 +64,15 @@ public class Hall {
      *
      * @return
      */
+    public Sector getSectorByName(String sectorName) throws IllegalArgumentException {
+        for(Sector sector1 : sectors){
+            if(sector1.getName().equals(sectorName)){
+                return sector1;
+            }
+        }
+        throw new IllegalArgumentException("No sector found");
+    }
+
     public Set<Sector> getSectors() {
         return sectors;
     }

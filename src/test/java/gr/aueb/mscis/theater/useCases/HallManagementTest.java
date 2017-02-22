@@ -1,14 +1,15 @@
 package gr.aueb.mscis.theater.useCases;
 
 import gr.aueb.mscis.theater.model.Hall;
+import gr.aueb.mscis.theater.model.Seat;
 import gr.aueb.mscis.theater.model.Sector;
 import gr.aueb.mscis.theater.persistence.Initializer;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
 import gr.aueb.mscis.theater.service.HallService;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assert;
 
 import static org.junit.Assert.*;
 
@@ -64,7 +65,7 @@ public class HallManagementTest {
     @Test
     public void CreateHall() throws Exception {
         hserv.save(hall);
-        Hall created = hserv.findHallsByName("newHall").get(0);
+        Hall created = hserv.findHallByName("newHall");
 
         assertEquals("newHall",created.getName());
         assertEquals(3,hall.getSectors().size());
@@ -86,7 +87,7 @@ public class HallManagementTest {
     @Test
     public void CreateSameNameHall() throws Exception {
         hserv.save(hall);
-        Hall created = hserv.findHallsByName("newHall").get(0);
+        Hall created = hserv.findHallByName("newHall");
 
         assertEquals("newHall",created.getName());
         assertEquals(3,hall.getSectors().size());
@@ -98,7 +99,7 @@ public class HallManagementTest {
     @Test
     public void AlterHallName() throws Exception {
         hserv.save(hall);
-        Hall created = hserv.findHallsByName("newHall").get(0);
+        Hall created = hserv.findHallByName("newHall");
         created.setName("alterName");
         hserv.save(created);
         assertEquals(0,hserv.findHallsByName("newHall").size());
@@ -111,7 +112,7 @@ public class HallManagementTest {
         hserv.save(hall);
         String halllName = "newHall";
 
-        Hall created = hserv.findHallsByName("newHall").get(0);
+        Hall created = hserv.findHallByName("newHall");
 
         hserv.delete(created.getId());
 
@@ -138,7 +139,7 @@ public class HallManagementTest {
 
         hserv.save(hall);
 
-        Hall created = hserv.findHallsByName("newHall").get(0);
+        Hall created = hserv.findHallByName("newHall");
 
         for (Sector sector : created.getSectors()) {
             if (sector.getName().equals("plateia")) {
@@ -149,8 +150,8 @@ public class HallManagementTest {
         }
 
         hserv.save(created);
-        Hall hallAlteredSector= hserv.findHallsByName("newHall").get(0);
-        for (Sector sector : created.getSectors()) {
+        Hall hallAlteredSector= hserv.findHallByName("newHall");
+        for (Sector sector : hallAlteredSector.getSectors()) {
             if (sector.getName().equals("plateia2")) {
                 assertEquals(2.0,sector.getPriceFactor(),1e-15);
             }
@@ -166,7 +167,7 @@ public class HallManagementTest {
         String sectorName = "plateia";
         hserv.save(hall);
 
-        Hall created = hserv.findHallsByName("newHall").get(0);
+        Hall created = hserv.findHallByName("newHall");
 
         for (Sector sector : created.getSectors()) {
             if (sector.getName().equals(sectorName)) {
@@ -177,7 +178,7 @@ public class HallManagementTest {
 
         hserv.save(created);
 
-        Hall deletedSectorHall = hserv.findHallsByName ("newHall").get(0);
+        Hall deletedSectorHall = hserv.findHallByName ("newHall");
 
         assertEquals(2, deletedSectorHall.getSectors().size());
         for (Sector sector : deletedSectorHall.getSectors()) {
@@ -190,21 +191,124 @@ public class HallManagementTest {
 
     @Test
     public void CreateLineInSector() throws Exception {
+        String sectorName = "plateia";
+        hserv.save(hall);
+
+        Hall created = hserv.findHallByName("newHall");
+
+        try {
+            Sector sector = created.getSectorByName(sectorName);
+
+            assertEquals(30,sector.getSeats().get(sector.getSeats().size()-1).getLineNumber());
+
+            sector.addLine();
+            hserv.save(created);
+
+            Hall addLineHall = hserv.findHallByName("newHall");
+
+            sector = addLineHall.getSectorByName(sectorName);
+
+            assertEquals(31,sector.getSeats().get(sector.getSeats().size()-1).getLineNumber());
+
+        }catch (IllegalArgumentException e){
+            Assert.fail();
+        }
 
     }
 
     @Test
-    public void AlterLine() throws Exception {
+    public void addSeatToLine() throws Exception {
+        String sectorName = "plateia";
+        int line = 1;
+        hserv.save(hall);
 
+        Hall created = hserv.findHallByName("newHall");
+
+        try {
+            Sector sector = created.getSectorByName(sectorName);
+
+            assertEquals(20,sector.lineLength(line));
+
+            sector.addSeat(line);
+            hserv.save(created);
+
+            Hall addLineHall = hserv.findHallByName("newHall");
+
+            sector = addLineHall.getSectorByName(sectorName);
+
+            assertEquals(21,sector.lineLength(line));
+
+        }catch (IllegalArgumentException e){
+            Assert.fail();
+        }
+    }
+
+    @Test
+    public void removeSeatFromLine() throws Exception {
+        String sectorName = "plateia";
+        int line = 1;
+        hserv.save(hall);
+
+        Hall created = hserv.findHallByName("newHall");
+
+        try {
+            Sector sector = created.getSectorByName(sectorName);
+
+            assertEquals(20,sector.lineLength(line));
+
+            sector.removeSeat(line);
+            hserv.save(created);
+
+            Hall addLineHall = hserv.findHallByName("newHall");
+
+            sector = addLineHall.getSectorByName(sectorName);
+
+            assertEquals(19,sector.lineLength(line));
+
+        }catch (IllegalArgumentException e){
+            Assert.fail();
+        }
     }
 
     @Test
     public void DeleteLine() throws Exception {
+        String sectorName = "plateia";
+        int line = 5;
+        hserv.save(hall);
 
+        Hall created = hserv.findHallByName("newHall");
+
+        try {
+            Sector sector = created.getSectorByName(sectorName);
+
+            assertEquals(30,sector.getSeats().get(sector.getSeats().size()-1).getLineNumber());
+
+            sector.removeLine(line);
+            hserv.save(created);
+
+            Hall addLineHall = hserv.findHallByName("newHall");
+
+            sector = addLineHall.getSectorByName(sectorName);
+
+            assertEquals(29,sector.getSeats().get(sector.getSeats().size()-1).getLineNumber());
+
+        }catch (IllegalArgumentException e){
+            Assert.fail();
+        }
     }
 
     @Test
     public void AlterHallAvailability() throws Exception {
+        hall = hserv.save(hall);
+        assertTrue(hall.isAvailable());
+
+        hall.setAvailability(false);
+
+        hserv.save(hall);
+
+        Hall unavailableHall = hserv.findHallByName("newHall");
+
+        assertFalse(unavailableHall.isAvailable());
 
     }
 
@@ -215,7 +319,23 @@ public class HallManagementTest {
 
     @Test
     public void AlterSectorAvailability() throws Exception {
+        String sectorName = "plateia";
+        hall = hserv.save(hall);
+        try {
+            Sector sector = hall.getSectorByName(sectorName);
 
+            assertTrue(sector.isAvailable());
+
+            sector.setAvailability(false);
+            hserv.save(hall);
+
+            Hall unavailableSectorHall = hserv.findHallByName("newHall");
+
+            assertFalse(unavailableSectorHall.getSectorByName(sectorName).isAvailable());
+
+        }catch (IllegalArgumentException e){
+            Assert.fail();
+        }
     }
 
     @Test
@@ -225,7 +345,27 @@ public class HallManagementTest {
 
     @Test
     public void AlterSeatAvailability() throws Exception {
+        String sectorName = "plateia";
+        int lineNumber = 3;
+        int seatNmber = 5;
+        hall = hserv.save(hall);
+        try {
+            Seat seat = hall.getSectorByName(sectorName).getSeat(lineNumber,seatNmber);
 
+
+
+            assertTrue(seat.isAvailable());
+
+            seat.setAvailability(false);
+            hserv.save(hall);
+
+            Hall unavailableSeatHall = hserv.findHallByName("newHall");
+
+            assertFalse(unavailableSeatHall.getSectorByName(sectorName).getSeat(lineNumber,seatNmber).isAvailable());
+
+        }catch (IllegalArgumentException e){
+            Assert.fail();
+        }
     }
 
     @Test

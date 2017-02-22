@@ -10,7 +10,7 @@ public class Play {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Integer id;
 
 	@Column(name = "title", length = 255, nullable = false)
 	private String title;
@@ -50,7 +50,7 @@ public class Play {
 		this.description = description;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 

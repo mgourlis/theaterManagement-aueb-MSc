@@ -25,7 +25,7 @@ public class Sector {
     private Hall hall;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "sector")
-    @OrderBy("lineNumber, seatNumber asc")
+    @OrderBy( value = "lineNumber ASC, seatNumber ASC")
     private List<Seat> seats = new ArrayList<Seat>();
 
     /**
@@ -86,6 +86,14 @@ public class Sector {
 
     public List<Seat> getSeats() {
         return seats;
+    }
+
+    public Seat getSeat(int lineNumber, int seatNumber) throws IllegalArgumentException{
+        for(Seat seat : seats){
+            if(seat.getLineNumber() == lineNumber && seat.getSeatNumber() == seatNumber)
+                return seat;
+        }
+        throw new IllegalArgumentException("seat not found");
     }
 
     public void addLine() {
