@@ -9,6 +9,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.*;
 
+import java.util.Date;
+
 /**
  * Created by Myron on 18/2/2017.
  */
@@ -18,7 +20,9 @@ public class UserTest {
 
 	@Before
     public void setUp() throws Exception {
-		user = new User("ELEFTHERIA", "TRAPEZANLIDOU", "el@aueb.gr", "pass!");
+		user = new User("ELEFTHERIA", "TRAPEZANLIDOU",
+                "el@aueb.gr", "pass!",
+                "Female", new Date(), "6942424242");
     }
 
     @After
@@ -94,19 +98,21 @@ public class UserTest {
 
     @Test
     public void isEqual() throws Exception {
-		User newUser = new User("x", "y", "el@aueb.gr", "p");
+		User newUser = new User("ELEFTHERIA", "TRAPEZANLIDOU",
+                "el@aueb.gr", "pass!",
+                "Female", new Date(), "6942424242");
         assertTrue(user.equals(newUser));
     }
     
     @Test
     public void notEqual() throws Exception {
-		User newUser = new User("x", "y", "el@auebgr", "p");
+		User newUser = new User("x", "y", "el@auebgr", "p","Female", new Date(), "6942424242");
         assertFalse(user.equals(newUser));
     }
 
     @Test
     public void notEqualEmail() throws Exception {
-		User newUser = new User("ELEFTHERIA", "TRAPEZANLIDOU", "el@auebgr", "pass!");
+		User newUser = new User("ELEFTHERIA", "TRAPEZANLIDOU", "el@auebgr", "pass!","Female", new Date(), "6942424242");
         assertFalse(user.equals(newUser));
     }
     

@@ -40,8 +40,8 @@ public class PurchaseTest {
     public void setUp() throws Exception {
 		testDate = new Date();
 		purchase = new Purchase(testDate, "tameio", 3, 45.50);
-		user1 = new User("user_fname", "user_lname", "email@aueb.gr", "passw0rd");
-		user2 = new User("user2_fname", "user2_lname", "email2@aueb.gr", "pass2w0rd");
+		user1 = new User("user_fname", "user_lname", "email@aueb.gr", "passw0rd", "Female", new Date(), "6942424242");
+		user2 = new User("user2_fname", "user2_lname", "email2@aueb.gr", "pass2w0rd", "Female", new Date(), "6942424242");
 
 		/* Create ticket1*/
         hall = new Hall("hall1");
@@ -129,6 +129,7 @@ public class PurchaseTest {
     @Test
     public void setTotalAmount() throws Exception {
     	Double newPrice = new Double(30);
+    	purchase.setTotalAmount(newPrice);
     	Assert.assertEquals(newPrice, purchase.getTotalAmount());
     }
 

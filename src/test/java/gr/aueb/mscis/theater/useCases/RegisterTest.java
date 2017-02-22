@@ -43,7 +43,7 @@ public class RegisterTest {
     public void RegisterCustomer() throws Exception {
 		UserService newUserService = new UserService(JPAUtil.createEntityManager());
 		newUserService.saveUser(customer1);
-    	Assert.assertEquals(customer1, newUserService.findUserByEmail("pass!word2"));
+    	Assert.assertEquals(customer1, newUserService.findUserByEmail("el@mail.gr"));
     }
 
     @Test
@@ -55,7 +55,7 @@ public class RegisterTest {
     public void RegisterCustomerEmailExists() throws Exception {
     	UserService newUserService = new UserService(JPAUtil.createEntityManager());
 		newUserService.saveUser(customer1);
-		customer2.setPassword("pass!word2");
+		customer2.setEmail("el@mail.gr");
 		Assert.assertNull(newUserService.saveUser(customer2));
     }
 

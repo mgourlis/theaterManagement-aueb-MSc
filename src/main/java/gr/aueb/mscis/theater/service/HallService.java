@@ -101,7 +101,7 @@ public class HallService {
             hall = em.merge(hall);
             //Flush to make a refresh of the Entity
             em.flush();
-            //Refresh for correct ordering in seats
+            //Refv cresh for correct ordering in seats
             em.refresh(hall);
         } else {
             try {

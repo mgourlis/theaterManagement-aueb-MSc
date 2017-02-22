@@ -27,12 +27,8 @@ public class UserService {
 		return em.find(User.class, id);
 	}
     
-	public User newUser(String firstname,
-						String lastName,
-						String email,
-						String password)
+	public User newUser(User user)
 	{
-		User user = new User(firstname, lastName, email, password);
 		
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
