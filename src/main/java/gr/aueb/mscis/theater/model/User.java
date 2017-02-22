@@ -1,6 +1,8 @@
 package gr.aueb.mscis.theater.model;
 
 import javax.persistence.*;
+
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,23 +46,51 @@ public class User {
     public User() { }
 
     /**
-     * Βοηθητικός κατασκευαστής.
+     * Βοηθητικός κατασκευαστής για τους τύπους χρηστών Cashier, ArtDirector, TechnicalDirector.
      * @param firstname Το όνομα χρήστη
      * @param lastName Το επώνυμο του χρήστη
      * @param email Το e-mail του χρήστη
      * @param password Ο κωδικός πρόσβασης του χρήστη
+     * @param category Ο τύπος του χρήστη(Cashier, ArtDirector, TechnicalDirector).     
      */
     public User(String firstname,
     		    String lastName,
     		    String email,
-    		    String password) {
+    		    String password,
+    		    UserType category) {
 
     	this.firstName = firstname;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        new UserCategory(category, null, null, null);        
     }
 
+    /**
+     * Βοηθητικός κατασκευαστής για τον τύπο χρήστη Customer.
+     * @param firstname Το όνομα χρήστη
+     * @param lastName Το επώνυμο του χρήστη
+     * @param email Το e-mail του χρήστη
+     * @param password Ο κωδικός πρόσβασης του χρήστη
+     * @param gender Το φύλλο του χρήστη
+     * @param birthday Η ημερομηνία γέννησης του χρήστη
+     * @param telephone Ο αριθμός τηλεφώνου του χρήστη
+     */
+    public User(String firstname,
+    		    String lastName,
+    		    String email,
+    		    String password, 
+    		    String gender, 
+    		    Date birthday, 
+    		    String telephone) {
+
+    	this.firstName = firstname;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;        
+        new UserCategory(UserType.Customer, gender, birthday, telephone);
+    }
+    
     /**
      * Επιστρέφει το id του αντικειμένου στη Βάση Δεδομένων.
      * Επιστρέφει Null αν το αντικείμενο δεν έχει ανασυρθεί από τη βάση.
