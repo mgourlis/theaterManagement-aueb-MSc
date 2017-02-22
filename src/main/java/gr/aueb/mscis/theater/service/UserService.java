@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NonUniqueResultException;
 
 import gr.aueb.mscis.theater.model.Hall;
 import gr.aueb.mscis.theater.model.User;
@@ -41,31 +42,19 @@ public class UserService {
 		return user;
 	}
 
-    public List<User> findUserByEmail(String email)
+    public User findUserByEmail(String email)
     {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        List<User> results = null;
+        User results = null;
         try {
-            results = em.createQuery("select user from User user where user.email = :userEmail").setParameter("userEmail", email).getResultList();
+            results = (User) em.createQuery("select user from User user where user.email = :userEmail").setParameter("userEmail", email).getSingleResult();
             tx.commit();
         }
         catch (NoResultException ex) {
             tx.rollback();
         }
-        return results;
-    }
-	
-    public List<User> findUserByPassword(String password)
-    {
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        List<User> results = null;
-        try {
-            results = em.createQuery("select user from User user where user.password = :pass").setParameter("pass", password).getResultList();
-            tx.commit();
-        }
-        catch (NoResultException ex) {
+        catch (NonUniqueResultException ex) {
             tx.rollback();
         }
         return results;
