@@ -48,6 +48,10 @@ public class RegisterTest {
 
     @Test
     public void RegisterCustomerRequiredFields() throws Exception {
+        UserService newUserService = new UserService(JPAUtil.createEntityManager());
+        customer1.setFirstName(null);
+        customer1 = newUserService.saveUser(customer1);
+        Assert.assertNull(customer1);
 
     }
 

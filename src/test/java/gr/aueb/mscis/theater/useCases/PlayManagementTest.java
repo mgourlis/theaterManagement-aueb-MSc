@@ -14,8 +14,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Created by Myron on 19/2/2017.
@@ -93,7 +92,7 @@ public class PlayManagementTest {
     public void DeletePlay() throws Exception {
         Play created = pserv.findPlaysByTitle("test play").get(0);
 
-        pserv.delete(created.getId());
+        assertTrue(pserv.delete(created.getId()));
 
         List<Play> plays = pserv.findPlaysByTitle("test play");
 
@@ -111,27 +110,69 @@ public class PlayManagementTest {
 
     @Test
     public void CreateAgent() throws Exception {
-
+        Agent agent1 = new Agent("name1","surname1",1901,"cv1");
+        agent1 = aserv.save(agent1);
+        assertNotNull(aserv.findAgentById(agent1.getId()));
     }
 
     @Test
     public void AlterAgent() throws Exception {
-
+        Agent agent1 = new Agent("name1","surname1",1901,"cv1");
+        agent1 = aserv.save(agent1);
+        Agent agentCreated = aserv.findAgentById(agent1.getId());
+        agentCreated.setCv("cv2");
+        agentCreated.setFirstName("name2");
+        aserv.save(agentCreated);
+        agent1 = aserv.findAgentById(agentCreated.getId());
+        assertEquals("cv2",agent1.getCv());
+        assertEquals("name2",agent1.getFirstName());
     }
 
     @Test
     public void DeleteAgent() throws Exception {
-
+        Agent agent1 = new Agent("name1","surname1",1901,"cv1");
+        agent1 = aserv.save(agent1);
+        assertNotNull(aserv.findAgentById(agent1.getId()));
+        aserv.delete(agent1.getId());
+        assertNull(aserv.findAgentById(agent1.getId()));
     }
 
     @Test
     public void CreateRoleInPlay() throws Exception {
-
+        Play created = pserv.findPlaysByTitle("test play").get(0);
+        created.addRole(new Role("newRole",RoleType.Actor));
+        pserv.save(created);
+        Play createdWithRole = pserv.findPlaysByTitle("test play").get(0);
+        assertEquals(7,createdWithRole.getRoles().size());
+        try {
+            assertNotNull(createdWithRole.getRole("newRole",RoleType.Actor));
+        }catch (IllegalArgumentException ex){
+            Assert.fail();
+        }
     }
 
     @Test
     public void DeleteRole() throws Exception {
+        String roleName = "actor1";
+        RoleType type = RoleType.Actor;
 
+        Play created = pserv.findPlaysByTitle("test play").get(0);
+        try {
+            assertEquals(6,created.getRoles().size());
+
+            assertTrue(created.removeRole(created.getRole(roleName,type)));
+            pserv.save(created);
+            Play createdWithoutRole = pserv.findPlaysByTitle("test play").get(0);
+            assertEquals(5,createdWithoutRole.getRoles().size());
+            try {
+                createdWithoutRole.getRole("actor1",RoleType.Actor);
+                Assert.fail();
+            }catch (IllegalArgumentException ex){
+                assertTrue(true);
+            }
+        }catch (IllegalArgumentException ex){
+            Assert.fail();
+        }
     }
 
 

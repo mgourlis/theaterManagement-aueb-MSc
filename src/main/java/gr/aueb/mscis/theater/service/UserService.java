@@ -1,16 +1,8 @@
 package gr.aueb.mscis.theater.service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.NonUniqueResultException;
-
-import gr.aueb.mscis.theater.model.Hall;
+import javax.persistence.*;
 import gr.aueb.mscis.theater.model.User;
 
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Myron on 18/2/2017.
@@ -61,7 +53,13 @@ public class UserService {
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 		if (user.getId() != null) {
-            user = em.merge(user);
+		    try {
+                user = em.merge(user);
+                em.flush();
+            } catch (PersistenceException ex){
+                tx.rollback();
+                return null;
+            }
 		}
 		else {
             try {
@@ -70,7 +68,12 @@ public class UserService {
                 tx.rollback();
                 return null;
             } catch (NoResultException ex) {
-                em.persist(user);
+                try {
+                    em.persist(user);
+                } catch (PersistenceException ex2){
+                    tx.rollback();
+                    return null;
+                }
             }
         }
 

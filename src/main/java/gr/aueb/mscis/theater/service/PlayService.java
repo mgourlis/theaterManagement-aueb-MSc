@@ -3,10 +3,7 @@ package gr.aueb.mscis.theater.service;
 import gr.aueb.mscis.theater.model.Play;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -69,11 +66,21 @@ public class PlayService {
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 		if (play.getId() != null) {
-			play = em.merge(play);
-			em.flush();
-			em.refresh(play);
+			try {
+				play = em.merge(play);
+				em.flush();
+				em.refresh(play);
+			} catch (PersistenceException ex) {
+				tx.rollback();
+			return null;
+		}
 		} else {
-			em.persist(play);
+			try {
+				em.persist(play);
+			} catch (PersistenceException ex) {
+			tx.rollback();
+			return null;
+		}
 		}
 		tx.commit();
 		return play;

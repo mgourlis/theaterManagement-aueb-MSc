@@ -3,10 +3,7 @@ package gr.aueb.mscis.theater.service;
 import gr.aueb.mscis.theater.model.Agent;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -68,11 +65,21 @@ public class AgentService {
         tx.begin();
         //Validate on same name with existing
         if (agent.getId() != null) {
-            agent = em.merge(agent);
-            em.flush();
-            em.refresh(agent);
+            try {
+                agent = em.merge(agent);
+                em.flush();
+                em.refresh(agent);
+            } catch (PersistenceException ex) {
+                tx.rollback();
+                return null;
+            }
         } else {
-            em.persist(agent);
+            try {
+                em.persist(agent);
+            } catch (PersistenceException ex) {
+                tx.rollback();
+                return null;
+            }
         }
         tx.commit();
         return agent;

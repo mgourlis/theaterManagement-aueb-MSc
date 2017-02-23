@@ -31,7 +31,7 @@ public class Role {
 
     @PreRemove
     private void removeAssociationWithParent() {
-        agent.removeRole(this);
+       if(agent != null)agent.removeRole(this);
     }
 
     public Role(){

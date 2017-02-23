@@ -22,7 +22,7 @@ public class Play {
 	private Set<Role> roles = new HashSet<Role>();
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE,
-			CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval = true, mappedBy = "play")
+			CascadeType.PERSIST, CascadeType.REFRESH}, mappedBy = "play")
 	private Set<Show> shows = new HashSet<Show>();
 
 	/**
@@ -91,21 +91,21 @@ public class Play {
 		throw new IllegalArgumentException("role not found");
 	}
 
-	public void addRole(Role temprole){
-		temprole.setPlay(this);
-		this.roles.add(temprole);
+	public void addRole(Role role){
+		role.setPlay(this);
+		this.roles.add(role);
 	}
 
 	public boolean removeRole(Role role){
-		for(Role r : roles) {
-			if(r.equals(role)) {
-				Boolean delete = this.roles.remove(r);
-				r.setPlay(null);
-				r.setAgent(null);
-				return true;
+		Boolean delete = this.roles.remove(role);
+		if(delete) {
+			if(role.getAgent() != null){
+				role.getAgent().removeRole(role);
 			}
+			role.setPlay(null);
+			return true;
 		}
-		return false;
+		return delete;
 	}
 
 	public Set<Show> getShows() {

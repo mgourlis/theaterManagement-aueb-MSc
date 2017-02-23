@@ -2,10 +2,7 @@ package gr.aueb.mscis.theater.service;
 
 import gr.aueb.mscis.theater.model.Hall;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
-import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -98,11 +95,16 @@ public class HallService {
         tx.begin();
         //Validate on same name with existing
         if (hall.getId() != null) {
-            hall = em.merge(hall);
-            //Flush to make a refresh of the Entity
-            em.flush();
-            //Refv cresh for correct ordering in seats
-            em.refresh(hall);
+            try {
+                hall = em.merge(hall);
+                //Flush to make a refresh of the Entity
+                em.flush();
+                //Refv cresh for correct ordering in seats
+                em.refresh(hall);
+            } catch (PersistenceException ex) {
+                tx.rollback();
+                return null;
+            }
         } else {
             try {
                 Hall existingHall = ((Hall) em.createQuery("select h from Hall h where h.name = :hallName")
@@ -110,7 +112,12 @@ public class HallService {
                 tx.rollback();
                 return null;
             } catch (NoResultException ex) {
-                em.persist(hall);
+                try{
+                    em.persist(hall);
+                } catch (PersistenceException ex2) {
+                    tx.rollback();
+                    return null;
+                }
             }
         }
         tx.commit();

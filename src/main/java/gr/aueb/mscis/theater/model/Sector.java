@@ -1,6 +1,7 @@
 package gr.aueb.mscis.theater.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 /**
@@ -15,6 +16,7 @@ public class Sector {
     private int id;
 
     @Column(name = "name", length = 512, nullable = false)
+    @NotNull
     private String name;
 
     @Column(name = "priceFactor", nullable = false)
@@ -22,6 +24,7 @@ public class Sector {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="hall_id", nullable = false)
+    @NotNull
     private Hall hall;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "sector")
@@ -171,6 +174,36 @@ public class Sector {
             }
         }
         return false;
+    }
+
+    public List<Seat> getFreeSeats(int numberOfSeats, Date date) throws IllegalArgumentException{
+        List<Seat> freeSeats = new ArrayList<Seat>();
+        ListIterator<Seat> lit = seats.listIterator();
+        int freeNum = 0;
+        while (lit.hasNext()){
+            Seat s = lit.next();
+            if(!s.isBooked(date) && s.isAvailable() && freeSeats.get(0).getLineNumber() == s.getLineNumber()) {
+                freeSeats.add(s);
+                freeNum++;
+                if(freeNum == numberOfSeats) return  freeSeats;
+            } else {
+                freeNum = 0;
+                freeSeats.removeAll(freeSeats);
+            }
+        }
+        throw new IllegalArgumentException("No free seats found in sequence");
+    }
+
+    public List<Seat> getFreeSeats(Date date){
+        List<Seat> freeSeats = new ArrayList<Seat>();
+        ListIterator<Seat> lit = seats.listIterator();
+        while (lit.hasNext()){
+            Seat s = lit.next();
+            if(!s.isBooked(date) && s.isAvailable() && freeSeats.get(0).getLineNumber() == s.getLineNumber()) {
+                freeSeats.add(s);
+            }
+        }
+        return freeSeats;
     }
 
     public boolean isAvailable(){

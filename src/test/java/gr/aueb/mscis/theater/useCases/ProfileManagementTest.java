@@ -10,7 +10,7 @@ import gr.aueb.mscis.theater.model.User;
 import gr.aueb.mscis.theater.persistence.Initializer;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
 import gr.aueb.mscis.theater.service.UserService;
-
+import static org.junit.Assert.*;
 /**
  * Created by Myron on 19/2/2017.
  */
@@ -36,12 +36,19 @@ public class ProfileManagementTest {
     @Test
     public void AlterUserData() throws Exception {
 		UserService newUserService = new UserService(JPAUtil.createEntityManager());
-		newUserService.saveUser(customer1);
+		customer1 = newUserService.saveUser(customer1);
+		assertEquals("pass!word2",newUserService.findUserById(customer1.getId()).getPassword());
     	customer1.setPassword("new12passw");
+        customer1 = newUserService.saveUser(customer1);
+        assertEquals("new12passw",newUserService.findUserById(customer1.getId()).getPassword());
     }
 
     @Test
     public void AlterUserDataError() throws Exception {
-
+        UserService newUserService = new UserService(JPAUtil.createEntityManager());
+        customer1 = newUserService.saveUser(customer1);
+        customer1.setFirstName(null);
+        newUserService.saveUser(customer1);
+        assertEquals("ELEFTHERIA",newUserService.findUserById(customer1.getId()).getFirstName());
     }
 }
