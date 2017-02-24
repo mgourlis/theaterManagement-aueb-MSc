@@ -60,10 +60,6 @@ public class Purchase {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     /**
      * Θέτει την ημερομηνία αγοράς.
      * @param date Η ημερομηνία αγοράς

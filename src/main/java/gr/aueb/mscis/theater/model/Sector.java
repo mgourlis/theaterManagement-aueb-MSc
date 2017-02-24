@@ -267,7 +267,7 @@ public class Sector {
 
     /**
      * Θέτει τη διαθεσιμότητα του τομέα
-     * @param availability tru/false
+     * @param availability true/false
      */
     public void setAvailability(boolean availability) {
         for (Seat seat : seats) {
