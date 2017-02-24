@@ -1,6 +1,5 @@
 package gr.aueb.mscis.theater.service;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import gr.aueb.mscis.theater.model.*;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
 
@@ -71,7 +70,7 @@ public class ShowService {
                     emailUers.add(ticket.getPurchase().getUser());
                 }
             }
-            show.setCanceled(true);
+            show.setCanceled();
             tx.commit();
         } catch (NoResultException ex) {
             tx.rollback();

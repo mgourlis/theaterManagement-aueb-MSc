@@ -164,7 +164,7 @@ public class Show {
      * Ακυρώνει την παράσταση
      */
     public void setCanceled() {
-        this.canceled = false;
+        this.canceled = true;
     }
 
     /**

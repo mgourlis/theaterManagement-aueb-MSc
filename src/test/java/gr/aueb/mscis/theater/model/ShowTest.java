@@ -104,7 +104,7 @@ public class ShowTest {
 
     @Test
     public void setCanceled() throws Exception {
-        show.setCanceled(true);
+        show.setCanceled();
         assertTrue(show.isCanceled());
     }
 
