@@ -1,16 +1,11 @@
 package gr.aueb.mscis.theater.model;
 
-import jdk.nashorn.internal.ir.WhileNode;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-/**
- *
- * Created by Myron on 11/2/2017.
- */
+
 @Entity
 @Table(name = "agents")
 public class Agent {
@@ -35,6 +30,9 @@ public class Agent {
             CascadeType.REFRESH}, mappedBy = "agent")
     private Set<Role> roles = new HashSet<Role>();
 
+    /**
+     * Μέθοδος για αποσύνδεση με την συσχετιζόμενη οντότητα ρολων
+     */
     @PreRemove
     private void removeAssociationsWithChilds() {
         for (Role role : roles) {
@@ -67,8 +65,8 @@ public class Agent {
     }
 
     /**
-     * Accessor method
-     * @return επιστρέφει το id του αντικειμένου
+     * Επιστρέφει το Id του αντικειμένου
+     * @return το Id
      */
     public Integer getId() {
         return id;
@@ -107,36 +105,39 @@ public class Agent {
     }
 
     /**
-     * Accessor method
-     * @return
+     * Επιστρέφει την ημερομηνία γέννησης του Συντελεστή
+     * @return Date η ημερωμηνία γέννησης
      */
     public int getYearOfBirth() {
         return yearOfBirth;
     }
 
+    /**
+     * Θέτει την ημερομηνία γέννησης του Συντελεστή
+     * @param yearOfBirth η ημερομηνία γέννησης
+     */
     public void setYearOfBirth(int yearOfBirth) {
         this.yearOfBirth = yearOfBirth;
     }
 
     /**
-     * Accessor method
-     * @return
+     * Επιστρέφει το βιογραφικό του Συντελεστή
+     * @return το βιογραφικό
      */
     public String getCv() {
         return cv;
     }
 
     /**
-     * Transformer Method
-     * @param cv
+     * Θέτει το βιογραφικό τπυ Συντελεστή
+     * @param cv το βιογραφικό
      */
     public void setCv(String cv) {
         this.cv = cv;
     }
 
     /**
-     * Accessor method
-     *
+     * Επιστρέφει σύνολο με τους ρόλους του Συντελεστή σε θεατρικά έργα
      * @return Set με αντικείμενα Role
      */
     public Set<Role> getRoles() {
@@ -144,8 +145,9 @@ public class Agent {
     }
 
     /**
-     *
-     * @param role
+     *Εισάγει έναν ρόλο στους ρόλους του Συντελεστή χρεισιμοποιόντας την μέθοδο add
+     * του HashSet και ενώνει τον ρόλο με τον Συντελεστή.
+     * @param role ο ρόλος
      */
     public void addRole(Role role) {
         role.setAgent(this);
@@ -153,8 +155,9 @@ public class Agent {
     }
 
     /**
-     *
-     * @param role
+     *Αφαιρεί ένα ρόλο από τους ρόλους του Συντελεστή χρεισιμοποιόντας την μέθοδο remove
+     * του HashSet και αποσυνδέει τον ρόλο με τον Συντελεστή.
+     * @param role ο ρόλος που α αφαιρεθεί
      * @return
      */
     public boolean removeRole(Role role){
@@ -170,11 +173,6 @@ public class Agent {
         return delete;
     }
 
-    /**
-     *
-     * @param o
-     * @return
-     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -187,10 +185,6 @@ public class Agent {
         return firstName.equals(agent.firstName);
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public int hashCode() {
         int result = lastName.hashCode(); //firstName?

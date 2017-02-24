@@ -7,9 +7,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by Myron on 11/2/2017.
- */
 @Entity
 @Table(name = "seats")
 public class Seat {
@@ -35,23 +32,27 @@ public class Seat {
             CascadeType.DETACH, CascadeType.MERGE,CascadeType.REFRESH}, mappedBy = "seat")
     private Set<Ticket> tickets = new HashSet<Ticket>();
 
+    /**
+     * Αφαιρεί τις συνδέσεις της θέσης με τα εισιτήρια έτσι ώστε να αφαιρεθεί.
+     */
     @PreRemove
     private void removeAssociationsWithChilds() {
         for (Ticket ticket : tickets) {
-            ticket.setSeat(null);
+            if(ticket.getSeat() != null)ticket.setSeat(null);
         }
     }
 
     /**
-     *
+     * Προκαθορισμένος κατασκευαστής.
      */
     public Seat(){
 
     }
 
     /**
-     *
-     * @param seatNumber
+     * Κατασκευαστής της κλάσσης Seat, δημιουργεί αντικείμενο τύπου seat
+     * @param lineNumber ο αριθμός σειράς της θέσης
+     * @param seatNumber ο αριθμός της θέσης.
      */
     public Seat(int lineNumber, int seatNumber) {
         this.lineNumber = lineNumber;
@@ -64,33 +65,57 @@ public class Seat {
     }
 
     /**
-     *
-     * @return int seatNumber
+     *Επιστρέφει τον αριθμό της θέσης
+     * @return ο αριθμός της θέσης
      */
     public int getSeatNumber() {
         return seatNumber;
     }
 
+    /**
+     * Θέτει τον αριθμό της θέσης
+     * @param seatNumber ο αριθμός της θέσης
+     */
     public void setSeatNumber(int seatNumber) {
         this.seatNumber = seatNumber;
     }
 
+    /**
+     * Επιστρέφει τον αριθμό σειράς της θέσης
+     * @return ο αριθμός σειράς
+     */
     public int getLineNumber() {
         return lineNumber;
     }
 
+    /**
+     * Θέτει τον αριθμό σειράς της θέσης
+     * @param lineNumber ο αριθμός σειράς
+     */
     public void setLineNumber(int lineNumber) {
         this.lineNumber = lineNumber;
     }
 
+    /**
+     * Επιστρέφει τον τομέα της θέσης
+     * @return ο τομέας
+     */
     public Sector getSector() {
         return sector;
     }
 
+    /**
+     * Θέτει τον τομέα της θέσης
+     * @param sector ο τομέας
+     */
     public void setSector(Sector sector) {
         this.sector = sector;
     }
 
+    /**
+     * Ελέγχει υπάρχουν μελλοντικά αγορασμένα εισητίρια για τη θέση
+     * @return true/false αν υπάρχουν εισητίρια ή όχι
+     */
     public boolean isBooked(){
         Date currentDate = Calendar.getInstance().getTime();
         for(Ticket ticket : tickets){
@@ -101,9 +126,10 @@ public class Seat {
     }
 
     /**
-     *
-     * @param date
-     * @return
+     *Επιστρέφει αν υπάρχουν αγορασμένα εισητίρια για τη θέση σε
+     * συγκεκριμένη ημερομηνία
+     * @param date η ημερομηνία ελέγχου
+     * @return true/false αν υπάρχουν εισητίρια ή όχι
      */
     public boolean isBooked(Date date){
         for(Ticket ticket : tickets){
@@ -113,16 +139,29 @@ public class Seat {
         return false;
     }
 
+    /**
+     * Επιστρέφει το σύνολο των εισητιρίων για τη θέση
+     * @return το σύνολο των εισητιρίων
+     */
     public Set<Ticket> getTickets() {
         return tickets;
     }
 
+    /**
+     * Εισάγει ένα εισητίριο στην θέση.
+     * @param ticket το εισητίριο
+     */
     public void addTicket(Ticket ticket){
         ticket.getSeat().removeTicket(ticket);
         ticket.setSeat(this);
         tickets.add(ticket);
     }
 
+    /**
+     * Αφαιρεί ένα εισητίριο από την θέση
+     * @param ticket το εισητίριο
+     * @return true/false αν διαγράφηκε το εισητίριο ή όχι
+     */
     public boolean removeTicket(Ticket ticket){
         boolean delete = tickets.remove(ticket);
         if(delete)
@@ -131,16 +170,16 @@ public class Seat {
     }
 
     /**
-     *
-     * @return boolean
+     *Επιστρέφει την διαθεσιμότητα της θέσης.
+     * @return true/false αν είναι διαθέσιμη ή όχι
      */
     public boolean isAvailable(){
         return availability;
     }
 
     /**
-     *
-     * @param availability
+     *Θέτει την διαθεσιμότητα της θέσης
+     * @param availability η διαθεσιμότητα true/false
      */
     public void setAvailability(boolean availability) {
         this.availability = availability;

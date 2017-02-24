@@ -2,9 +2,6 @@ package gr.aueb.mscis.theater.model;
 
 import javax.persistence.*;
 
-/**
- * Created by Myron on 11/2/2017.
- */
 @Entity
 @Table(name = "roles")
 public class Role {
@@ -34,10 +31,18 @@ public class Role {
        if(agent != null)agent.removeRole(this);
     }
 
+    /**
+     *Προκαθορισμένος κατασκευαστής.
+     */
     public Role(){
 
     }
 
+    /**
+     * Κατασκευαστής της κλάσσης Role, δημιουργεί αντικείμενο τύπου role
+     * @param name το όνομα του ρόλου
+     * @param roleType ο τύπος του ρόλου
+     */
     public Role(String name, RoleType roleType) {
         this.name = name;
         this.roleType = roleType;
@@ -47,34 +52,66 @@ public class Role {
         return id;
     }
 
+    /**
+     * Επιστρέφει το όνομα του ρόλου
+     * @return το όνομα
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Θέτει το όνομα του ρόλου
+     * @param name το όνομα
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Επιστρέφει τον τύπο του ρόλου
+     * @return ο τύπος
+     */
     public RoleType getRoleType() {
         return roleType;
     }
 
+    /**
+     * Θέτει τον τύπο του ρόλου
+     * @param roleType ο τύπος
+     */
     public void setRoleType(RoleType roleType) {
         this.roleType = roleType;
     }
 
+    /**
+     * Επιστρέφει το θεατρικό έργο του ρόλου
+     * @return το θεατρικό έργο
+     */
     public Play getPlay() {
         return play;
     }
 
+    /**
+     * Θέτει το θεατρικό έργο του ρόλου
+     * @param play το θεατρικό έργο
+     */
     public void setPlay(Play play) {
         this.play = play;
     }
 
+    /**
+     * Επιστρέφει τον Συντελεστη του ρόλου
+     * @return ο συντελεστής
+     */
     public Agent getAgent() {
         return agent;
     }
 
+    /**
+     * Θέτει τον συντελεστή του ρόλου
+     * @param agent ο συντελεστής
+     */
     public void setAgent(Agent agent) {
         this.agent = agent;
     }

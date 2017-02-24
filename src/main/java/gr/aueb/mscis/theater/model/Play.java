@@ -26,24 +26,16 @@ public class Play {
 	private Set<Show> shows = new HashSet<Show>();
 
 	/**
-	 *
+	 *Προκαθορισμένος κατασκευαστής.
 	 */
 	public Play() {
 
 	}
 
 	/**
-	 *
-	 * @param title
-	 */
-	public Play(String title) {
-		this.title = title;
-	}
-
-	/**
-	 *
-	 * @param title
-	 * @param description
+	 *Κατασκευαστής της κλάσσης Play, δημιουργεί αντικείμενο τύπου Play
+	 * @param title ο τίτλος του θεατρικού έργου
+	 * @param description η περιγραφή του θεατρικού έργου
 	 */
 	public Play(String title, String description) {
 		this.title = title;
@@ -55,34 +47,53 @@ public class Play {
 	}
 
 	/**
-	 *
-	 * @return
+	 *Επιστρέφει τον τίτλο του θεατρικού έργου
+	 * @return ο τίτλος
 	 */
 	public String getTitle() {
 		return title;
 	}
 
 	/**
-	 *
-	 * @param title
+	 *Θέτει τον τίτλο του θεατρικού έργου
+	 * @param title ο τίτλος
 	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-
+	/**
+	 * Επιστρέφει την περιγραφή του θεατρικού έργου
+	 * @return η περιγραφή
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * Θέτει την περιγραφή του θεατρικού έργου
+	 * @param description η περιγραφή
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/**
+	 * Επιστρέφει το σύνολο των ρόλων του θεατρικού έργου
+	 * @return σύνολο ρόλων
+	 */
 	public Set<Role> getRoles() {
 		return new HashSet<Role>(roles);
 	}
 
+	/**
+	 * Επιστρέφει έναν ρόλο του θεατρικού έργου που έχει ως παραμέτρους το όνομά του
+	 * και τον τύπο του
+	 * @param roleName το όνομα του ρόλου
+	 * @param type ο τύπος του ρόλου
+	 * @return ο ρόλος
+	 * @throws IllegalArgumentException αν δεν βρεθεί ο ρόλος
+	 */
 	public Role getRole(String roleName, RoleType type) throws IllegalArgumentException {
 		for(Role role :roles){
 			if(role.getName().equals(roleName) && role.getRoleType().equals(type))
@@ -91,11 +102,20 @@ public class Play {
 		throw new IllegalArgumentException("role not found");
 	}
 
+	/**
+	 * Εισάγει ρόλο στο θεατρικό έργο με την μέθοδο add του HashSet
+	 * @param role ο ρόλος
+	 */
 	public void addRole(Role role){
 		role.setPlay(this);
 		this.roles.add(role);
 	}
 
+	/**
+	 * Αφαιρεί ρόλο από το θεατρικό έργο με την μέθοδο remove του HashSet
+	 * @param role ο ρόλος
+	 * @return true/false αν έγινε η διαγραφεί ή όχι.
+	 */
 	public boolean removeRole(Role role){
 		Boolean delete = this.roles.remove(role);
 		if(delete) {
@@ -108,6 +128,10 @@ public class Play {
 		return delete;
 	}
 
+	/**
+	 * Επιστρέφει το σύνολο των παραστέσεων του θεατρικού έργου.
+	 * @return το σύνολο των παραστάσεων
+	 */
 	public Set<Show> getShows() {
 		return shows;
 	}

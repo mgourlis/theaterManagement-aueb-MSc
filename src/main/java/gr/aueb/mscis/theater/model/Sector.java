@@ -4,9 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
 
-/**
- * Created by Myron on 11/2/2017.
- */
 @Entity
 @Table(name = "sectors")
 public class Sector {
@@ -32,15 +29,15 @@ public class Sector {
     private List<Seat> seats = new ArrayList<Seat>();
 
     /**
-     *
+     * Προκαθορισμένος κατασκευαστής.
      */
     public Sector(){
 
     }
 
     /**
-     *
-     * @param name
+     * Κατασκευαστής της κλάσσης Sector, δημιουργεί αντικείμενο τύπου Sector
+     * @param name το όνομα του τομέα
      */
     public Sector(String name, double priceFactor){
         this.name = name;
@@ -52,41 +49,57 @@ public class Sector {
     }
 
     /**
-     *
-     * @return
+     * Επιστρέφει το όνομα του Τομέα
+     * @return το όνομα
      */
     public String getName() {
         return name;
     }
 
     /**
-     *
-     * @param name
+     * Θέτει το όνομα του Τομέα
+     * @param name το όνομα
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     *
-     * @return
+     * Επιστρέφει το συντελεστή τιμής του τομέα
+     * @return ο συντελεστής τιμής
      */
     public double getPriceFactor() {
         return priceFactor;
     }
 
+    /**
+     * Θέτει τον συντελεστή τιμής του τομέα
+     * @param priceFactor ο συντελεστής τιμής
+     */
     public void setPriceFactor(double priceFactor) {
         this.priceFactor = priceFactor;
     }
 
+    /**
+     * Επιστρέφει την αίθουσα του τομέα
+     * @return η αίθουσα
+     */
     public Hall getHall() {
         return hall;
     }
 
+    /**
+     * Θέτει την αίθουσα του τομέα
+     * @param hall η αίθουσα
+     */
     public void setHall(Hall hall) {
         this.hall = hall;
     }
 
+    /**
+     * Επιστρέφει το σύνολο των θέσεων του τομέα
+     * @return το σύνολο των θέσεων
+     */
     public List<Seat> getSeats() {
         return seats;
     }
@@ -99,12 +112,22 @@ public class Sector {
         throw new IllegalArgumentException("seat not found");
     }
 
+    /**
+     * Εισάγει μια θέση στον τομέα σε νέα σειρά (υπάρχουσες σειρές +1 )
+     */
     public void addLine() {
         Seat seat = new Seat(seats.isEmpty() ? 1 : seats.get(seats.size()-1).getLineNumber()+1,1);
         seat.setSector(this);
         this.seats.add(seat);
     }
 
+    /**
+     * Αφαιρεί τις θέσεις μιας σειράς του τομέα, στη περίπτωση που δεν υπάρχουν
+     * εισητίρια για τις θέσεις της, και επανυπολογίζει τους αριθμούς σειρών
+     * των θέσεων του τομέα
+     * @param line ο αριθμός σειράς
+     * @return true/false αν έγινε η αφαίρεση ή όχι
+     */
     public boolean removeLine(int line){
         Boolean removeFlag = false;
         int linelength = lineLength(line);
@@ -137,6 +160,10 @@ public class Sector {
         return removeFlag;
     }
 
+    /**
+     * Εισάγει μια θέση στο τέλος της σειράς
+     * @param line ο αριθμός σριράς
+     */
     public void addSeat(int line){
         int seatNumber = lineLength(line);
         if(seatNumber > 0){
@@ -148,6 +175,12 @@ public class Sector {
         }
     }
 
+    /**
+     * Αφαιρεί την πρώτη θέση της σειράς που δεν έχει μελλοντικά εισητίρια
+     * και επανυπολογίζει τους αριθμούς θέσεων.
+     * @param line ο αριθμός δειράς
+     * @return true/false αν αφαιρέθεικε θέση ή όχι
+     */
     public boolean removeSeat(int line){
         int seatNumber = lineLength(line);
         if(seatNumber > 1) {
@@ -176,6 +209,14 @@ public class Sector {
         return false;
     }
 
+    /**
+     * Επιστρέφει τις πρώτες numberOfSeats ελεύθερες θέσεις σε σειρά του τομέα
+     * για μια συγκεκριμένη ημερωμηνία
+     * @param numberOfSeats ο αριθμός των θέσεων
+     * @param date η ημερομηνία
+     * @return λίστα με ελεύθερες θέσεις σε σειρά
+     * @throws IllegalArgumentException αν δεν υπάρχουν numberOfSeats ελεύθερες θέσεις σε σειρά
+     */
     public List<Seat> getFreeSeats(int numberOfSeats, Date date) throws IllegalArgumentException{
         List<Seat> freeSeats = new ArrayList<Seat>();
         ListIterator<Seat> lit = seats.listIterator();
@@ -194,6 +235,12 @@ public class Sector {
         throw new IllegalArgumentException("No free seats found in sequence");
     }
 
+    /**
+     * Επιστρέφει λίστα με διαθέσιμες θέσεις σε όλο τον τομέα
+     * για συγκεκριμένη ημερομηνία
+     * @param date η ημερομηνία
+     * @return λίστα με διαθέσιμες θέσεις
+     */
     public List<Seat> getFreeSeats(Date date){
         List<Seat> freeSeats = new ArrayList<Seat>();
         ListIterator<Seat> lit = seats.listIterator();
@@ -206,6 +253,10 @@ public class Sector {
         return freeSeats;
     }
 
+    /**
+     * Επιστρέφει την διαθεσιμότητα του τομέα
+     * @return true/false αν είναι διαθέσιμος ή όχι
+     */
     public boolean isAvailable(){
         for (Seat seat : seats) {
             if(seat.isAvailable())
@@ -214,12 +265,20 @@ public class Sector {
         return false;
     }
 
+    /**
+     * Θέτει τη διαθεσιμότητα του τομέα
+     * @param availability tru/false
+     */
     public void setAvailability(boolean availability) {
         for (Seat seat : seats) {
             seat.setAvailability(availability);
         }
     }
 
+    /**
+     * Επιστρέφει αν ο τομέας έχει μελλοντικές κρατήσεις στις θέσεις του
+     * @return true/flase αν έχει κρτατήσεις ή όχι
+     */
     public boolean hasBookings(){
         for (Seat seat : seats) {
             if(seat.isBooked())
@@ -228,6 +287,11 @@ public class Sector {
         return false;
     }
 
+    /**
+     * Επιστρέφει τον αριθμό θέσεων μιας σειράς
+     * @param line ο αριθμός σειράς,
+     * @return 0 αν η σειρά δεν υπάρχει αλλιώς τον αριθμό θέσεων
+     */
     public int lineLength(int line){
         int lineLength = 0;
         ListIterator<Seat> lit = seats.listIterator();
