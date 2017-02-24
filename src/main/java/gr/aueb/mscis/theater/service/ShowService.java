@@ -11,9 +11,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Myron on 18/2/2017.
- */
 public class ShowService {
 
     EntityManager em;

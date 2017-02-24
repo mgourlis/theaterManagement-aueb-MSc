@@ -5,9 +5,6 @@ import gr.aueb.mscis.theater.model.Hall;
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * Created by Myron on 18/2/2017.
- */
 public class HallService {
 
     EntityManager em;

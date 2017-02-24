@@ -3,9 +3,6 @@ package gr.aueb.mscis.theater.service;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Myron on 24/2/2017.
- */
 public class FlashMessageServiceImpl implements FlashMessageService{
 
     private Map<String, FlashMessageType> messages = new HashMap<String, FlashMessageType>();

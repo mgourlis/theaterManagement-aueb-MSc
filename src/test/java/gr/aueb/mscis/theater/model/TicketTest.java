@@ -1,20 +1,15 @@
 package gr.aueb.mscis.theater.model;
 
 import gr.aueb.mscis.theater.service.SerialNumberProvider;
-import gr.aueb.mscis.theater.service.SerialNumberProviderImpl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.UUID;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Myron on 19/2/2017.
- */
 public class TicketTest {
 
     Hall hall;

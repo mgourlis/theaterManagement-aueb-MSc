@@ -1,19 +1,17 @@
 package gr.aueb.mscis.theater.useCases;
 
-import java.util.Date;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import gr.aueb.mscis.theater.model.User;
 import gr.aueb.mscis.theater.persistence.Initializer;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
 import gr.aueb.mscis.theater.service.UserService;
-import static org.junit.Assert.*;
-/**
- * Created by Myron on 19/2/2017.
- */
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
+
 public class ProfileManagementTest {
     Initializer init = new Initializer();
 	Date customerDate;

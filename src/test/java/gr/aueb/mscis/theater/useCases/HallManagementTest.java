@@ -13,9 +13,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Myron on 19/2/2017.
- */
 public class HallManagementTest {
 
     Initializer init = new Initializer();

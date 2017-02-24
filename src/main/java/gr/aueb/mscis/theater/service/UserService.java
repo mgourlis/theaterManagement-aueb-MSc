@@ -1,12 +1,9 @@
 package gr.aueb.mscis.theater.service;
 
-import javax.persistence.*;
 import gr.aueb.mscis.theater.model.User;
 
+import javax.persistence.*;
 
-/**
- * Created by Myron on 18/2/2017.
- */
 public class UserService {
 
     EntityManager em;

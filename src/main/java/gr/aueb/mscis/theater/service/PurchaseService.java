@@ -9,9 +9,6 @@ import javax.persistence.NoResultException;
 
 import gr.aueb.mscis.theater.model.Purchase;
 
-/**
- * Created by Myron on 18/2/2017.
- */
 public class PurchaseService {
 
     EntityManager em;

@@ -6,12 +6,6 @@ import gr.aueb.mscis.theater.persistence.JPAUtil;
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * CRUD operations and other functionality related to movies
- * 
- * @author bzafiris
- *
- */
 public class PlayService {
 
 	EntityManager em;

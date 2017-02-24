@@ -1,19 +1,15 @@
 package gr.aueb.mscis.theater.model;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Date;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.*;
-
-import java.util.Date;
-
-/**
- * Created by Myron on 18/2/2017.
- */
 public class UserTest {
 	
 	User user;

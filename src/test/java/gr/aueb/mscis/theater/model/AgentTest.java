@@ -5,14 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Iterator;
-
 import static org.junit.Assert.*;
-
-/**
- * Created by Myron on 18/2/2017.
- */
-
 
 public class AgentTest {
 

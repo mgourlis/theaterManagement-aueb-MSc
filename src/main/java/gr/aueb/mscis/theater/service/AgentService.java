@@ -6,9 +6,6 @@ import gr.aueb.mscis.theater.persistence.JPAUtil;
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * Created by Myron on 18/2/2017.
- */
 public class AgentService {
 
     EntityManager em;

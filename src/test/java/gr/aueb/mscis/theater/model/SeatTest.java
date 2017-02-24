@@ -8,14 +8,9 @@ import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Myron on 19/2/2017.
- */
 public class SeatTest {
 
     Hall hall;

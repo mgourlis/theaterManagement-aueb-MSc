@@ -6,9 +6,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Myron on 18/2/2017.
- */
 public class RoleTest {
 
     Play play;

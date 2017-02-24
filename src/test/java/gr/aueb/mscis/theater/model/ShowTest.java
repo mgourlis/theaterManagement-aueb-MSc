@@ -10,9 +10,6 @@ import java.util.Date;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Myron on 19/2/2017.
- */
 public class ShowTest {
     Play play;
     Show show;

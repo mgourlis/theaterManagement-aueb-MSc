@@ -1,24 +1,15 @@
 package gr.aueb.mscis.theater.model;
 
-import org.junit.*;
-
 import gr.aueb.mscis.theater.service.SerialNumberProvider;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import gr.aueb.mscis.theater.service.SerialNumberProviderImpl;
-import java.util.UUID;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-/**
- * Created by Myron on 18/2/2017.
- */
 public class PurchaseTest {
 	
 	User user1;

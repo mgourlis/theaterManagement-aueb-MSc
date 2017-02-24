@@ -16,9 +16,6 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Myron on 19/2/2017.
- */
 public class PlayManagementTest {
 
     Initializer init = new Initializer();
