@@ -104,6 +104,7 @@ public class Hall {
         return shows;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
