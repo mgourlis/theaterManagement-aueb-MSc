@@ -150,19 +150,11 @@ public class Initializer  {
 
         Show show1 = new Show(cal.getTime(),50.0,amlet,hall1);
 
-        cal.set(2017, Calendar.AUGUST, 23);
-        Show show2 = new Show(cal.getTime(),50.0,amlet,hall1);
-        
-        cal.set(2017, Calendar.AUGUST, 25);
-        Show show3 = new Show(cal.getTime(),50.0,amlet,hall1);
-        
         SerialNumberProvider serial = new SerialNumberProviderImpl();
 
         Ticket ticket = new Ticket(show1,hall1sector1.getSeats().get(0),serial);
 
         em.persist(show1);
-        em.persist(show2);
-        em.persist(show3);
 
         em.persist(ticket);
         

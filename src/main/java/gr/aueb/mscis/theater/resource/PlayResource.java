@@ -1,8 +1,10 @@
 package gr.aueb.mscis.theater.resource;
 
 import gr.aueb.mscis.theater.model.Play;
-import gr.aueb.mscis.theater.service.PlayService;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
+import gr.aueb.mscis.theater.service.FlashMessageService;
+import gr.aueb.mscis.theater.service.FlashMessageServiceImpl;
+import gr.aueb.mscis.theater.service.PlayService;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.GET;
@@ -30,10 +32,13 @@ public class PlayResource {
 
         EntityManager em = JPAUtil.getCurrentEntityManager();
 
-        PlayService playService = new PlayService();
+        FlashMessageService flashserv = new FlashMessageServiceImpl();
+
+        PlayService playService = new PlayService(flashserv);
         Play play = playService.findPlayById(playId);
 
         PlayInfo playInfo = PlayInfo.wrap(play);
+
         em.close();
 
         return playInfo;

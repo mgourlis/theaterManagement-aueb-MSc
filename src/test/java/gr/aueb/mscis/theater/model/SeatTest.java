@@ -46,16 +46,14 @@ public class SeatTest {
         Date dummyPastDate = c.getTime();
         Show futureShow = new Show(dummyFutureDate,50.0,play,hall);
         Show pastShow = new Show(dummyPastDate,50.0,play,hall);
-        Ticket futureTicket = new Ticket(futureShow,seat,serial);
+
+        assertFalse(seat.isBooked());
+
         Ticket pastTicket = new Ticket(pastShow,seat,serial);
 
         assertFalse(seat.isBooked());
 
-        seat.getTickets().add(pastTicket);
-
-        assertFalse(seat.isBooked());
-
-        seat.getTickets().add(futureTicket);
+        Ticket futureTicket = new Ticket(futureShow,seat,serial);
 
         assertTrue(seat.isBooked());
     }
@@ -72,16 +70,14 @@ public class SeatTest {
         Date dummyPastDate = c.getTime();
         Show futureShow = new Show(dummyFutureDate,50.0,play,hall);
         Show pastShow = new Show(dummyPastDate,50.0,play,hall);
-        Ticket futureTicket = new Ticket(futureShow,seat,serial);
-        Ticket pastTicket = new Ticket(pastShow,seat,serial);
 
         assertFalse(seat.isBooked(dummyFutureDate));
 
-        seat.getTickets().add(pastTicket);
+        Ticket pastTicket = new Ticket(pastShow,seat,serial);
 
         assertTrue(seat.isBooked(dummyPastDate));
 
-        seat.getTickets().add(futureTicket);
+        Ticket futureTicket = new Ticket(futureShow,seat,serial);
 
         assertTrue(seat.isBooked(dummyFutureDate));
     }
@@ -96,10 +92,6 @@ public class SeatTest {
         Date dummydate = c.getTime();
         Show show = new Show(dummydate,50.0,play,hall);
         Ticket ticket = new Ticket(show,seat,serial);
-
-        assertEquals(0, seat.getTickets().size());
-
-        seat.getTickets().add(ticket);
 
         assertEquals(1, seat.getTickets().size());
 
@@ -117,13 +109,6 @@ public class SeatTest {
         Ticket ticket = new Ticket(show,seat,serial);
         Ticket ticket2 = new Ticket(show,seat,serial);
         Ticket ticket3 = new Ticket(show,seat,serial);
-
-
-        assertEquals(0, seat.getTickets().size());
-
-        seat.addTicket(ticket);
-        seat.addTicket(ticket2);
-        seat.addTicket(ticket3);
 
         assertEquals(3, seat.getTickets().size());
 

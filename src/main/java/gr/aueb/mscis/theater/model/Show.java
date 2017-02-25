@@ -28,7 +28,7 @@ public class Show {
     private Play play;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="hall_id", nullable = false)
+    @JoinColumn(name="hall_id", nullable = true)
     private Hall hall;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "show")
@@ -136,7 +136,7 @@ public class Show {
      * @param hall η αίθουσα
      */
     public void setHall(Hall hall) {
-        if(!hall.equals(this.hall) && hall != null){
+        if(!this.hall.equals(hall) && hall != null){
             Iterator<Show> it = this.hall.getShows().iterator();
             while (it.hasNext()){
                 Show sh = it.next();
@@ -147,7 +147,10 @@ public class Show {
                     break;
                 }
             }
-        }else {
+        } else if (hall == null) {
+            this.hall.getShows().remove(this);
+            this.hall = null;
+        } else {
             this.hall = hall;
         }
     }
@@ -164,6 +167,7 @@ public class Show {
      * Ακυρώνει την παράσταση
      */
     public void setCanceled() {
+        this.setHall(null);
         this.canceled = true;
     }
 
@@ -190,8 +194,11 @@ public class Show {
      * @return truw/false αν αφαιρέθηκε ή όχι
      */
     public boolean removeTicket(Ticket ticket){
-        ticket.setShow(null);
-        return this.tickets.remove(ticket);
+        boolean delete  = this.tickets.remove(ticket);
+        if(delete)
+            ticket.setShow(null);
+        return delete;
+
     }
 
     @Override
@@ -204,17 +211,15 @@ public class Show {
         if (canceled != show.canceled) return false;
         if (!date.equals(show.date)) return false;
         if (!play.equals(show.play)) return false;
-        return hall.equals(show.hall);
+        return hall != null ? hall.equals(show.hall) : show.hall == null;
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = date.hashCode();
+        int result = date.hashCode();
         result = 31 * result + (canceled ? 1 : 0);
         result = 31 * result + play.hashCode();
-        result = 31 * result + hall.hashCode();
+        result = 31 * result + (hall != null ? hall.hashCode() : 0);
         return result;
     }
 }

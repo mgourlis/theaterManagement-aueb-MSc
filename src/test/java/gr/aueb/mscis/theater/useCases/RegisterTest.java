@@ -2,7 +2,8 @@ package gr.aueb.mscis.theater.useCases;
 
 import gr.aueb.mscis.theater.model.User;
 import gr.aueb.mscis.theater.persistence.Initializer;
-import gr.aueb.mscis.theater.persistence.JPAUtil;
+import gr.aueb.mscis.theater.service.FlashMessageService;
+import gr.aueb.mscis.theater.service.FlashMessageServiceImpl;
 import gr.aueb.mscis.theater.service.UserService;
 import org.junit.After;
 import org.junit.Assert;
@@ -16,10 +17,14 @@ public class RegisterTest {
 	Date customerDate;
 	User customer1;
 	User customer2;
+    UserService newUserService;
+    FlashMessageService flashserv;
 	
 	@Before
     public void setUp() throws Exception {
         init.prepareData();
+        flashserv = new FlashMessageServiceImpl();
+        newUserService = new UserService(flashserv);
     	customerDate = new Date();
 		customer1 = new User("ELEFTHERIA", "TRAPEZANLIDOU",
 							   "el@mail.gr", "pass!word2",
@@ -36,14 +41,12 @@ public class RegisterTest {
 
     @Test
     public void RegisterCustomer() throws Exception {
-		UserService newUserService = new UserService(JPAUtil.createEntityManager());
 		newUserService.saveUser(customer1);
     	Assert.assertEquals(customer1, newUserService.findUserByEmail("el@mail.gr"));
     }
 
     @Test
     public void RegisterCustomerRequiredFields() throws Exception {
-        UserService newUserService = new UserService(JPAUtil.createEntityManager());
         customer1.setFirstName(null);
         customer1 = newUserService.saveUser(customer1);
         Assert.assertNull(customer1);
@@ -52,7 +55,6 @@ public class RegisterTest {
 
     @Test
     public void RegisterCustomerEmailExists() throws Exception {
-    	UserService newUserService = new UserService(JPAUtil.createEntityManager());
 		newUserService.saveUser(customer1);
 		customer2.setEmail("el@mail.gr");
 		Assert.assertNull(newUserService.saveUser(customer2));

@@ -3,7 +3,6 @@ package gr.aueb.mscis.theater.service;
 import gr.aueb.mscis.theater.model.Hall;
 import gr.aueb.mscis.theater.model.Sector;
 import gr.aueb.mscis.theater.persistence.Initializer;
-import gr.aueb.mscis.theater.persistence.JPAUtil;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,11 +15,13 @@ import static org.junit.Assert.assertEquals;
 public class HallServiceTest {
     Initializer init = new Initializer();
     HallService hserv;
+    FlashMessageService flashserv;
 
     @Before
     public void setUp() throws Exception {
         init.prepareData();
-        hserv = new HallService(JPAUtil.createEntityManager());
+        flashserv = new FlashMessageServiceImpl();
+        hserv = new HallService(flashserv);
     }
 
     @After
@@ -71,9 +72,12 @@ public class HallServiceTest {
 
     @Test
     public void delete() throws Exception {
-        Hall hall = hserv.findHallById(hserv.findAllHalls().get(0).getId());
+        Hall newhall = new Hall("newHall");
+        hserv.save(newhall);
+        Assert.assertEquals(3,hserv.findAllHalls().size());
+        Hall hall = hserv.findHallById(hserv.findHallByName("newHall").getId());
         hserv.delete(hall.getId());
-        Assert.assertEquals(1,hserv.findAllHalls().size());
+        Assert.assertEquals(2,hserv.findAllHalls().size());
     }
 
 }

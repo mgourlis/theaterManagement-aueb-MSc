@@ -58,6 +58,8 @@ public class Ticket {
         this.active = true;
         this.moneyReturn = false;
         this.price = show.getPrice()*seat.getSector().getPriceFactor();
+        seat.addTicket(this);
+        show.addTicket(this);
     }
 
     public int getId() {
