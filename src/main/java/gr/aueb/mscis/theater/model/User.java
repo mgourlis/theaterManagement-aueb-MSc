@@ -195,6 +195,14 @@ public class User {
     public Set<Purchase> getPurchases() {
         return purchases;
     }
+        
+    /**
+     * Επιστρέφει ένα αντικείμενο τύπου UserCategory.
+     * @return Το αντικείμενο τύπου UserCategory
+     */
+    public UserCategory getCategory() {
+        return userCategory;
+    }
     
     public boolean isPasswordValid() {
     	

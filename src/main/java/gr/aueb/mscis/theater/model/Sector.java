@@ -225,20 +225,32 @@ public class Sector {
      * @return λίστα με τις συνεχόμενες ελεύθερες θέσεις
      * @throws IllegalArgumentException αν δεν υπάρχουν numberOfSeats συνεχόμενες ελεύθερες θέσεις
      */
-    public List<Seat> getFreeSeats(int numberOfSeats, Date date) throws IllegalArgumentException{
+    public List<Seat> getFreeSeats(int numberOfSeats, Date date) throws IllegalArgumentException {
         List<Seat> freeSeats = new ArrayList<Seat>();
-        ListIterator<Seat> lit = seats.listIterator();
+        ListIterator<Seat> lit = seats.listIterator();        
         int freeNum = 0;
-        while (lit.hasNext()){
-            Seat s = lit.next();
-            if(!s.isBooked(date) && s.isAvailable() && freeSeats.get(0).getLineNumber() == s.getLineNumber()) {
+        Seat s = null;
+        while (lit.hasNext()) {
+            s = lit.next();
+            if (!s.isBooked(date) && s.isAvailable()) {            	
                 freeSeats.add(s);
                 freeNum++;
-                if(freeNum == numberOfSeats) return  freeSeats;
-            } else {
-                freeNum = 0;
-                freeSeats.removeAll(freeSeats);
-            }
+                while (lit.hasNext()) {
+                	s = lit.next();
+                	if (freeSeats.get(freeNum-1).getLineNumber() == s.getLineNumber() && !s.isBooked(date) && s.isAvailable()) {
+                        freeSeats.add(s);
+                        freeNum++;
+                        if (freeNum == numberOfSeats) 
+                        	return  freeSeats;
+                	}
+                	else
+                		break;
+                }
+                	                
+        		freeNum = 0;
+        		freeSeats.removeAll(freeSeats);
+            } 
+
         }
         throw new IllegalArgumentException("No free seats found in sequence");
     }
@@ -252,9 +264,10 @@ public class Sector {
     public List<Seat> getFreeSeats(Date date){
         List<Seat> freeSeats = new ArrayList<Seat>();
         ListIterator<Seat> lit = seats.listIterator();
-        while (lit.hasNext()){
-            Seat s = lit.next();
-            if(!s.isBooked(date) && s.isAvailable() && freeSeats.get(0).getLineNumber() == s.getLineNumber()) {
+        Seat s = null;
+        while (lit.hasNext()) {
+            s = lit.next();
+            if(!s.isBooked(date) && s.isAvailable()) {
                 freeSeats.add(s);
             }
         }
