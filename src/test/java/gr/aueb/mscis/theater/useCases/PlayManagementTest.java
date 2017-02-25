@@ -6,6 +6,8 @@ import gr.aueb.mscis.theater.model.Role;
 import gr.aueb.mscis.theater.model.RoleType;
 import gr.aueb.mscis.theater.persistence.Initializer;
 import gr.aueb.mscis.theater.service.AgentService;
+import gr.aueb.mscis.theater.service.FlashMessageService;
+import gr.aueb.mscis.theater.service.FlashMessageServiceImpl;
 import gr.aueb.mscis.theater.service.PlayService;
 import org.junit.After;
 import org.junit.Assert;
@@ -21,12 +23,14 @@ public class PlayManagementTest {
     Initializer init = new Initializer();
     PlayService pserv;
     AgentService aserv;
+    FlashMessageService flashserv;
 
     @Before
     public void setUp() throws Exception {
         init.prepareData();
-        pserv = new PlayService();
-        aserv = new AgentService();
+        flashserv = new FlashMessageServiceImpl();
+        pserv = new PlayService(flashserv);
+        aserv = new AgentService(flashserv);
 
         Play play = new Play("test play","test descr");
 

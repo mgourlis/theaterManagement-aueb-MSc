@@ -3,15 +3,20 @@ package gr.aueb.mscis.theater.service;
 import gr.aueb.mscis.theater.model.Play;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 public class PlayService {
 
 	EntityManager em;
+	FlashMessageService flashserv;
 	
-	public PlayService() {
+	public PlayService(FlashMessageService flashserv) {
 		em = JPAUtil.getCurrentEntityManager();
+		this.flashserv = flashserv;
 	}
 
 	public List<Play> findAllPlays() {
@@ -19,10 +24,9 @@ public class PlayService {
 		tx.begin();
 
 		List<Play> results = null;
-		try {
 			results = em.createQuery("select p from Play p").getResultList();
-		} catch (NoResultException ex) {
-			tx.rollback();
+		if(results.isEmpty()) {
+			flashserv.addMessage("No results found",FlashMessageType.Info);
 		}
 		tx.commit();
 
@@ -33,11 +37,10 @@ public class PlayService {
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 		Play play = null;
-		try {
 			play = em.find(Play.class, id);
 			tx.commit();
-		} catch (NoResultException ex) {
-			tx.rollback();
+		if(play == null) {
+			flashserv.addMessage("Play does not exist",FlashMessageType.Warning);
 		}
 		return play;
 	}
@@ -46,13 +49,13 @@ public class PlayService {
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 		List<Play> results = null;
-		try {
 			results = em.createQuery("select p from Play p where p.title like :title")
 					.setParameter("title", "%"+title+"%").getResultList();
-			tx.commit();
-		} catch (NoResultException ex) {
-			tx.rollback();
+
+		if(results.isEmpty()) {
+			flashserv.addMessage("No results found",FlashMessageType.Info);
 		}
+		tx.commit();
 		return results;
 	}
 
@@ -66,15 +69,17 @@ public class PlayService {
 				em.refresh(play);
 			} catch (PersistenceException ex) {
 				tx.rollback();
-			return null;
-		}
+				flashserv.addMessage("Changed data not valid",FlashMessageType.Error);
+				return null;
+			}
 		} else {
 			try {
 				em.persist(play);
 			} catch (PersistenceException ex) {
-			tx.rollback();
-			return null;
-		}
+				tx.rollback();
+				flashserv.addMessage("Data not valid",FlashMessageType.Error);
+				return null;
+			}
 		}
 		tx.commit();
 		return play;
@@ -83,17 +88,15 @@ public class PlayService {
 	public boolean delete(int playId) {
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
-
 		try {
 			Play play = em.getReference(Play.class, playId);
 			em.remove(play);
-			em.flush();
+			tx.commit();
 		} catch (EntityNotFoundException e) {
+			flashserv.addMessage("Play not found", FlashMessageType.Error);
 			tx.rollback();
 			return false;
 		}
-
-		tx.commit();
 
 		return true;
 	}

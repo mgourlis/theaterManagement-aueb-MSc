@@ -131,7 +131,9 @@ public class Initializer  {
         hall2sector3.addLine();
 
         Calendar cal = Calendar.getInstance();
-        cal.set(2017, Calendar.AUGUST, 22);
+        cal.add(Calendar.DATE,1);
+        cal.set(Calendar.MILLISECOND,0);
+        cal.set(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH),0,0,0);
 
         
         EntityManager em = JPAUtil.getCurrentEntityManager();
@@ -151,11 +153,16 @@ public class Initializer  {
 
         SerialNumberProvider serial = new SerialNumberProviderImpl();
 
-        Ticket ticket = new Ticket(show1,hall1sector1.getSeats().get(0),serial);
+        //Ticket ticket = new Ticket(show1,hall1sector1.getSeats().get(0),serial);
+
+        cal.add(Calendar.DATE,1);
+
+        Show show2 = new Show(cal.getTime(),50.0,tgm,hall2);
 
         em.persist(show1);
+        em.persist(show2);
 
-        em.persist(ticket);
+        //em.persist(ticket);
         
         tx.commit();
     

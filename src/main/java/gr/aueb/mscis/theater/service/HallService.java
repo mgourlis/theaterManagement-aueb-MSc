@@ -1,6 +1,7 @@
 package gr.aueb.mscis.theater.service;
 
 import gr.aueb.mscis.theater.model.Hall;
+import gr.aueb.mscis.theater.persistence.JPAUtil;
 
 import javax.persistence.*;
 import java.util.List;
@@ -8,9 +9,11 @@ import java.util.List;
 public class HallService {
 
     EntityManager em;
+    FlashMessageService flashserv;
 
-    public HallService(EntityManager em) {
-        this.em = em;
+    public HallService(FlashMessageService flashserv) {
+        em = JPAUtil.getCurrentEntityManager();
+        this.flashserv = flashserv;
     }
 
 
@@ -19,10 +22,9 @@ public class HallService {
         tx.begin();
 
         List<Hall> results = null;
-        try {
-            results = em.createQuery("select h from Hall h").getResultList();
-        } catch (NoResultException ex) {
-            tx.rollback();
+        results = em.createQuery("select h from Hall h").getResultList();
+        if (results.isEmpty()) {
+            flashserv.addMessage("No results found", FlashMessageType.Info);
         }
         tx.commit();
 
@@ -33,11 +35,10 @@ public class HallService {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         Hall hall = null;
-        try {
-            hall = em.find(Hall.class, id);
-            tx.commit();
-        } catch (NoResultException ex) {
-            tx.rollback();
+        hall = em.find(Hall.class, id);
+        tx.commit();
+        if(hall == null){
+            flashserv.addMessage("Hall not found", FlashMessageType.Warning);
         }
         return hall;
     }
@@ -46,13 +47,12 @@ public class HallService {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         List<Hall> results = null;
-        try {
-            results = em.createQuery("select h from Hall h where h.name like :hallName")
+        results = em.createQuery("select h from Hall h where h.name like :hallName")
                     .setParameter("hallName", "%"+name+"%").getResultList();
-            tx.commit();
-        } catch (NoResultException ex) {
-            tx.rollback();
+        if(results.isEmpty()){
+            flashserv.addMessage("No results found", FlashMessageType.Info);
         }
+        tx.commit();
         return results;
     }
 
@@ -63,10 +63,11 @@ public class HallService {
         try {
             hall = ((Hall) em.createQuery("select h from Hall h where h.name = :hallName")
                     .setParameter("hallName", name).getSingleResult());
-            tx.commit();
         } catch (NoResultException ex) {
             tx.rollback();
+            flashserv.addMessage("Hall not found", FlashMessageType.Warning);
         }
+        tx.commit();
         return hall;
     }
 
@@ -74,16 +75,15 @@ public class HallService {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         List<Hall> results = null;
-        try {
-            results = em.createQuery("select h from Hall h").getResultList();
-            for (Hall hall : results) {
-                if (!hall.isAvailable())
-                    results.remove(hall);
-            }
-            tx.commit();
-        } catch (NoResultException ex) {
-            tx.rollback();
+        results = em.createQuery("select h from Hall h").getResultList();
+        for (Hall hall : results) {
+            if (!hall.isAvailable())
+                results.remove(hall);
         }
+        if(results.isEmpty()){
+            flashserv.addMessage("There are no available Halls", FlashMessageType.Info);
+        }
+        tx.commit();
         return results;
     }
 
@@ -100,6 +100,7 @@ public class HallService {
                 em.refresh(hall);
             } catch (PersistenceException ex) {
                 tx.rollback();
+                flashserv.addMessage("Changed data provided not valid", FlashMessageType.Error);
                 return null;
             }
         } else {
@@ -107,12 +108,14 @@ public class HallService {
                 Hall existingHall = ((Hall) em.createQuery("select h from Hall h where h.name = :hallName")
                         .setParameter("hallName", hall.getName()).getSingleResult());
                 tx.rollback();
+                flashserv.addMessage("Hall already exists", FlashMessageType.Error);
                 return null;
             } catch (NoResultException ex) {
                 try{
                     em.persist(hall);
                 } catch (PersistenceException ex2) {
                     tx.rollback();
+                    flashserv.addMessage("Data for Hall provided not valid", FlashMessageType.Error);
                     return null;
                 }
             }
@@ -126,16 +129,21 @@ public class HallService {
 
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-
         try {
             Hall hall = em.getReference(Hall.class, hallId);
-            em.remove(hall);
+            if(hall.getShows().isEmpty()) {
+                em.remove(hall);
+                tx.commit();
+            }else{
+                tx.commit();
+                flashserv.addMessage("Hall has shows and cannot be deleted", FlashMessageType.Error);
+                return false;
+            }
         } catch (EntityNotFoundException e) {
+            flashserv.addMessage("Hall not found", FlashMessageType.Error);
             tx.rollback();
             return false;
         }
-
-        tx.commit();
 
         return true;
     }

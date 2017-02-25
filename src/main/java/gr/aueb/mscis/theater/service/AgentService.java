@@ -9,9 +9,11 @@ import java.util.List;
 public class AgentService {
 
     EntityManager em;
+    FlashMessageService flashserv;
 
-    public AgentService() {
+    public AgentService(FlashMessageService flashserv) {
         em = JPAUtil.getCurrentEntityManager();
+        this.flashserv = flashserv;
     }
 
 
@@ -20,10 +22,9 @@ public class AgentService {
         tx.begin();
 
         List<Agent> results = null;
-        try {
-            results = em.createQuery("select a from Agent a").getResultList();
-        } catch (NoResultException ex) {
-            tx.rollback();
+        results = em.createQuery("select a from Agent a").getResultList();
+        if(results.isEmpty()){
+            flashserv.addMessage("No agents found", FlashMessageType.Info);
         }
         tx.commit();
 
@@ -34,12 +35,11 @@ public class AgentService {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         Agent agent = null;
-        try {
             agent = em.find(Agent.class, id);
+            if(agent == null){
+                flashserv.addMessage("Agent does not exist",FlashMessageType.Warning);
+            }
             tx.commit();
-        } catch (NoResultException ex) {
-            tx.rollback();
-        }
         return agent;
     }
 
@@ -47,13 +47,12 @@ public class AgentService {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         List<Agent> results = null;
-        try {
             results = em.createQuery("select a from Agent a where a.firstName like %:namedata% or a.lastName like %:namedata%")
                     .setParameter("namedata", namedata).getResultList();
-            tx.commit();
-        } catch (NoResultException ex) {
-            tx.rollback();
+        if(results.isEmpty()){
+            flashserv.addMessage("No agents found", FlashMessageType.Info);
         }
+        tx.commit();
         return results;
     }
 
@@ -89,12 +88,11 @@ public class AgentService {
         try {
             Agent agent = em.getReference(Agent.class, agentId);
             em.remove(agent);
+            tx.commit();
         } catch (EntityNotFoundException e) {
             tx.rollback();
             return false;
         }
-
-        tx.commit();
 
         return true;
     }

@@ -4,7 +4,8 @@ import gr.aueb.mscis.theater.model.Hall;
 import gr.aueb.mscis.theater.model.Seat;
 import gr.aueb.mscis.theater.model.Sector;
 import gr.aueb.mscis.theater.persistence.Initializer;
-import gr.aueb.mscis.theater.persistence.JPAUtil;
+import gr.aueb.mscis.theater.service.FlashMessageService;
+import gr.aueb.mscis.theater.service.FlashMessageServiceImpl;
 import gr.aueb.mscis.theater.service.HallService;
 import org.junit.After;
 import org.junit.Assert;
@@ -18,11 +19,13 @@ public class HallManagementTest {
     Initializer init = new Initializer();
     HallService hserv;
     Hall hall;
+    FlashMessageService flashserv;
 
     @Before
     public void setUp() throws Exception {
         init.prepareData();
-        hserv = new HallService(JPAUtil.createEntityManager());
+        flashserv = new FlashMessageServiceImpl();
+        hserv = new HallService(flashserv);
 
         hall = new Hall("newHall");
         hall.addSector(new Sector("plateia",1.0));
@@ -311,7 +314,7 @@ public class HallManagementTest {
 
     @Test
     public void AlterHallAvailabilityWIthTickets() throws Exception {
-
+        //phase 3
     }
 
     @Test
@@ -337,7 +340,7 @@ public class HallManagementTest {
 
     @Test
     public void AlterSectorAvailabilityWIthTickets() throws Exception {
-
+        //phase 3
     }
 
     @Test
@@ -367,7 +370,7 @@ public class HallManagementTest {
 
     @Test
     public void AlterSeatAvailabilityWIthTickets() throws Exception {
-
+        //phase 3
     }
 
 

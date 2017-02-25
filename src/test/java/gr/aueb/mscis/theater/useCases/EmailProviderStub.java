@@ -13,6 +13,7 @@ public class EmailProviderStub implements EmailProvider {
         emails.put(email, message);
     }
 
+    @Override
     public Map<String,String> getEmails(){
         return emails;
     }
