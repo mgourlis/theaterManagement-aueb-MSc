@@ -8,7 +8,7 @@ public class ShowManagementTest {
 
     @Before
     public void setUp() throws Exception {
-
+ //show
     }
 
     @After
