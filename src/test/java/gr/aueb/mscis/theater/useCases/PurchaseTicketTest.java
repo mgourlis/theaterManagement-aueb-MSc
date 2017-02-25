@@ -1,28 +1,20 @@
 package gr.aueb.mscis.theater.useCases;
 
-import gr.aueb.mscis.theater.model.Ticket;
-import gr.aueb.mscis.theater.model.Sector;
-import gr.aueb.mscis.theater.model.Show;
-import gr.aueb.mscis.theater.model.Play;
-import gr.aueb.mscis.theater.model.Seat;
+import gr.aueb.mscis.theater.model.*;
 import gr.aueb.mscis.theater.persistence.Initializer;
-import gr.aueb.mscis.theater.persistence.JPAUtil;
-import gr.aueb.mscis.theater.service.PurchaseService;
+import gr.aueb.mscis.theater.service.PlayService;
 import gr.aueb.mscis.theater.service.SerialNumberProvider;
 import gr.aueb.mscis.theater.service.SerialNumberProviderImpl;
-import gr.aueb.mscis.theater.service.PlayService;
-
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
 
 //import org.junit.*;
 
@@ -50,8 +42,11 @@ public class PurchaseTicketTest {
     	Set<Show> shows = null;
     	List<Seat> freeSeats = null;
         SerialNumberProvider serialNo = new SerialNumberProviderImpl();
-        
-        cal.set(2017, Calendar.AUGUST, 25);
+
+		cal.add(Calendar.DATE,3);
+		cal.set(Calendar.MILLISECOND,0);
+		cal.set(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH),0,0,0);
+
     	
         /* find play Amlet*/
     	play = playService.findPlaysByTitle("Amlet");
@@ -65,7 +60,7 @@ public class PurchaseTicketTest {
         for (Show s:shows) {
         	if (cal.getTime().compareTo(s.getDate()) == 0) { // Μάλλον υπάρχει θέμα μετατροπής μεταξύ Date και Calendar!!!!
 
-        		/* if there are available seats that day*/
+				/* if there are available seats that day*/
         		if (s.getHall().isAvailable()) {
         			sec = s.getHall().getSectorByName("hall1sector1");
         			
