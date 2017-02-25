@@ -102,9 +102,25 @@ public class Initializer  {
 
 
         hall1sector1.addLine();
+        hall1sector1.addSeat(1);
+        hall1sector1.addSeat(1);
+        hall1sector1.addSeat(1);
         hall1sector1.addLine();
+        hall1sector1.addSeat(2);
+        hall1sector1.addSeat(2);
+        hall1sector1.addSeat(2);
+        hall1sector1.addSeat(2);
         hall1sector1.addLine();
+        hall1sector1.addSeat(3);
+        hall1sector1.addSeat(3);
+        hall1sector1.addSeat(3);
+        hall1sector1.addSeat(3);
         hall1sector1.addLine();
+        hall1sector1.addSeat(4);
+        hall1sector1.addSeat(4);
+        hall1sector1.addSeat(4);
+        hall1sector1.addSeat(4);
+        hall1sector1.addSeat(4);
 
         hall1sector2.addLine();
         hall1sector2.addLine();

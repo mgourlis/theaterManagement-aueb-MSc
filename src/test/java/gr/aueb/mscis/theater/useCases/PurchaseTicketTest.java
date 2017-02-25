@@ -62,34 +62,30 @@ public class PurchaseTicketTest {
 
 				/* if there are available seats that day*/
                 if (s.getHall().isAvailable()) {
-                    sec = s.getHall().getSectorByName("hall1sector1");
+                    sec = s.getHall().getSectorByName("sector1");
 
         			/*find 3 available seats*/
                     freeSeats = sec.getFreeSeats(3, s.getDate());
-                    Assert.assertEquals(Integer.valueOf(1), Integer.valueOf(freeSeats.size()));
+                    Assert.assertEquals(Integer.valueOf(3), Integer.valueOf(freeSeats.size()));
 
         	        /*validate that there were no tickets for these seats*/
                     for (int i=0; i<3; i++) {
-                        //assertEquals(1, freeSeats.get(i).getTickets().size());
-                        Assert.assertEquals(Integer.valueOf(1), Integer.valueOf(freeSeats.get(i).getTickets().size()));
+                        assertEquals(0, freeSeats.get(i).getTickets().size());
+                        //Assert.assertEquals(Integer.valueOf(1), Integer.valueOf(freeSeats.get(i).getTickets().size()));
                     }
 
                     for (int k=0; k<3; k++) {
                         Ticket ticket = new Ticket(s, freeSeats.get(k), serialNo);
                         freeSeats.get(k).addTicket(ticket);
-                        ticket = null;
                     }
 
-//        	        for (int i=0; i<3; i++) {
-//        	        	freeSeats.get(0).getTickets();
-//        	        	ticket = null;
-//        	        }
+        	        for (int i=0; i<3; i++) {
+        	        	freeSeats.get(0).getTickets();
+                        assertEquals(1, freeSeats.get(i).getTickets().size());
+        	        }
 
                 }
-
             }
         }
     }
-
-
 }

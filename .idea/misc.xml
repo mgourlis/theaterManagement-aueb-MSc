@@ -10,4 +10,22 @@
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
+  <component name="UMLDiagramComponent">
+    <diagram name="Class Diagram">
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Agent" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Hall" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Play" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Purchase" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Role" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.RoleType" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Seat" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Sector" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Show" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Ticket" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.User" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.UserCategory" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.UserType" />
+      <compartment-visibility />
+    </diagram>
+  </component>
 </project>

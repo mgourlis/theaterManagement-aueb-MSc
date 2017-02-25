@@ -229,14 +229,15 @@ public class Sector {
         int freeNum = 0;
         while (lit.hasNext()){
             Seat s = lit.next();
-            if(!s.isBooked(date) && s.isAvailable() && freeSeats.get(0).getLineNumber() == s.getLineNumber()) {
+            int line = s.getLineNumber();
+            while (!s.isBooked(date) && s.isAvailable() && line == s.getLineNumber() && lit.hasNext()) {
                 freeSeats.add(s);
                 freeNum++;
                 if(freeNum == numberOfSeats) return  freeSeats;
-            } else {
-                freeNum = 0;
-                freeSeats.removeAll(freeSeats);
+                s = lit.next();
             }
+            freeNum = 0;
+            freeSeats.removeAll(freeSeats);
         }
         throw new IllegalArgumentException("No free seats found in sequence");
     }
