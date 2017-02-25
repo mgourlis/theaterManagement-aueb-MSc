@@ -113,8 +113,8 @@ public class Seat {
     }
 
     /**
-     * Ελέγχει υπάρχουν μελλοντικά αγορασμένα εισητίρια για τη θέση
-     * @return true/false αν υπάρχουν εισητίρια ή όχι
+     * Ελέγχει αν υπάρχουν μελλοντικά αγορασμένα εισιτήρια για τη θέση
+     * @return true/false αν υπάρχουν εισιτήρια ή όχι
      */
     public boolean isBooked(){
         Date currentDate = Calendar.getInstance().getTime();
@@ -126,7 +126,7 @@ public class Seat {
     }
 
     /**
-     *Επιστρέφει αν υπάρχουν αγορασμένα εισητίρια για τη θέση σε
+     *Επιστρέφει αν υπάρχουν αγορασμένα εισιτήρια για τη θέση σε
      * συγκεκριμένη ημερομηνία
      * @param date η ημερομηνία ελέγχου
      * @return true/false αν υπάρχουν εισητίρια ή όχι
@@ -140,16 +140,16 @@ public class Seat {
     }
 
     /**
-     * Επιστρέφει το σύνολο των εισητιρίων για τη θέση
-     * @return το σύνολο των εισητιρίων
+     * Επιστρέφει το σύνολο των εισιτηρίων για τη θέση
+     * @return το σύνολο των εισιτηρίων
      */
     public Set<Ticket> getTickets() {
         return tickets;
     }
 
     /**
-     * Εισάγει ένα εισητίριο στην θέση.
-     * @param ticket το εισητίριο
+     * Εισάγει ένα εισιτήριο στην θέση.
+     * @param ticket το εισιτήριο
      */
     public void addTicket(Ticket ticket){
         ticket.getSeat().removeTicket(ticket);

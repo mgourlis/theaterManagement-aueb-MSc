@@ -98,6 +98,10 @@ public class Hall {
         return this.sectors.remove(tempSector);
     }
     
+    /**
+     * Ελέγχει αν υπάρχει διαθέσιμος τομέας στην αίθουσα
+     * @return true/false αν υπάρχει διαθέσιμος τομέας στην αίθουσα ή όχι
+     */
     public boolean isAvailable(){
         for (Sector sector : sectors) {
             if(sector.isAvailable())

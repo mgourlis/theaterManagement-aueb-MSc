@@ -45,9 +45,9 @@ public class Ticket {
 
     /**
      * Κατασκευαστής της κλάσσης Ticket, δημιουργεί αντικείμενο τύπου Ticket
-     * @param show η παράσταση του εισητιρίου
-     * @param seat η θέση του εισητιρίου
-     * @param serial ο σειριακός αριθμός του εισητιρίου
+     * @param show η παράσταση του εισιτηρίου
+     * @param seat η θέση του εισιτηρίου
+     * @param serial ο σειριακός αριθμός του εισιτηρίου
      */
     public Ticket(Show show, Seat seat, SerialNumberProvider serial) {
         if(!show.getHall().equals(seat.getSector().getHall()))
@@ -67,7 +67,7 @@ public class Ticket {
     }
 
     /**
-     * Επιστρέφει τον σειριακό αριθμό του εισητιρίου
+     * Επιστρέφει τον σειριακό αριθμό του εισιτηρίου
      * @return ο σειριακός αριθμός
      */
     public String getSerial() {
@@ -75,15 +75,15 @@ public class Ticket {
     }
 
     /**
-     * Θέτει τον σειριακό αριθμό του εισητιρίου
-     * @param serial SerialNumberProvider κατασκευαστήε του σειριακού αριθμού
+     * Θέτει τον σειριακό αριθμό του εισιτηρίου
+     * @param serial SerialNumberProvider κατασκευαστής του σειριακού αριθμού
      */
     public void setSerial(SerialNumberProvider serial) {
         this.serial = serial.createUniqueSerial();
     }
 
     /**
-     * Επιστρέφει την τιμή του εισητιρίου
+     * Επιστρέφει την τιμή του εισιτηρίου
      * @return η τιμή
      */
     public double getPrice() {
@@ -91,7 +91,7 @@ public class Ticket {
     }
 
     /**
-     * Θέτει την τιμή του εισητητίου
+     * Θέτει την τιμή του εισιτηρίου
      * @param price η τιμή
      */
     public void setPrice(double price) {
@@ -99,16 +99,16 @@ public class Ticket {
     }
 
     /**
-     * Ελέγχει αν το εισητίριο έχει δικαίωμα επιστροφής χρημάτων
-     * @return true/false αν έχει ή όχι
+     * Ελέγχει αν έχει γίνει επιστροφή χρημάτων
+     * @return true/false αν έχει γίνει επιστροφή ή όχι.
      */
     public boolean isMoneyReturn() {
         return moneyReturn;
     }
 
     /**
-     * Θέτει στο εισητίριο το δικαίωμα επιστρεφής χρημάτων
-     * @param moneyReturn tru/false αν έχει ή όχι.
+     * Θέτει αν έχει γίνει επιστροφή χρημάτων
+     * @param moneyReturn true/false αν έχει γίνει επιστροφή ή όχι.
      */
     public void setMoneyReturn(boolean moneyReturn) {
         this.moneyReturn = moneyReturn;
@@ -123,7 +123,7 @@ public class Ticket {
     }
 
     /**
-     * Θέτει το εισητίριο ως ενεργό ή ακυρωμένα
+     * Θέτει το εισιτήριο ως ενεργό ή ακυρωμένο
      * @param active true για ενεργό false για ακυρωμένο
      */
     public void setActive(boolean active) {
@@ -131,7 +131,7 @@ public class Ticket {
     }
 
     /**
-     * Επιστρέφει τη παράσταση του εισητιρίου
+     * Επιστρέφει την παράσταση του εισιτηρίου
      * @return η παράσταση
      */
     public Show getShow() {
@@ -139,7 +139,7 @@ public class Ticket {
     }
 
     /**
-     * Θέτει την παράσταση του εισητιρίου
+     * Θέτει την παράσταση του εισιτηρίου
      * @param show η παράσταση
      */
     public void setShow(Show show) {
@@ -147,7 +147,7 @@ public class Ticket {
     }
 
     /**
-     * Επιστρέφει την θέση του εισητιρίου
+     * Επιστρέφει τη θέση του εισιτηρίου
      * @return η θέση
      */
     public Seat getSeat() {
@@ -155,7 +155,7 @@ public class Ticket {
     }
 
     /**
-     * Θέτει την θέση του εισητιρίου
+     * Θέτει τη θέση του εισιτηρίου
      * @param seat η θέση
      */
     public void setSeat(Seat seat) {
@@ -163,7 +163,7 @@ public class Ticket {
     }
 
     /**
-     * Επιστρέφει την αγορά με την οποία αγοράσθηκε το εισητίριο
+     * Επιστρέφει την αγορά που αντιστοιχεί στο εισιτήριο
      * @return η αγορά
      */
     public Purchase getPurchase() {
@@ -171,7 +171,7 @@ public class Ticket {
     }
 
     /**
-     * Θέτει την αγορά με την οποία αγοράσθηκε το εισητίριο
+     * Θέτει την αγορά που αντιστοιχεί στο εισιτήριο
      * @param purchase η αγορά
      */
     public void setPurchase(Purchase purchase) {

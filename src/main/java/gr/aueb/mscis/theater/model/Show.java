@@ -172,16 +172,16 @@ public class Show {
     }
 
     /**
-     * Επιστρέφει το σύνολο των εισητιρίων για τη παράσταση,
-     * @return το σύνολο των εισητιρίων
+     * Επιστρέφει το σύνολο των εισιτηρίων για τη παράσταση,
+     * @return το σύνολο των εισιτηρίων
      */
     public Set<Ticket> getTickets() {
         return tickets;
     }
 
     /**
-     * Εισάγει ένα εισητίριο στη παράσταση
-     * @param ticket το εισητίριο
+     * Εισάγει ένα εισιτήριο στη παράσταση
+     * @param ticket το εισιτήριο
      */
     public void addTicket(Ticket ticket){
         ticket.setShow(this);
@@ -189,9 +189,9 @@ public class Show {
     }
 
     /**
-     * Αφαιρεί ένα εισητίριο από την παράσταση
-     * @param ticket το εισητίριο
-     * @return truw/false αν αφαιρέθηκε ή όχι
+     * Αφαιρεί ένα εισιτήριο από την παράσταση
+     * @param ticket το εισιτήριο
+     * @return true/false αν αφαιρέθηκε ή όχι
      */
     public boolean removeTicket(Ticket ticket){
         boolean delete  = this.tickets.remove(ticket);

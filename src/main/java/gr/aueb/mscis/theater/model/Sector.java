@@ -97,13 +97,19 @@ public class Sector {
     }
 
     /**
-     * Επιστρέφει το σύνολο των θέσεων του τομέα
-     * @return το σύνολο των θέσεων
+     * Επιστρέφει όλες τις θέσεις του τομέα
+     * @return οι θέσεις του τομέα
      */
     public List<Seat> getSeats() {
         return seats;
     }
 
+    /**
+     * Επιστρέφει τη θέση που ανήκει σε συγκεκριμένη σειρά και αριθμό
+     * @param lineNumber η σειρά που ανήκει η θέση
+     * @param seatNumber ο αριθμός της θέσης
+     * @return η συγκεριμένη θέση
+     */
     public Seat getSeat(int lineNumber, int seatNumber) throws IllegalArgumentException{
         for(Seat seat : seats){
             if(seat.getLineNumber() == lineNumber && seat.getSeatNumber() == seatNumber)
@@ -122,8 +128,8 @@ public class Sector {
     }
 
     /**
-     * Αφαιρεί τις θέσεις μιας σειράς του τομέα, στη περίπτωση που δεν υπάρχουν
-     * εισητίρια για τις θέσεις της, και επανυπολογίζει τους αριθμούς σειρών
+     * Αφαιρεί τις θέσεις μιας σειράς του τομέα, στην περίπτωση που δεν υπάρχουν
+     * εισιτήρια για τις θέσεις της, και επαναυπολογίζει τους αριθμούς σειρών
      * των θέσεων του τομέα
      * @param line ο αριθμός σειράς
      * @return true/false αν έγινε η αφαίρεση ή όχι
@@ -162,12 +168,12 @@ public class Sector {
 
     /**
      * Εισάγει μια θέση στο τέλος της σειράς
-     * @param line ο αριθμός σριράς
+     * @param line ο αριθμός σειράς
      */
     public void addSeat(int line){
-        int seatNumber = lineLength(line);
-        if(seatNumber > 0){
-            Seat s = new Seat(line, seatNumber+1);
+        int numOfSeats = lineLength(line);
+        if(numOfSeats > 0){
+            Seat s = new Seat(line, numOfSeats+1);
             s.setSector(this);
             seats.add(s);
         }else{
@@ -176,14 +182,14 @@ public class Sector {
     }
 
     /**
-     * Αφαιρεί την πρώτη θέση της σειράς που δεν έχει μελλοντικά εισητίρια
-     * και επανυπολογίζει τους αριθμούς θέσεων.
-     * @param line ο αριθμός δειράς
-     * @return true/false αν αφαιρέθεικε θέση ή όχι
+     * Αφαιρεί την πρώτη θέση της σειράς που δεν έχει μελλοντικά εισιτήρια
+     * και επαναυπολογίζει τους αριθμούς θέσεων.
+     * @param line ο αριθμός σειράς
+     * @return true/false αν αφαιρέθηκε θέση ή όχι
      */
     public boolean removeSeat(int line){
-        int seatNumber = lineLength(line);
-        if(seatNumber > 1) {
+        int numOfSeats = lineLength(line);
+        if(numOfSeats > 1) {
             ListIterator<Seat> lit = seats.listIterator();
             Seat s = null;
             while (lit.hasNext()) {
@@ -210,12 +216,12 @@ public class Sector {
     }
 
     /**
-     * Επιστρέφει τις πρώτες numberOfSeats ελεύθερες θέσεις σε σειρά του τομέα
-     * για μια συγκεκριμένη ημερωμηνία
+     * Επιστρέφει τις πρώτες numberOfSeats συνεχόμενες ελεύθερες θέσεις του τομέα
+     * για μια συγκεκριμένη ημερομηνία
      * @param numberOfSeats ο αριθμός των θέσεων
      * @param date η ημερομηνία
-     * @return λίστα με ελεύθερες θέσεις σε σειρά
-     * @throws IllegalArgumentException αν δεν υπάρχουν numberOfSeats ελεύθερες θέσεις σε σειρά
+     * @return λίστα με τις συνεχόμενες ελεύθερες θέσεις
+     * @throws IllegalArgumentException αν δεν υπάρχουν numberOfSeats συνεχόμενες ελεύθερες θέσεις
      */
     public List<Seat> getFreeSeats(int numberOfSeats, Date date) throws IllegalArgumentException{
         List<Seat> freeSeats = new ArrayList<Seat>();
@@ -266,8 +272,8 @@ public class Sector {
     }
 
     /**
-     * Θέτει τη διαθεσιμότητα του τομέα
-     * @param availability tru/false
+     * Θέτει τη διαθεσιμότητα του τομέα, δηλαδή θέτει ότι όλες οι θέσεις του τομέα είναι διαθέσιμες ή όχι
+     * @param availability true/false
      */
     public void setAvailability(boolean availability) {
         for (Seat seat : seats) {
