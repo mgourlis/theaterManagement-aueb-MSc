@@ -83,6 +83,7 @@ public class Initializer  {
 
         Hall hall1 = new Hall("hall1");
         Hall hall2 = new Hall("hall2");
+        //fhgg
         
         Sector hall1sector1 = new Sector("sector1", 1.5);
         Sector hall1sector2 = new Sector("sector2", 1.2);
