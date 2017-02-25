@@ -42,19 +42,19 @@ public class ShowManagementTest {
         Hall hall = hserv.findHallByName("hall1");
         Calendar cal = Calendar.getInstance();
         cal.set(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH),0,0,0);
-        cal.add(Calendar.DATE,2);
+        cal.add(Calendar.DATE,7);
         Date startDate = cal.getTime();
-        cal.add(Calendar.DATE,9);
+        cal.add(Calendar.DATE,4);
         Date endDate = cal.getTime();
         double price= 50.0;
 
-        Assert.assertEquals(1, pserv.findPlayById(play.getId()).getShows().size());
+        Assert.assertEquals(3, pserv.findPlayById(play.getId()).getShows().size());
 
         List<Show> memoryShows = shserv.createProgram(play,hall,startDate,endDate,price);
 
         Assert.assertNotNull(memoryShows);
 
-        Assert.assertEquals(11,pserv.findPlayById(play.getId()).getShows().size());
+        Assert.assertEquals(8,pserv.findPlayById(play.getId()).getShows().size());
 
 
 
@@ -73,13 +73,13 @@ public class ShowManagementTest {
         Date endDate = cal.getTime();
         double price= 50.0;
 
-        Assert.assertEquals(1, pserv.findPlayById(play.getId()).getShows().size());
+        Assert.assertEquals(3, pserv.findPlayById(play.getId()).getShows().size());
 
         List<Show> memoryShows = shserv.createProgram(play,hall,startDate,endDate,price);
 
         Assert.assertEquals(0,memoryShows.size());
 
-        Assert.assertEquals(1,pserv.findPlayById(play.getId()).getShows().size());
+        Assert.assertEquals(3,pserv.findPlayById(play.getId()).getShows().size());
 
     }
 
@@ -96,13 +96,13 @@ public class ShowManagementTest {
         Date endDate = cal.getTime();
         double price= 50.0;
 
-        Assert.assertEquals(1, pserv.findPlayById(play.getId()).getShows().size());
+        Assert.assertEquals(3, pserv.findPlayById(play.getId()).getShows().size());
 
         List<Show> memoryShows = shserv.createProgram(play,hall,startDate,endDate,price);
 
         Assert.assertEquals(0,memoryShows.size());
 
-        Assert.assertEquals(1,pserv.findPlayById(play.getId()).getShows().size());
+        Assert.assertEquals(3,pserv.findPlayById(play.getId()).getShows().size());
     }
 
     @Test
@@ -142,7 +142,7 @@ public class ShowManagementTest {
 
         Assert.assertEquals(cal.getTime(),show.getDate());
 
-        cal.add(Calendar.DATE,2);
+        cal.add(Calendar.DATE,3);
 
         shserv.alterShowDate(show.getId(),cal.getTime(),"",emailprov);
 
@@ -162,7 +162,7 @@ public class ShowManagementTest {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MILLISECOND,0);
         cal.set(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH),0,0,0);
-        cal.add(Calendar.DATE,2);
+        cal.add(Calendar.DATE,7);
         Date startDate = cal.getTime();
         cal.add(Calendar.DATE,4);
         Date endDate = cal.getTime();
@@ -180,7 +180,7 @@ public class ShowManagementTest {
 
         Show show2 = shserv.findFutureShowsByPlay(play.getId()).get(0);
 
-        cal.add(Calendar.DATE,-4);
+        cal.add(Calendar.DATE,-9);
 
         Assert.assertEquals(cal.getTime(),show.getDate());
 

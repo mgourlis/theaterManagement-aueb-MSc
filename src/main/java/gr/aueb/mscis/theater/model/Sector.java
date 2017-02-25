@@ -252,7 +252,7 @@ public class Sector {
         ListIterator<Seat> lit = seats.listIterator();
         while (lit.hasNext()){
             Seat s = lit.next();
-            if(!s.isBooked(date) && s.isAvailable() && freeSeats.get(0).getLineNumber() == s.getLineNumber()) {
+            if(!s.isBooked(date) && s.isAvailable()) {
                 freeSeats.add(s);
             }
         }

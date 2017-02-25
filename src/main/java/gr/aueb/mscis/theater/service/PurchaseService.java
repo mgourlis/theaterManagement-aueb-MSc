@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
 
 import gr.aueb.mscis.theater.model.Purchase;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
@@ -53,8 +52,8 @@ public class PurchaseService {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         List<Purchase> results = null;
-            results = em.createQuery("select purchase from Purchase purchase where purchase.date = :currentDate")
-                    .setParameter("currentDate", date)
+            results = em.createQuery("select purchase from Purchase purchase where purchase.date = :Date")
+                    .setParameter("Date", date)
                     .getResultList();
             tx.commit();
         if(results.isEmpty()){
