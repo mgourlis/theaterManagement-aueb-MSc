@@ -59,10 +59,6 @@ public class UserCategory {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     /**
     * Επιστρέφει την κατηγορία που ανήκει ο χρήστης.
     * @return Την κατηγορία που ανήκει ο χρήστης
