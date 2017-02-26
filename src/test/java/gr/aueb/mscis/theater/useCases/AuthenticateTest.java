@@ -26,7 +26,7 @@ public class AuthenticateTest {
         userv = new UserService(flashserv);
         customerDate = new Date();
         customer1 = new User("ELEFTHERIA", "TRAPEZANLIDOU",
-                "el@mail.gr", "password",
+                "el@mail.gr", "password12",
                 "Female", customerDate, "6942424242");
         userv.saveUser(customer1);
         serialprov = new SerialNumberProviderImpl();

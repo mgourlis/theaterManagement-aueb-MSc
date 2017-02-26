@@ -62,6 +62,7 @@ public class RegisterTest {
 
     @Test
     public void RegisterCustomerWeakPassword() throws Exception {
-
+        customer1.setPassword("12345");
+        Assert.assertNull(newUserService.saveUser(customer1));
     }
 }

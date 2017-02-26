@@ -53,8 +53,14 @@ public class UserService {
 		tx.begin();
 		if (user.getId() != null) {
 		    try {
-                user = em.merge(user);
-                em.flush();
+                if(user.isPasswordValid()) {
+                    user = em.merge(user);
+                    em.flush();
+                } else {
+                    tx.commit();
+                    flashserv.addMessage("weak password",FlashMessageType.Error);
+                    return null;
+                }
             } catch (PersistenceException ex){
 		        tx.rollback();
                 flashserv.addMessage("Changed data provided not valid", FlashMessageType.Error);
@@ -70,7 +76,13 @@ public class UserService {
                 return null;
             } catch (NoResultException ex) {
                 try {
-                    em.persist(user);
+                    if(user.isPasswordValid())
+                        em.persist(user);
+                    else {
+                        tx.commit();
+                        flashserv.addMessage("weak password",FlashMessageType.Error);
+                        return null;
+                    }
                 } catch (PersistenceException ex2){
                     tx.rollback();
                     flashserv.addMessage("Data for User provided not valid", FlashMessageType.Error);

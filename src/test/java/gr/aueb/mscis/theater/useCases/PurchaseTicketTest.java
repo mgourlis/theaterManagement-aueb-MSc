@@ -3,12 +3,14 @@ package gr.aueb.mscis.theater.useCases;
 import gr.aueb.mscis.theater.model.*;
 import gr.aueb.mscis.theater.persistence.Initializer;
 import gr.aueb.mscis.theater.service.*;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -19,13 +21,19 @@ import static org.junit.Assert.assertEquals;
 public class PurchaseTicketTest {
     Initializer init = new Initializer();
     PlayService playService;
+    UserService userService;
     FlashMessageService flashserv;
-
+    User user;
 
     @Before
     public void setUp() throws Exception {
         init.prepareData();
         flashserv = new FlashMessageServiceImpl();
+        userService = new UserService(flashserv);
+        user = new User("ELEFTHERIA", "TRAPEZANLIDOU",
+                "el@aueb.gr", "pass!12345",
+                "Female", new Date(), "6942424242");
+        userService.saveUser(user);
     }
 
     @After
@@ -42,6 +50,7 @@ public class PurchaseTicketTest {
         Set<Show> shows = null;
         List<Seat> freeSeats = null;
         SerialNumberProvider serialNo = new SerialNumberProviderImpl();
+        User customer = new User();
 
         cal.add(Calendar.DATE,3);
         cal.set(Calendar.MILLISECOND,0);
@@ -58,7 +67,7 @@ public class PurchaseTicketTest {
 
         /* find a specific day*/
         for (Show s:shows) {
-            if (cal.getTime().compareTo(s.getDate()) == 0) { // Μάλλον υπάρχει θέμα μετατροπής μεταξύ Date και Calendar!!!!
+            if (cal.getTime().compareTo(s.getDate()) == 0) {
 
 				/* if there are available seats that day*/
                 if (s.getHall().isAvailable()) {
@@ -66,26 +75,44 @@ public class PurchaseTicketTest {
 
         			/*find 3 available seats*/
                     freeSeats = sec.getFreeSeats(3, s.getDate());
-                    Assert.assertEquals(Integer.valueOf(3), Integer.valueOf(freeSeats.size()));
+                    assertEquals(3, freeSeats.size());
+
+                    customer = userService.findUserByEmail("el@aueb.gr");
+                    Assert.assertNotNull(customer);
+
+                    Assert.assertEquals(UserType.Customer, customer.getUserCategory().getCategory());
 
         	        /*validate that there were no tickets for these seats*/
                     for (int i=0; i<3; i++) {
                         assertEquals(0, freeSeats.get(i).getTickets().size());
-                        //Assert.assertEquals(Integer.valueOf(1), Integer.valueOf(freeSeats.get(i).getTickets().size()));
                     }
 
                     for (int k=0; k<3; k++) {
                         Ticket ticket = new Ticket(s, freeSeats.get(k), serialNo);
                         freeSeats.get(k).addTicket(ticket);
+                        ticket = null;
                     }
 
-        	        for (int i=0; i<3; i++) {
-        	        	freeSeats.get(0).getTickets();
+        	        /*validate that there is one ticket for each seat*/
+                    for (int i=0; i<3; i++) {
                         assertEquals(1, freeSeats.get(i).getTickets().size());
-        	        }
+                    }
+
+                    customer.getToken();
+
+
+
+
+//        	        for (int i=0; i<3; i++) {
+//        	        	freeSeats.get(0).getTickets();
+//        	        	ticket = null;
+//        	        }
 
                 }
+
             }
         }
     }
+
+
 }
