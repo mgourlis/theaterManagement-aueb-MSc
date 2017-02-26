@@ -211,9 +211,7 @@ public class User {
     	Pattern p = Pattern.compile("([0-9])");
     	Matcher m = p.matcher(password);
     	boolean b = m.find();
-    	if (b == false) return false;
-    	
-    	return true;
+    	return b;
     }
 
     @Override
