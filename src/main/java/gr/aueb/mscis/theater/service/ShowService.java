@@ -47,6 +47,18 @@ public class ShowService {
         return shows;
     }
 
+    public Show findShowById(int showId) {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Show show = null;
+        show = em.find(Show.class, showId);
+        tx.commit();
+        if(show == null) {
+            flashserv.addMessage("Show does not exist",FlashMessageType.Warning);
+        }
+        return show;
+    }
+
     public List<Show> findFutureShows(){
         EntityTransaction tx = em.getTransaction();
         tx.begin();

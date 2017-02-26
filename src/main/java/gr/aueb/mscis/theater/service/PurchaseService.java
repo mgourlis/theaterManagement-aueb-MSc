@@ -1,13 +1,12 @@
 package gr.aueb.mscis.theater.service;
 
-import java.util.Date;
-import java.util.List;
+import gr.aueb.mscis.theater.model.*;
+import gr.aueb.mscis.theater.persistence.JPAUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-
-import gr.aueb.mscis.theater.model.Purchase;
-import gr.aueb.mscis.theater.persistence.JPAUtil;
+import java.util.Date;
+import java.util.List;
 
 public class PurchaseService {
 

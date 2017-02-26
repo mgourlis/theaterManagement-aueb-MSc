@@ -87,6 +87,7 @@ public class HallService {
         return results;
     }
 
+
     public Hall save(Hall hall) {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
