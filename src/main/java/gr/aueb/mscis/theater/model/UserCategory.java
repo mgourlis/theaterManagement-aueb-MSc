@@ -17,13 +17,13 @@ public class UserCategory {
     @Enumerated(EnumType.STRING)
     private UserType category;
 	
-    @Column(name = "gender", length = 255, nullable = false)
+    @Column(name = "gender", length = 255, nullable = true)
     private String gender;
 
-    @Column(name = "birthday", length = 255, nullable = false)
+    @Column(name = "birthday", length = 255, nullable = true)
     private Date birthday;
 
-    @Column(name = "telephone", length = 255, nullable = false)
+    @Column(name = "telephone", length = 255, nullable = true)
     private String telephone;
 	
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userCategory")    

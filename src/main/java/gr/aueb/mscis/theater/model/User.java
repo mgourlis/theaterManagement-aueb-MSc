@@ -168,7 +168,9 @@ public class User {
      * Θέτει το token.
      * @param token Το token.
      */
-    protected void setToken(String token) {
+    //An einai protected den mporei na setaristei apo to useCase...
+    //protected void setToken(String token) {
+    public void setToken(String token) {
         this.token = token;
     }
     

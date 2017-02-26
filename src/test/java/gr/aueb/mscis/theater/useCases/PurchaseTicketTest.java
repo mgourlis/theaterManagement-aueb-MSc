@@ -2,16 +2,20 @@ package gr.aueb.mscis.theater.useCases;
 
 import gr.aueb.mscis.theater.model.*;
 import gr.aueb.mscis.theater.persistence.Initializer;
+import gr.aueb.mscis.theater.persistence.JPAUtil;
 import gr.aueb.mscis.theater.service.PlayService;
 import gr.aueb.mscis.theater.service.SerialNumberProvider;
 import gr.aueb.mscis.theater.service.SerialNumberProviderImpl;
 import gr.aueb.mscis.theater.service.UserService;
+import gr.aueb.mscis.theater.service.TicketService;
+import gr.aueb.mscis.theater.service.HallService;
 
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -25,15 +29,22 @@ public class PurchaseTicketTest {
     Initializer init = new Initializer();
 	PlayService playService;
     UserService userService;
+    TicketService ticketService;
+    HallService hallService;
     User user;
     
     @Before
     public void setUp() throws Exception {
         init.prepareData();
+		userService = new UserService(JPAUtil.getCurrentEntityManager());
+		ticketService = new TicketService(JPAUtil.getCurrentEntityManager());
+
 		user = new User("ELEFTHERIA", "TRAPEZANLIDOU",
-                "el@aueb.gr", "pass!",
-                "Female", new Date(), "6942424242");
-		userService.newUser(user);
+                		"eleftheria@aueb.gr", "pass!wo12",
+                		"Female", new Date(), "6942424242");
+
+		user.setToken("token123");
+		userService.saveUser(user);
     }
 
     @After
@@ -50,12 +61,13 @@ public class PurchaseTicketTest {
     	Set<Show> shows = null;
     	List<Seat> freeSeats = null;
         SerialNumberProvider serialNo = new SerialNumberProviderImpl();
+        List<Ticket> tickets = new ArrayList<Ticket>();
         User customer = new User();
+        Ticket ticket = null;
         
 		cal.add(Calendar.DATE,3);
 		cal.set(Calendar.MILLISECOND,0);
 		cal.set(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH),0,0,0);
-
     	
         /* find play Amlet*/
     	play = playService.findPlaysByTitle("Amlet");
@@ -76,11 +88,6 @@ public class PurchaseTicketTest {
         			/*find 3 available seats*/
         			freeSeats = sec.getFreeSeats(3, s.getDate());        	    	
         	    	assertEquals(3, freeSeats.size());
-        	    	
-        	        customer = userService.findUserByEmail("el@aueb.gr");        	        
-        	        Assert.assertNotNull(customer);
-        	        
-        	        Assert.assertEquals(UserType.Customer, customer.getCategory());
         	        
         	        /*validate that there were no tickets for these seats*/
         	        for (int i=0; i<3; i++) {
@@ -88,8 +95,9 @@ public class PurchaseTicketTest {
         	        }
         	        
         	        for (int k=0; k<3; k++) {
-        	        	Ticket ticket = new Ticket(s, freeSeats.get(k), serialNo);
+        	        	ticket = new Ticket(s, freeSeats.get(k), serialNo);
         	        	freeSeats.get(k).addTicket(ticket);
+        	        	tickets.add(ticket);
         	        	ticket = null;
         	        }
       	        
@@ -98,21 +106,33 @@ public class PurchaseTicketTest {
             	    	assertEquals(1, freeSeats.get(i).getTickets().size());
         	        }
 
-        	        customer.getToken();
+          	        /*allocate the 3 seats*/
+        	        //poia diadikasia to kanei ayto?
+
+        	        /*validate that the customer is signed in*/
+        	        customer = userService.findUserByEmail("eleftheria@aueb.gr");        	        
+        	        Assert.assertNotNull(customer);
+        	        Assert.assertEquals("token123", customer.getToken());
+
+        	        /*ta teleytaia vimata tou useCase einai ta parakatw*/
+        	        /*logika gia to 15 kai 17 den prepei na kanoyme kati*/
+        	        /*alla gia to 16?*/
         	        
+        	        //15. Το σύστημα εμφανίζει μήνυμα ολοκλήρωσης αγοράς εισιτηρίων.
         	        
+        	        //16. Το σύστημα καταχωρεί τα στοιχεία των εισιτηρίων.
+        	        //Eftiaksa sto purchase kai sto ticket Service ta antistoixa save
+        	        //einai swsto to parakatw?
+        	        for (int i=0; i<3; i++) {
+        	        	ticket = ticketService.save(tickets.get(i));
+            	    	Assert.assertEquals(tickets.get(i), ticket);
+            	    	ticket = null;
+        	        }
         	        
-        	        
-//        	        for (int i=0; i<3; i++) {
-//        	        	freeSeats.get(0).getTickets();
-//        	        	ticket = null;
-//        	        }
-        	        
+        	        //17. Το σύστημα αποστέλλει email με τα στοιχεία του εισιτηρίου και της αγοράς στον πελάτη με 
+        	        //      τη χρήση του Διακομιστή Ηλ. Ταχ.
         		}
-        			
         	}
         }
     }
-    
-    
 }

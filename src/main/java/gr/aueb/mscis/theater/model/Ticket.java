@@ -60,7 +60,7 @@ public class Ticket {
         this.price = show.getPrice()*seat.getSector().getPriceFactor();
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

@@ -6,8 +6,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 
 import gr.aueb.mscis.theater.model.Purchase;
+import gr.aueb.mscis.theater.model.Ticket;
 
 public class PurchaseService {
 
@@ -64,4 +66,30 @@ public class PurchaseService {
         return results;
     }
     
+    public Purchase save(Purchase purchase) {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        if (purchase.getId() != null) {
+            try {
+                purchase = em.merge(purchase);
+                //Flush to make a refresh of the Entity
+                em.flush();
+                em.refresh(purchase);
+            } catch (PersistenceException ex) {
+                tx.rollback();
+                return null;
+            }
+        }
+        else {
+            try {
+                em.persist(purchase);
+            }
+            catch (PersistenceException ex) {
+                tx.rollback();
+                return null;
+            }
+        }
+        tx.commit();
+        return purchase;
+    }
 }
