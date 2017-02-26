@@ -143,4 +143,6 @@ public class Hall {
     public int hashCode() {
         return name.hashCode();
     }
+    
+    //elt
 }
