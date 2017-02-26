@@ -13,7 +13,6 @@ public class Sector {
     private int id;
 
     @Column(name = "name", length = 512, nullable = false)
-    @NotNull
     private String name;
 
     @Column(name = "priceFactor", nullable = false)
@@ -21,7 +20,6 @@ public class Sector {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="hall_id", nullable = false)
-    @NotNull
     private Hall hall;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "sector")
@@ -172,7 +170,7 @@ public class Sector {
      * Εισάγει μια θέση στο τέλος της σειράς
      * @param line ο αριθμός σειράς
      */
-    public void addSeat(int line){
+    public void addSeat(int line) throws IllegalArgumentException {
         int numOfSeats = lineLength(line);
         if(numOfSeats > 0){
             Seat s = new Seat(line, numOfSeats+1);
