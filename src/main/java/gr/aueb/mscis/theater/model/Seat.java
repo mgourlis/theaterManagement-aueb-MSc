@@ -29,7 +29,7 @@ public class Seat {
     private Sector sector;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST ,
-            CascadeType.DETACH, CascadeType.MERGE,CascadeType.REFRESH}, mappedBy = "seat")
+            CascadeType.DETACH, CascadeType.MERGE,CascadeType.REFRESH}, mappedBy = "seat")    
     private Set<Ticket> tickets = new HashSet<Ticket>();
 
     /**
@@ -38,7 +38,8 @@ public class Seat {
     @PreRemove
     private void removeAssociationsWithChilds() {
         for (Ticket ticket : tickets) {
-            if(ticket.getSeat() != null)ticket.setSeat(null);
+            if(ticket.getSeat() != null)
+            	ticket.setSeat(null);
         }
     }
 
