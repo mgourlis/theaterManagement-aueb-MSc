@@ -47,8 +47,8 @@ public class AgentService {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         List<Agent> results = null;
-            results = em.createQuery("select a from Agent a where a.firstName like %:namedata% or a.lastName like %:namedata%")
-                    .setParameter("namedata", namedata).getResultList();
+            results = em.createQuery("select a from Agent a where a.firstName like :namedata or a.lastName like :namedata")
+                    .setParameter("namedata", "%"+namedata +"%").getResultList();
         if(results.isEmpty()){
             flashserv.addMessage("No agents found", FlashMessageType.Info);
         }
