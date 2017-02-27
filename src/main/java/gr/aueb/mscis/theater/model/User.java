@@ -36,7 +36,7 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Purchase> purchases = new HashSet<Purchase>();
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="userCategory_id", nullable = true)
     private UserCategory userCategory;
     
@@ -63,7 +63,7 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        new UserCategory(category, null, null, null);        
+        this.userCategory = new UserCategory(category, null, null, null);
     }
 
     /**
@@ -87,8 +87,8 @@ public class User {
     	this.firstName = firstname;
         this.lastName = lastName;
         this.email = email;
-        this.password = password;        
-        new UserCategory(UserType.Customer, gender, birthday, telephone);
+        this.password = password;
+        this.userCategory = new UserCategory(UserType.Customer, gender, birthday, telephone);
     }
     
     /**
@@ -168,8 +168,6 @@ public class User {
      * Θέτει το token.
      * @param token Το token.
      */
-    //An einai protected den mporei na setaristei apo to useCase...
-    //protected void setToken(String token) {
     public void setToken(String token) {
         this.token = token;
     }
@@ -197,25 +195,23 @@ public class User {
     public Set<Purchase> getPurchases() {
         return purchases;
     }
-        
+
     /**
      * Επιστρέφει ένα αντικείμενο τύπου UserCategory.
      * @return Το αντικείμενο τύπου UserCategory
      */
-    public UserCategory getCategory() {
+    public UserCategory getUserCategory() {
         return userCategory;
     }
-    
+
     public boolean isPasswordValid() {
     	
-    	if (email.length() < 8) return false;
+    	if (password.length() < 8) return false;
 
     	Pattern p = Pattern.compile("([0-9])");
-    	Matcher m = p.matcher(email);
+    	Matcher m = p.matcher(password);
     	boolean b = m.find();
-    	if (b == false) return false;
-    	
-    	return true;
+    	return b;
     }
 
     @Override

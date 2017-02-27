@@ -1,15 +1,18 @@
 package gr.aueb.mscis.theater.service;
 
 import gr.aueb.mscis.theater.model.User;
+import gr.aueb.mscis.theater.persistence.JPAUtil;
 
 import javax.persistence.*;
 
 public class UserService {
 
     EntityManager em;
+    FlashMessageService flashserv;
 
-    public UserService(EntityManager em) {
-    	this.em = em;
+    public UserService(FlashMessageService flashserv) {
+        em = JPAUtil.getCurrentEntityManager();
+        this.flashserv = flashserv;
     }
 
 	public User findUserById(int id) {
@@ -18,7 +21,6 @@ public class UserService {
     
 	public User newUser(User user)
 	{
-		
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 		em.persist(user);
@@ -51,10 +53,17 @@ public class UserService {
 		tx.begin();
 		if (user.getId() != null) {
 		    try {
-                user = em.merge(user);
-                em.flush();
+                if(user.isPasswordValid()) {
+                    user = em.merge(user);
+                    em.flush();
+                } else {
+                    tx.commit();
+                    flashserv.addMessage("weak password",FlashMessageType.Error);
+                    return null;
+                }
             } catch (PersistenceException ex){
-                tx.rollback();
+		        tx.rollback();
+                flashserv.addMessage("Changed data provided not valid", FlashMessageType.Error);
                 return null;
             }
 		}
@@ -63,12 +72,20 @@ public class UserService {
                 User existingUser = ((User) em.createQuery("select u from User u where u.email = :userEmail")
                         .setParameter("userEmail", user.getEmail()).getSingleResult());
                 tx.rollback();
+                flashserv.addMessage("User already exists", FlashMessageType.Error);
                 return null;
             } catch (NoResultException ex) {
                 try {
-                    em.persist(user);
+                    if(user.isPasswordValid())
+                        em.persist(user);
+                    else {
+                        tx.commit();
+                        flashserv.addMessage("weak password",FlashMessageType.Error);
+                        return null;
+                    }
                 } catch (PersistenceException ex2){
                     tx.rollback();
+                    flashserv.addMessage("Data for User provided not valid", FlashMessageType.Error);
                     return null;
                 }
             }
@@ -77,4 +94,20 @@ public class UserService {
 		tx.commit();
         return user;
 	}
+
+    public boolean deleteUser(int userId) {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        try {
+            User user = em.getReference(User.class, userId);
+            em.remove(user);
+            tx.commit();
+        } catch (EntityNotFoundException e) {
+            flashserv.addMessage("User not found", FlashMessageType.Error);
+            tx.rollback();
+            return false;
+        }
+
+        return true;
+    }
 }

@@ -18,7 +18,7 @@ public class Initializer  {
      */
     public void  eraseData() {
         EntityManager em = JPAUtil.getCurrentEntityManager();
-       
+
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         Query query = null;
@@ -44,14 +44,14 @@ public class Initializer  {
         query = em.createNativeQuery("delete from users");
         query.executeUpdate();
 
-        
+
         //query = em.createNativeQuery("ALTER SEQUENCE hibernate_sequence RESTART WITH 1");
         //query.executeUpdate();
-        
+
         tx.commit();
-        
+
     }
-    
+
 
     public void prepareData() {
 
@@ -83,7 +83,7 @@ public class Initializer  {
 
         Hall hall1 = new Hall("hall1");
         Hall hall2 = new Hall("hall2");
-
+        
         Sector hall1sector1 = new Sector("sector1", 1.5);
         Sector hall1sector2 = new Sector("sector2", 1.2);
         Sector hall1sector3 = new Sector("sector3", 1);
@@ -102,17 +102,26 @@ public class Initializer  {
 
 
         hall1sector1.addLine();
-        // Προσθέσαμε τις θέσεις εδώ κάτω, γιατί δεν τα φόρτωνε ταξινομημένα ο sector. 
-        // Αν δηλαδή προσθέσεις τις θέσεις πιο κάτω[*], φορτώνονται με τυχαία σειρά!
         hall1sector1.addSeat(1);
-        hall1sector1.addSeat(1);        
-        
+        hall1sector1.addSeat(1);
+        hall1sector1.addSeat(1);
         hall1sector1.addLine();
+        hall1sector1.addSeat(2);
+        hall1sector1.addSeat(2);
+        hall1sector1.addSeat(2);
+        hall1sector1.addSeat(2);
         hall1sector1.addLine();
+        hall1sector1.addSeat(3);
+        hall1sector1.addSeat(3);
+        hall1sector1.addSeat(3);
+        hall1sector1.addSeat(3);
         hall1sector1.addLine();
-        //[*]
-        
-        
+        hall1sector1.addSeat(4);
+        hall1sector1.addSeat(4);
+        hall1sector1.addSeat(4);
+        hall1sector1.addSeat(4);
+        hall1sector1.addSeat(4);
+
         hall1sector2.addLine();
         hall1sector2.addLine();
 
@@ -142,7 +151,7 @@ public class Initializer  {
         cal.set(Calendar.MILLISECOND,0);
         cal.set(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH),0,0,0);
 
-
+        
         EntityManager em = JPAUtil.getCurrentEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -175,8 +184,8 @@ public class Initializer  {
         em.persist(show3);
 
         //em.persist(ticket);
-
+        
         tx.commit();
-
+    
     }
 }

@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" value="C:/TheaterJavadoc" />
+    <option name="OPTION_SCOPE" value="protected" />
+    <option name="OPTION_HIERARCHY" value="true" />
+    <option name="OPTION_NAVIGATOR" value="true" />
+    <option name="OPTION_INDEX" value="true" />
+    <option name="OPTION_SEPARATE_INDEX" value="true" />
+    <option name="OPTION_DOCUMENT_TAG_USE" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_VERSION" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_DEPRECATED" value="true" />
+    <option name="OPTION_DEPRECATED_LIST" value="true" />
+    <option name="OTHER_OPTIONS" value="-encoding utf8 -docencoding utf8 -charset utf8" />
+    <option name="HEAP_SIZE" />
+    <option name="LOCALE" value="el" />
+    <option name="OPEN_IN_BROWSER" value="true" />
+    <option name="OPTION_INCLUDE_LIBS" value="false" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
@@ -9,5 +27,23 @@
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="UMLDiagramComponent">
+    <diagram name="Class Diagram">
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Agent" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Hall" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Play" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Purchase" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Role" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.RoleType" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Seat" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Sector" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Show" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.Ticket" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.User" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.UserCategory" />
+      <command command-class="de.frag.umlplugin.uml.command.AddClassCommand" psi-class="gr.aueb.mscis.theater.model.UserType" />
+      <compartment-visibility />
+    </diagram>
   </component>
 </project>

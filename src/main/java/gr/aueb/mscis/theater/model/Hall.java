@@ -19,7 +19,7 @@ public class Hall {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "hall")
     private Set<Sector> sectors = new HashSet<Sector>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "hall")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "hall")
     private Set<Show> shows = new HashSet<Show>();
 
     /**
@@ -97,11 +97,11 @@ public class Hall {
     public boolean removeSector(Sector tempSector){
         return this.sectors.remove(tempSector);
     }
-
+    
     /**
-     * Ελέγχει αν υπάρχει διαθέσιμος τομέας στην αίθουσα     
+     * Ελέγχει αν υπάρχει διαθέσιμος τομέας στην αίθουσα
      * @return true/false αν υπάρχει διαθέσιμος τομέας στην αίθουσα ή όχι
-     */    
+     */
     public boolean isAvailable(){
         for (Sector sector : sectors) {
             if(sector.isAvailable())

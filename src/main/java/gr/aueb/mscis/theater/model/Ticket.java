@@ -12,7 +12,7 @@ public class Ticket {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @Column(name = "serial", length = 255, nullable = false)
     private String serial;
@@ -58,6 +58,8 @@ public class Ticket {
         this.active = true;
         this.moneyReturn = false;
         this.price = show.getPrice()*seat.getSector().getPriceFactor();
+        seat.addTicket(this);
+        show.addTicket(this);
     }
 
     public Integer getId() {

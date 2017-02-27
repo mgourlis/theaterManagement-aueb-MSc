@@ -1,40 +1,67 @@
 package gr.aueb.mscis.theater.service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
-
 import gr.aueb.mscis.theater.model.User;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 
 public class AuthenticateService {
 
     EntityManager em;
-    
-    public AuthenticateService () {
-    	em = JPAUtil.getCurrentEntityManager() ;
+    FlashMessageService flashserv;
+    SerialNumberProvider serialprov;
+    UserService userv;
+
+    public AuthenticateService(FlashMessageService flashserv,SerialNumberProvider serialprov) {
+        em = JPAUtil.getCurrentEntityManager();
+        this.flashserv = flashserv;
+        this.serialprov = serialprov;
+        userv = new UserService(flashserv);
+
     }
-    
-    public User validateUser(String email, String password)
-    {
+
+    public User login(String usermail, String password){
+        User user = userv.findUserByEmail(usermail);
         EntityTransaction tx = em.getTransaction();
         tx.begin();
-        User results = null;
-        try {
-            results = (User) em.createQuery("select user from User user where user.email = :userEmail and user.password = :userPassword")
-            								.setParameter("userEmail", email)
-            								.setParameter("userPassword", password)
-            								.getSingleResult();
-            tx.commit();
+        if(user != null){
+            if(user.getPassword().equals(password)){
+                user.setToken(serialprov.createUniqueSerial());
+                em.merge(user);
+                em.flush();
+                em.refresh(user);
+            }else{
+                user = null;
+            }
         }
-        catch (NoResultException ex) {
-            tx.rollback();
-        }
-        catch (NonUniqueResultException ex) {
-            tx.rollback();
-        }
-        return results;
+        tx.commit();
+        return user;
     }
-    
+
+    public User isAuthenticated(int userId, String token){
+        User user = userv.findUserById(userId);;
+        if(user != null)
+            if(user.getToken() != null)
+                return user.getToken().equals(token) ? user : null;
+        return null;
+    }
+
+    public User logout(int userId){
+        User user = userv.findUserById(userId);
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        if(user != null){
+            if(isAuthenticated(user.getId(),user.getToken()) != null){
+                user.setToken(null);
+                em.merge(user);
+                em.flush();
+                em.refresh(user);
+                tx.commit();
+                return user;
+            }
+        }
+        tx.commit();
+        return null;
+    }
 }

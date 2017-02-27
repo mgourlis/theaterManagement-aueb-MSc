@@ -107,7 +107,7 @@ public class Sector {
      * @param lineNumber η σειρά που ανήκει η θέση
      * @param seatNumber ο αριθμός της θέσης
      * @return η συγκεριμένη θέση
-     */    
+     */
     public Seat getSeat(int lineNumber, int seatNumber) throws IllegalArgumentException{
         for(Seat seat : seats){
             if(seat.getLineNumber() == lineNumber && seat.getSeatNumber() == seatNumber)
@@ -151,16 +151,14 @@ public class Sector {
                     break;
                 }
             }
-            if (removeFlag) { 
-	            while (lit.hasNext()) {
-	                seat = lit.next();
-	                if(seat.getLineNumber() == line) {
-	                    seat.setSector(null);
-	                    lit.remove();
-	                } else {
-	                    seat.setLineNumber(seat.getLineNumber()-1);
-	                }
-	            }
+            while (lit.hasNext() && removeFlag) {
+                seat = lit.next();
+                if(seat.getLineNumber() == line) {
+                    seat.setSector(null);
+                    lit.remove();
+                } else {
+                    seat.setLineNumber(seat.getLineNumber()-1);
+                }
             }
         }
         return removeFlag;
@@ -223,32 +221,21 @@ public class Sector {
      * @return λίστα με τις συνεχόμενες ελεύθερες θέσεις
      * @throws IllegalArgumentException αν δεν υπάρχουν numberOfSeats συνεχόμενες ελεύθερες θέσεις
      */
-    public List<Seat> getFreeSeats(int numberOfSeats, Date date) throws IllegalArgumentException {
+    public List<Seat> getFreeSeats(int numberOfSeats, Date date) throws IllegalArgumentException{
         List<Seat> freeSeats = new ArrayList<Seat>();
-        ListIterator<Seat> lit = seats.listIterator();        
+        ListIterator<Seat> lit = seats.listIterator();
         int freeNum = 0;
-        Seat s = null;
-        while (lit.hasNext()) {
-            s = lit.next();
-            if (!s.isBooked(date) && s.isAvailable()) {            	
+        while (lit.hasNext()){
+            Seat s = lit.next();
+            int line = s.getLineNumber();
+            while (!s.isBooked(date) && s.isAvailable() && line == s.getLineNumber() && lit.hasNext()) {
                 freeSeats.add(s);
                 freeNum++;
-                while (lit.hasNext()) {
-                	s = lit.next();
-                	if (freeSeats.get(freeNum-1).getLineNumber() == s.getLineNumber() && !s.isBooked(date) && s.isAvailable()) {
-                        freeSeats.add(s);
-                        freeNum++;
-                        if (freeNum == numberOfSeats) 
-                        	return  freeSeats;
-                	}
-                	else
-                		break;
-                }
-                	                
-        		freeNum = 0;
-        		freeSeats.removeAll(freeSeats);
-            } 
-
+                if(freeNum == numberOfSeats) return  freeSeats;
+                s = lit.next();
+            }
+            freeNum = 0;
+            freeSeats.removeAll(freeSeats);
         }
         throw new IllegalArgumentException("No free seats found in sequence");
     }
@@ -262,9 +249,8 @@ public class Sector {
     public List<Seat> getFreeSeats(Date date){
         List<Seat> freeSeats = new ArrayList<Seat>();
         ListIterator<Seat> lit = seats.listIterator();
-        Seat s = null;
-        while (lit.hasNext()) {
-            s = lit.next();
+        while (lit.hasNext()){
+            Seat s = lit.next();
             if(!s.isBooked(date) && s.isAvailable()) {
                 freeSeats.add(s);
             }

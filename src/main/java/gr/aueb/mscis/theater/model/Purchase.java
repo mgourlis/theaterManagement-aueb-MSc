@@ -30,7 +30,8 @@ public class Purchase {
 	@JoinColumn(name="user_id", nullable = false)
 	private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "purchase")
+    @OneToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.REFRESH,
+    CascadeType.DETACH,CascadeType.MERGE}, mappedBy = "purchase")
 	private Set<Ticket> tickets = new HashSet<Ticket>();
     
     /**

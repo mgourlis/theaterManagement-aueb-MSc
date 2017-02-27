@@ -1,22 +1,21 @@
 package gr.aueb.mscis.theater.service;
 
-import java.util.Date;
-import java.util.List;
+import gr.aueb.mscis.theater.model.*;
+import gr.aueb.mscis.theater.persistence.JPAUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceException;
-
-import gr.aueb.mscis.theater.model.Purchase;
-import gr.aueb.mscis.theater.model.Ticket;
+import java.util.Date;
+import java.util.List;
 
 public class PurchaseService {
 
     EntityManager em;
+    FlashMessageService flashserv;
     
-    public PurchaseService(EntityManager em) {
-    	this.em = em;
+    public PurchaseService(FlashMessageService flashserv) {
+    	this.em = JPAUtil.getCurrentEntityManager();
+    	this.flashserv = flashserv;
     }
 	
 	public Purchase newPurchase(Date date,
@@ -25,7 +24,7 @@ public class PurchaseService {
 								Double totalAmount)
 	{
 		Purchase  purchase = new Purchase(date, wayOfPurchase, quantity, totalAmount);
-		
+
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 		em.persist(purchase);
@@ -35,19 +34,29 @@ public class PurchaseService {
 	}
 	
 	public Purchase findPurchaseById(int id) {
-		return em.find(Purchase.class, id);
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Purchase purchase = null;
+		purchase = em.find(Purchase.class, id);
+
+		if(purchase == null){
+            flashserv.addMessage("Purchase does not exist",FlashMessageType.Warning);
+        }
+
+        tx.commit();
+		return purchase;
 	}
 
     public List<Purchase> findPurchaseByDate(Date date) {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         List<Purchase> results = null;
-        try {
-            results = em.createQuery("select purchase from Purchase purchase where purchase.date = :currentDate").setParameter("currentDate", date).getResultList();
+            results = em.createQuery("select purchase from Purchase purchase where purchase.date = :Date")
+                    .setParameter("Date", date)
+                    .getResultList();
             tx.commit();
-        }
-        catch (NoResultException ex) {
-            tx.rollback();
+        if(results.isEmpty()){
+            flashserv.addMessage("Purchase not found",FlashMessageType.Info);
         }
         return results;
     }
@@ -56,40 +65,12 @@ public class PurchaseService {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         List<Purchase> results = null;
-        try {
             results = em.createQuery("select purchase from Purchase purchase where purchase.wayOfPurchase :wayOfPurchase").setParameter("wayOfPurchase", wayOfPurchase).getResultList();
             tx.commit();
-        }
-        catch (NoResultException ex) {
-            tx.rollback();
-        }
+            if(results.isEmpty()){
+                flashserv.addMessage("Purchase not found",FlashMessageType.Info);
+            }
         return results;
     }
     
-    public Purchase save(Purchase purchase) {
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        if (purchase.getId() != null) {
-            try {
-                purchase = em.merge(purchase);
-                //Flush to make a refresh of the Entity
-                em.flush();
-                em.refresh(purchase);
-            } catch (PersistenceException ex) {
-                tx.rollback();
-                return null;
-            }
-        }
-        else {
-            try {
-                em.persist(purchase);
-            }
-            catch (PersistenceException ex) {
-                tx.rollback();
-                return null;
-            }
-        }
-        tx.commit();
-        return purchase;
-    }
 }

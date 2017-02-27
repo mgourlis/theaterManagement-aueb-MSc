@@ -71,19 +71,19 @@ public class UserTest {
     
     @Test
     public void passwordWithoutNumbers() throws Exception {
-    	user.setEmail("password");
+    	user.setPassword("password");
     	Assert.assertFalse(user.isPasswordValid());
     }
     
     @Test
     public void passwordValidSize8() throws Exception {
-    	user.setEmail("pass1wor");
+    	user.setPassword("pass1wor");
     	Assert.assertTrue(user.isPasswordValid());
     }
     
     @Test
     public void passwordValidSizeMoreThan8() throws Exception {
-    	user.setEmail("2pass1wor");
+    	user.setPassword("2pass1wor");
     	Assert.assertTrue(user.isPasswordValid());
     }
     

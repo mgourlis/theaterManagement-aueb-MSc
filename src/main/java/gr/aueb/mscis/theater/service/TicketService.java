@@ -1,15 +1,18 @@
 package gr.aueb.mscis.theater.service;
 
 import gr.aueb.mscis.theater.model.Ticket;
+import gr.aueb.mscis.theater.persistence.JPAUtil;
 
 import javax.persistence.*;
 
 public class TicketService {
 
     EntityManager em;
+    FlashMessageService flashserv;
 
-    public TicketService(EntityManager em) {
-        this.em = em;
+    public TicketService(FlashMessageService flashserv) {
+        this.em = JPAUtil.getCurrentEntityManager();
+        this.flashserv = flashserv;
     }
 
     public Ticket save(Ticket ticket) {
@@ -18,9 +21,6 @@ public class TicketService {
         if (ticket.getId() != null) {
             try {
                 ticket = em.merge(ticket);
-                //Flush to make a refresh of the Entity
-                em.flush();
-                em.refresh(ticket);
             } catch (PersistenceException ex) {
                 tx.rollback();
                 return null;
