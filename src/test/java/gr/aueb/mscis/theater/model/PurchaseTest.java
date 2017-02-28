@@ -42,12 +42,7 @@ public class PurchaseTest {
         hall.addSector(sector);
 
         play = new Play("play", "description");
-
-//        Calendar c = Calendar.getInstance();
         currentDate = new Date();
-//        c.setTime(currentDate);
-//        c.add(Calendar.DATE, 8);
-//        date = c.getTime();
         show = new Show(currentDate, 50.0, play, hall);
         serial = new SerialNumberProviderStub();
         ticket1 = new Ticket(show, hall.getSectors().iterator().next().getSeats().get(0), serial);
@@ -61,12 +56,7 @@ public class PurchaseTest {
         hall.addSector(sector);
 
         play = new Play("play", "description");
-
-//        Calendar c = Calendar.getInstance();
         currentDate = new Date();
-//        c.setTime(currentDate);
-//        c.add(Calendar.DATE, 8);
-//        date = c.getTime();
         show = new Show(currentDate, 50.0, play, hall);
         serial = new SerialNumberProviderStub();
         ticket2 = new Ticket(show, hall.getSectors().iterator().next().getSeats().get(1), serial);

@@ -177,13 +177,9 @@ public class Initializer  {
 
         SerialNumberProvider serial = new SerialNumberProviderImpl();
 
-        //Ticket ticket = new Ticket(show1,hall1sector1.getSeats().get(0),serial);
-
         em.persist(show1);
         em.persist(show2);
         em.persist(show3);
-
-        //em.persist(ticket);
         
         tx.commit();
     

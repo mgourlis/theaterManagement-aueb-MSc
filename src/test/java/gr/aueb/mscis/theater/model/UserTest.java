@@ -59,11 +59,6 @@ public class UserTest {
     	Assert.assertEquals("password", user.getPassword());
     }
 
-//    @Test
-//    public void setEmail() throws Exception {
-//
-//    }
-
     @Test
     public void passwordLessThan8() throws Exception {
     	Assert.assertFalse(user.isPasswordValid());
@@ -111,9 +106,5 @@ public class UserTest {
 		User newUser = new User("ELEFTHERIA", "TRAPEZANLIDOU", "el@auebgr", "pass!","Female", new Date(), "6942424242");
         assertFalse(user.equals(newUser));
     }
-    
-//    @Test
-//    public void getToken() throws Exception {
-//
-//    }
+
 }

@@ -97,31 +97,19 @@ public class PurchaseTicketTest {
             	    	assertEquals(1, freeSeats.get(i).getTickets().size());
         	        }
 
-          	        /*allocate the 3 seats*/
-        	        //poia diadikasia to kanei ayto?
-
         	        /*validate that the customer is signed in*/
         	        customer = userService.findUserByEmail("eleftheria@aueb.gr");
         	        Assert.assertNotNull(customer);
         	        Assert.assertEquals("token123", customer.getToken());
 
-        	        /*ta teleytaia vimata tou useCase einai ta parakatw*/
-        	        /*logika gia to 15 kai 17 den prepei na kanoyme kati*/
-        	        /*alla gia to 16?*/
-
-        	        //15. Το σύστημα εμφανίζει μήνυμα ολοκλήρωσης αγοράς εισιτηρίων.
-
-        	        //16. Το σύστημα καταχωρεί τα στοιχεία των εισιτηρίων.
-        	        //Eftiaksa sto purchase kai sto ticket Service ta antistoixa save
-        	        //einai swsto to parakatw?
+        	        /*save tickets*/
         	        for (int i=0; i<3; i++) {
         	        	ticket = ticketService.save(tickets.get(i));
             	    	Assert.assertEquals(tickets.get(i), ticket);
             	    	ticket = null;
         	        }
 
-        	        //17. Το σύστημα αποστέλλει email με τα στοιχεία του εισιτηρίου και της αγοράς στον πελάτη με
-        	        //      τη χρήση του Διακομιστή Ηλ. Ταχ.
+        	        /*send e-mail*/
                     EmailProvider emailserv = new EmailProviderStub();
         	        emailserv.sendEmail(user.getEmail(),"purchase mail with ticket data");
         		}
