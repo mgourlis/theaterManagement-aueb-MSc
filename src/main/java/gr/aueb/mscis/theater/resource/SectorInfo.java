@@ -1,32 +1,24 @@
 package gr.aueb.mscis.theater.resource;
 
+import gr.aueb.mscis.theater.model.Sector;
+
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import gr.aueb.mscis.theater.model.Hall;
-import gr.aueb.mscis.theater.model.Seat;
-import gr.aueb.mscis.theater.model.Sector;
-
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class SectorInfo {
-	
+
+	@XmlElement(name="id")
     private int id;
+	@XmlElement(name="name")
     private String name;
+	@XmlElement(name="priceFactor")
     private double priceFactor;
-    
-    
+	@XmlElementWrapper(name = "SeatInfoes")
+	@XmlElement(name = "SeatInfo")
     private List<SeatInfo> seats;
 
 	public SectorInfo() {
@@ -64,7 +56,7 @@ public class SectorInfo {
 		this.priceFactor = priceFactor;
 	}
 
-	@XmlElement(name="SectorSeats")
+
 	public List<SeatInfo> getSeats() {
 		return seats;
 	}

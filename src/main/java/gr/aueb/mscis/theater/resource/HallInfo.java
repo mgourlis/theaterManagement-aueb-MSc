@@ -1,41 +1,28 @@
 package gr.aueb.mscis.theater.resource;
 
 import gr.aueb.mscis.theater.model.Hall;
-import gr.aueb.mscis.theater.model.Sector;
-import gr.aueb.mscis.theater.model.Show;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.EntityManager;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-/**
- * Created by Myron on 9/2/2017.
- */
+
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class HallInfo {
 
+	@XmlElement(name="id")
     private Integer id;
+	@XmlElement(name="name")
     private String name;
-    
-    
+	@XmlElementWrapper(name = "SectorInfoes")
+	@XmlElement(name = "SectorInfo")
     private List<SectorInfo> sectors;
-    //private List<Show> shows = new ArrayList<ShowInfo>();    
     
     public HallInfo() {
 
 	}
-    
+
 //	public HallInfo(Integer id, String name, List<SectorInfo> sectors, List<Show> shows) {
 //		this.id = id;
 //		this.name = name;
@@ -65,11 +52,11 @@ public class HallInfo {
 		this.name = name;
 	}
 
-	@XmlElement(name="hallSectors")
 	public List<SectorInfo> getsectors() {
 		return sectors;
 	}
-	
+
+
 	public void setSectors(List<SectorInfo> sectors) {
 		this.sectors = sectors;
 	}

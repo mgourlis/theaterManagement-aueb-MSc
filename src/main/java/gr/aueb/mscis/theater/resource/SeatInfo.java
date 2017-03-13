@@ -1,29 +1,25 @@
 package gr.aueb.mscis.theater.resource;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import gr.aueb.mscis.theater.model.Sector;
-import gr.aueb.mscis.theater.model.Ticket;
-import gr.aueb.mscis.theater.model.Hall;
 import gr.aueb.mscis.theater.model.Seat;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
+import java.util.List;
+
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class SeatInfo {
-	
+
+	@XmlElement(name="id")
     private int id;
+	@XmlElement (name="lineNumber")
     private int lineNumber;
+	@XmlElement (name="seatNumber")
     private int seatNumber;
+	@XmlElement (name="availability")
     private boolean availability;
 
 //    private Set<Ticket> tickets = new HashSet<Ticket>();
