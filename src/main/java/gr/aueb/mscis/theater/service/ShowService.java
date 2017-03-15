@@ -47,6 +47,20 @@ public class ShowService {
         return shows;
     }
 
+    public List<Show> findAllShowsByPlayName(String playName){
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        List<Show> shows = null;
+        shows = em.createQuery("select s from Show s where s.play.title = :playName")
+                .setParameter("playName", playName)
+                .getResultList();
+        if(shows.isEmpty()){
+            flashserv.addMessage("No shows found",FlashMessageType.Info);
+        }
+        tx.commit();
+        return shows;
+    }
+    
     public Show findShowById(int showId) {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
