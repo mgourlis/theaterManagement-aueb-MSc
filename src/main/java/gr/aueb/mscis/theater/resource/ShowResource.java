@@ -40,4 +40,50 @@ public class ShowResource {
 
         return showInfo;
     }
+    
+
+    /*
+     * Propose to the user free seats of the hall with id hallid
+     * and sector with sectorid.
+     * The number of seats is declared in numberOfSeats 
+     */
+//    @GET
+//    @Path("{showid:[0-9]*}")
+//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    public List<SeatInfo> getFreeSeats(@PathParam("showid")  int showId
+//                                       @QueryParam("sectorid" int sectorId,
+//                                       @QueryParam("seatnum"  int numberOfSeats)) {
+//
+//        EntityManager em = JPAUtil.getCurrentEntityManager();
+//
+//        FlashMessageService flashserv = new FlashMessageServiceImpl();
+//
+//        List<SeatInfo> seatInfoList = new ArrayList<SeatInfo>();
+//        Show show;
+//        ShowService showService = new ShowService(flashserv);
+//        Show show = showService.findShowById(showId);
+//        
+//        if (show.getId != 0) {
+//            Set<Sector> sectors = null;
+//            List<Seat> seats = null;
+//
+//            sectors = show.getHall().getSectors();        
+//            for (Sector sector : sectors) {
+//                if (sector.getId() == sectorId) {
+//                    seats = getFreeSeats(numberOfSeats, show.getDate());
+//                    break;
+//                }
+//            }
+//            
+//            if (seats) {
+//                for (Seate s : seats)
+//                    seatInfoList.add(new SeatInfo(s));
+//            }
+//
+//        }
+//        
+//        em.close();
+//        return seatInfoList;
+//    }
+
 }
