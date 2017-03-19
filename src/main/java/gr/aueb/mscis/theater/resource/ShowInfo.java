@@ -1,18 +1,14 @@
 package gr.aueb.mscis.theater.resource;
 
+import gr.aueb.mscis.theater.model.Show;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import gr.aueb.mscis.theater.model.Hall;
-import gr.aueb.mscis.theater.model.Play;
 //import gr.aueb.mscis.theater.model.Ticket;
-import gr.aueb.mscis.theater.model.Show;
-
-import javax.persistence.EntityManager;
 
 @XmlRootElement
 //@XmlAccessorType(XmlAccessType.FIELD)
@@ -27,9 +23,9 @@ public class ShowInfo {
 	@XmlElement(name="canceled")
 	private boolean canceled;
 	@XmlElement(name="play")
-	private Play play;
+	private PlayInfo play;
 	@XmlElement(name="hall")
-	private Hall hall;
+	private HallInfo hall;
 //	@XmlElement(name="tickets")
 //	private Set<Ticket> tickets = new HashSet<Ticket>();
 	
@@ -42,8 +38,8 @@ public class ShowInfo {
 		this.date = show.getDate();
 		this.price = show.getPrice();
 		this.canceled = show.isCanceled();
-		this.play = show.getPlay();
-		this.hall = show.getHall();
+		this.play = PlayInfo.wrap(show.getPlay());
+		this.hall = new HallInfo(show.getHall(),false);
 //		this.tickets = tickets;
 	}
 
@@ -79,19 +75,19 @@ public class ShowInfo {
 		this.canceled = canceled;
 	}
 	
-	public Play getPlay() {
+	public PlayInfo getPlay() {
 		return play;
 	}
 	
-	public void setPlay(Play play) {
+	public void setPlay(PlayInfo play) {
 		this.play = play;
 	}
 	
-	public Hall getHall() {
+	public HallInfo getHall() {
 		return hall;
 	}
 	
-	public void setHall(Hall hall) {
+	public void setHall(HallInfo hall) {
 		this.hall = hall;
 	}
 //	

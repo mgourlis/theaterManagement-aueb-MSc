@@ -10,4 +10,6 @@ public interface FlashMessageService {
 
     public void clearAll();
 
+    public Map<String,String> toStringMap();
+
 }

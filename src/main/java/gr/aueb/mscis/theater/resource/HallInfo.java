@@ -30,10 +30,11 @@ public class HallInfo {
 //		this.shows = shows;
 //	}
 
-	public HallInfo(Hall hall) {
+	public HallInfo(Hall hall, boolean alldata) {
 		this.id = hall.getId();
 		this.name = hall.getName();
-		this.sectors = SectorInfo.wrap(hall.getSectors());
+		if(alldata)
+			this.sectors = SectorInfo.wrap(hall.getSectors());
 	}
 
 	public Integer getId() {
@@ -66,7 +67,7 @@ public class HallInfo {
 		List<HallInfo> hallInfoList = new ArrayList<HallInfo>();
 
 		for (Hall h : halls) {
-			hallInfoList.add(new HallInfo(h));
+			hallInfoList.add(new HallInfo(h,true));
 		}
 
 		return hallInfoList;

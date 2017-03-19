@@ -1,14 +1,10 @@
 package gr.aueb.mscis.theater.resource;
 
 import gr.aueb.mscis.theater.model.Hall;
-import gr.aueb.mscis.theater.model.Play;
-import gr.aueb.mscis.theater.model.Sector;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
 import gr.aueb.mscis.theater.service.FlashMessageService;
 import gr.aueb.mscis.theater.service.FlashMessageServiceImpl;
 import gr.aueb.mscis.theater.service.HallService;
-import gr.aueb.mscis.theater.service.PlayService;
-import gr.aueb.mscis.theater.model.Seat;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.GET;
@@ -17,13 +13,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.*;
 import javax.ws.rs.core.UriInfo;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
 import java.util.List;
 
-@Path("hall")
+@Path("/hall")
 public class HallResource {
 
     @Context
@@ -58,9 +51,13 @@ public class HallResource {
 
         HallService hallService = new HallService(flashserv);
         Hall hall = hallService.findHallById(hallId);
-        
-        HallInfo hallInfo = new HallInfo(hall);
-        
+
+        HallInfo hallInfo = null;
+
+        if(hall != null){
+            hallInfo = new HallInfo(hall,true);
+        }
+
         em.close();
 
         return hallInfo;

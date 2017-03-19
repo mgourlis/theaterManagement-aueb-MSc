@@ -21,4 +21,14 @@ public class FlashMessageServiceImpl implements FlashMessageService{
     public void clearAll() {
         messages.clear();
     }
+
+    @Override
+    public Map<String,String> toStringMap() {
+        Map<String, String> msgstr= new HashMap<String, String>();
+        for (Map.Entry<String, FlashMessageType> entry : messages.entrySet())
+        {
+            msgstr.put(entry.getKey(),entry.getValue().toString());
+        }
+        return msgstr;
+    }
 }

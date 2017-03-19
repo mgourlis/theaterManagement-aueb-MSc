@@ -1,17 +1,20 @@
 package gr.aueb.mscis.theater.resource;
 
-import java.util.List;
-import java.net.URI;
-
-import javax.persistence.EntityManager;
-
-import gr.aueb.mscis.theater.model.Hall;
 import gr.aueb.mscis.theater.model.Show;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
 import gr.aueb.mscis.theater.service.FlashMessageService;
 import gr.aueb.mscis.theater.service.FlashMessageServiceImpl;
-import gr.aueb.mscis.theater.service.PlayService;
 import gr.aueb.mscis.theater.service.ShowService;
+
+import javax.persistence.EntityManager;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
+import java.util.List;
 
 @Path("show")
 public class ShowResource {

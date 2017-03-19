@@ -35,7 +35,6 @@ public class HallResourceTest extends TheaterResourceTest {
         
 		HallService hallService = new HallService(flashserv);
 		List<Hall> halls;
-		
 		halls = hallService.findAllHalls();
 		Assert.assertEquals(2,halls.size());
 		HallInfo hall = target("hall/"+halls.get(0).getId()).request().get(HallInfo.class);
