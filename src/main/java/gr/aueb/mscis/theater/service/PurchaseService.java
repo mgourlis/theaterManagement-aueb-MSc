@@ -5,6 +5,8 @@ import gr.aueb.mscis.theater.persistence.JPAUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
+
 import java.util.Date;
 import java.util.List;
 
@@ -73,4 +75,29 @@ public class PurchaseService {
         return results;
     }
     
+	public Purchase save(Purchase purchase) {
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();
+		if (purchase.getId() != null) {
+			try {
+				purchase = em.merge(purchase);
+				em.flush();
+				em.refresh(purchase);
+			} catch (PersistenceException ex) {
+				tx.rollback();
+				flashserv.addMessage("Changed data not valid",FlashMessageType.Error);
+				return null;
+			}
+		} else {
+			try {
+				em.persist(purchase);
+			} catch (PersistenceException ex) {
+				tx.rollback();
+				flashserv.addMessage("Data not valid",FlashMessageType.Error);
+				return null;
+			}
+		}
+		tx.commit();
+		return purchase;
+	}
 }

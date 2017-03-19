@@ -68,7 +68,8 @@ public class ShowResource {
 
         FlashMessageService flashserv = new FlashMessageServiceImpl();
 
-        List<SeatInfo> seatInfoList = new ArrayList<SeatInfo>();
+//        List<SeatInfo> seatInfoList = new ArrayList<SeatInfo>();
+        List<SeatInfo> seatInfoList = null;
         ShowService showService = new ShowService(flashserv);
         Show show = showService.findShowById(showId);
         
@@ -84,11 +85,8 @@ public class ShowResource {
                 }
             }
             
-            if (seats != null) {
-                for (Seat s : seats)
-                    seatInfoList.add(new SeatInfo(s));
-            }
-
+            if (seats != null)
+            	seatInfoList = SeatInfo.wrap(seats);
         }
         
         em.close();

@@ -2,6 +2,9 @@ package gr.aueb.mscis.theater.resource;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import gr.aueb.mscis.theater.model.Purchase;
 import gr.aueb.mscis.theater.model.Seat;
 import gr.aueb.mscis.theater.model.Show;
@@ -11,14 +14,22 @@ import gr.aueb.mscis.theater.model.Ticket;
 //@XmlAccessorType(XmlAccessType.FIELD)
 public class TicketInfo {
 
-	private Integer id;
+    @XmlElement(name="id")
+    private Integer id;
+    @XmlElement(name="serial")
     private String serial;
+    @XmlElement(name="price")
     private double price;
+    @XmlElement(name="moneyReturn")
     private boolean moneyReturn;
+    @XmlElement(name="active")
     private boolean active;
-    private Show show;
-    private Seat seat;
-    private Purchase purchase;
+    @XmlElement(name="show")
+    private ShowInfo show;
+    @XmlElement(name="seat")
+    private SeatInfo seat;
+//    @XmlElement(name="purchase")
+//    private PurchaseInfo purchase;
 	
     public TicketInfo() {
 
@@ -31,9 +42,9 @@ public class TicketInfo {
 		this.price = ticket.getPrice();
 		this.moneyReturn = false;
 		this.active = true;
-		this.show = ticket.getShow();
-		this.seat = ticket.getSeat();
-		this.purchase = ticket.getPurchase();
+//		this.show = ShowInfo.wrap(ticket.getShow());
+//		this.seat = SeatInfo.wrap(ticket.getSeat());
+//		this.purchase = SeatInfo.wrap(ticket.getPurchase());
 	}
 
 	public Integer getId() {
@@ -76,30 +87,28 @@ public class TicketInfo {
 		this.active = active;
 	}
 
-	public Show getShow() {
-		return show;
-	}
-
-	public void setShow(Show show) {
-		this.show = show;
-	}
-
-	public Seat getSeat() {
-		return seat;
-	}
-
-	public void setSeat(Seat seat) {
-		this.seat = seat;
-	}
-
-	public Purchase getPurchase() {
-		return purchase;
-	}
-
-	public void setPurchase(Purchase purchase) {
-		this.purchase = purchase;
-	}
-    
-
+//	public Show getShow() {
+//		return show;
+//	}
+//
+//	public void setShow(Show show) {
+//		this.show = show;
+//	}
+//
+//	public Seat getSeat() {
+//		return seat;
+//	}
+//
+//	public void setSeat(Seat seat) {
+//		this.seat = seat;
+//	}
+//
+//	public Purchase getPurchase() {
+//		return purchase;
+//	}
+//
+//	public void setPurchase(Purchase purchase) {
+//		this.purchase = purchase;
+//	}
 	
 }
