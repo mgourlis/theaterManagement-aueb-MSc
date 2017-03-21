@@ -16,14 +16,14 @@ import java.util.List;
  * Created by Myron on 9/2/2017.
  */
 
-@Path("/play")
+@Path("play")
 public class PlayResource {
 
     @Context
     UriInfo uriInfo;
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
     public List<PlayInfo> getPlays() {
 
         EntityManager em = JPAUtil.getCurrentEntityManager();

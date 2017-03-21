@@ -101,8 +101,6 @@ public class HallResourceTest extends TheaterResourceTest {
 
 		Hall upthall = hallService.findHallByName("hall1");
 
-		String orighallname = upthall.getName();
-
 		HallInfo postreq = new HallInfo(upthall,true);
 
 		postreq.setName("Updated from put request");

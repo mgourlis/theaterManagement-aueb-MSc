@@ -7,22 +7,21 @@ import gr.aueb.mscis.theater.service.PurchaseService;
 import gr.aueb.mscis.theater.service.SerialNumberProviderImpl;
 
 import javax.persistence.EntityManager;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class NewPurchaseInfo {
 
-    @XmlElement(name="showId")
+    @XmlElement(name="show")
     private Integer showId;
-    @XmlElement(name="userId")
+    @XmlElement(name="user")
     private Integer userId;
     @XmlElementWrapper(name = "seatIdswrapper")
-    @XmlElement(name = "seatIds")
+    @XmlElement(name = "seats")
     private List<Integer> seatIds;
 
     public NewPurchaseInfo() {

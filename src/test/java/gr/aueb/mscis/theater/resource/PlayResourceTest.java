@@ -100,8 +100,6 @@ public class PlayResourceTest extends TheaterResourceTest{
 
         Play uptplay = playService.findPlaysByTitle("The Glass Menagerie").get(0);
 
-        String orighallname = uptplay.getTitle();
-
         PlayInfo postreq = new PlayInfo(uptplay,true);
 
         postreq.setTitle("Updated from put request");

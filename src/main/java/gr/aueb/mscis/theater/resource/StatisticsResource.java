@@ -13,7 +13,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
-import gr.aueb.mscis.theater.model.Purchase;
 import gr.aueb.mscis.theater.model.Show;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
 import gr.aueb.mscis.theater.service.FlashMessageService;
