@@ -2,6 +2,7 @@ package gr.aueb.mscis.theater.resource;
 
 import gr.aueb.mscis.theater.model.Seat;
 
+import javax.persistence.EntityManager;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -14,7 +15,7 @@ import java.util.List;
 public class SeatInfo {
 
 	@XmlElement(name="id")
-    private int id;
+    private Integer id;
 	@XmlElement (name="lineNumber")
     private int lineNumber;
 	@XmlElement (name="seatNumber")
@@ -36,11 +37,11 @@ public class SeatInfo {
 		this.availability = seat.isAvailable();
 	}
     
-    public int getId() {
+    public Integer getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	
@@ -86,5 +87,21 @@ public class SeatInfo {
 
 		return SeatInfoList;
 	}
-	
+
+	public Seat getSeat(EntityManager em){
+
+		Seat seat = null;
+
+		if (id != null) {
+			seat = em.find(Seat.class, id);
+		} else {
+			seat = new Seat();
+		}
+
+		seat.setAvailability(availability);
+		seat.setLineNumber(lineNumber);
+		seat.setSeatNumber(seatNumber);
+
+		return seat;
+	}
 }

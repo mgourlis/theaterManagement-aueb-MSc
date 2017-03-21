@@ -1,10 +1,14 @@
 package gr.aueb.mscis.theater.resource;
 
 import gr.aueb.mscis.theater.model.Hall;
+import gr.aueb.mscis.theater.model.Sector;
 
+import javax.persistence.EntityManager;
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @XmlRootElement
@@ -73,6 +77,28 @@ public class HallInfo {
 		return hallInfoList;
 
 	}
+
+	public Hall getHall(EntityManager em){
+		Hall hall = null;
+
+		if (id != null) {
+			hall = em.find(Hall.class, id);
+		} else {
+			hall = new Hall();
+		}
+
+		hall.setName(name);
+		Set<Sector> newsectors = new HashSet<Sector>();
+		for (SectorInfo s : sectors){
+			Sector sector = s.getSector(em);
+			sector.setHall(hall);
+			newsectors.add(sector);
+		}
+		hall.getSectors().clear();
+		hall.getSectors().addAll(newsectors);
+
+		return hall;
+	}
 	
 	
-    }
+}

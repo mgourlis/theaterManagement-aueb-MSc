@@ -80,6 +80,7 @@ public class Hall {
         return sectors;
     }
 
+    public void setSectors(Set<Sector> sectors) { this.sectors = sectors; }
     /**
      * Εισάγει Τομέα στην αίθουσα
      * @param tempSector ο Τομέας

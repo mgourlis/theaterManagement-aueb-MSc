@@ -1,9 +1,6 @@
-package gr.aueb.mscis.theater.Resource;
+package gr.aueb.mscis.theater.resource;
 
 import gr.aueb.mscis.theater.model.*;
-import gr.aueb.mscis.theater.resource.DebugExceptionMapper;
-import gr.aueb.mscis.theater.resource.NewPurchaseInfo;
-import gr.aueb.mscis.theater.resource.PurchaseResource;
 import gr.aueb.mscis.theater.service.FlashMessageService;
 import gr.aueb.mscis.theater.service.FlashMessageServiceImpl;
 import gr.aueb.mscis.theater.service.PlayService;

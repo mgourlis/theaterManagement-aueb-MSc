@@ -1,4 +1,4 @@
-package gr.aueb.mscis.theater.Resource;
+package gr.aueb.mscis.theater.resource;
 
 import javax.ws.rs.core.Application;
 

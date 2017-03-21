@@ -13,7 +13,7 @@ public class Seat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @Column(name = "lineNumber", nullable = false)
     private int lineNumber;

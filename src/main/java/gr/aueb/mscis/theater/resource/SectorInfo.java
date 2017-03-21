@@ -1,7 +1,9 @@
 package gr.aueb.mscis.theater.resource;
 
+import gr.aueb.mscis.theater.model.Seat;
 import gr.aueb.mscis.theater.model.Sector;
 
+import javax.persistence.EntityManager;
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.Set;
 public class SectorInfo {
 
 	@XmlElement(name="id")
-    private int id;
+    private Integer id;
 	@XmlElement(name="name")
     private String name;
 	@XmlElement(name="priceFactor")
@@ -32,11 +34,11 @@ public class SectorInfo {
 		this.seats = SeatInfo.wrap(sector.getSeats());
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -74,6 +76,30 @@ public class SectorInfo {
 		}
 
 		return SectorInfoList;
+	}
+
+	public Sector getSector(EntityManager em){
+
+		Sector sector = null;
+
+		if (id != null) {
+			sector = em.find(Sector.class, id);
+		} else {
+			sector = new Sector();
+		}
+
+		sector.setName(name);
+		sector.setPriceFactor(priceFactor);
+		List<Seat> newseats = new ArrayList<Seat>();
+		for (SeatInfo s : seats){
+			Seat seat = s.getSeat(em);
+			seat.setSector(sector);
+			newseats.add(seat);
+		}
+		sector.getSeats().clear();
+		sector.getSeats().addAll(newseats);
+
+		return sector;
 	}
     
 }

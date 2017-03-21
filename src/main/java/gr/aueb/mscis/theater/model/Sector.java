@@ -104,6 +104,9 @@ public class Sector {
         return seats;
     }
 
+    public void setSeats(List<Seat> seats){
+        this.seats = seats;
+    }
     /**
      * Επιστρέφει τη θέση που ανήκει σε συγκεκριμένη σειρά και αριθμό
      * @param lineNumber η σειρά που ανήκει η θέση
