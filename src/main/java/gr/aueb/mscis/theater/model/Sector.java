@@ -105,6 +105,14 @@ public class Sector {
     }
 
     /**
+     * Επιστρέφει το πλήθος θέσεων του τομέα
+     * @return το πλήθος θέσεων του τομέα
+     */
+    public Integer getNumOfSeats() {
+        return seats.size();
+    }
+    
+    /**
      * Επιστρέφει τη θέση που ανήκει σε συγκεκριμένη σειρά και αριθμό
      * @param lineNumber η σειρά που ανήκει η θέση
      * @param seatNumber ο αριθμός της θέσης

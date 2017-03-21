@@ -1,9 +1,12 @@
 package gr.aueb.mscis.theater.model;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -201,6 +204,20 @@ public class Show {
 
     }
 
+    /**
+     * Υπολογίζει τα συνολικά έσοδα της παράστασης
+     */
+    public double totalAmount() {
+        int i=0;
+        double amount = 0.0;
+
+        List<Ticket> ticketList = new ArrayList<Ticket>(tickets);
+        for (i=0; i<ticketList.size(); i++)
+        	amount += ticketList.get(i).getPrice();
+
+        return amount;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
