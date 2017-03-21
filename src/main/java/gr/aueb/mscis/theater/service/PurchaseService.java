@@ -22,10 +22,9 @@ public class PurchaseService {
 	
 	public Purchase newPurchase(Date date,
 								String wayOfPurchase,
-								Integer quantity,
-								Double totalAmount)
+								Integer quantity)
 	{
-		Purchase  purchase = new Purchase(date, wayOfPurchase, quantity, totalAmount);
+		Purchase  purchase = new Purchase(date, wayOfPurchase, quantity);
 
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();

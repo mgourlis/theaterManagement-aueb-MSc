@@ -48,13 +48,12 @@ public class Purchase {
      */
     public Purchase(Date date,
     		    	String wayOfPurchase,
-    		    	Integer quantity,
-    		    	Double totalAmount) {
+    		    	Integer quantity) {
 
-    	this.date = date;
+        this.date = date;
         this.wayOfPurchase = wayOfPurchase;
         this.quantity = quantity;
-        this.totalAmount = totalAmount;
+        this.totalAmount = 0.0;
     }
 
     public Integer getId() {
@@ -131,6 +130,7 @@ public class Purchase {
      */
     public void setTicket(Ticket newTicket) {
         this.tickets.add(newTicket);
+        this.totalAmount += newTicket.getPrice();
         newTicket.setPurchase(this);
     }
 
@@ -168,7 +168,6 @@ public class Purchase {
 
         if (!date.equals(purchase.date)) return false;
         if (!quantity.equals(purchase.quantity)) return false;
-        if (!totalAmount.equals(purchase.totalAmount)) return false;
         if (!wayOfPurchase.equals(purchase.wayOfPurchase)) return false;
         return user.equals(purchase.user);
     }
@@ -177,7 +176,6 @@ public class Purchase {
     public int hashCode() {
         int result = date.hashCode();
         result = 31 * result + quantity.hashCode();
-        result = 31 * result + totalAmount.hashCode();
         result = 31 * result + wayOfPurchase.hashCode();
         result = 31 * result + user.hashCode();
         return result;
