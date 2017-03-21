@@ -29,7 +29,7 @@ public class HallResource {
         HallService hallService = new HallService(flashserv);
         List<Hall> halls = hallService.findAllHalls();
         
-        List<HallInfo> hallInfo = HallInfo.wrap(halls);
+        List<HallInfo> hallInfo = HallInfo.wrap(halls,false);
 
         em.close();
 
@@ -70,7 +70,7 @@ public class HallResource {
 
         Hall hall = h.getHall(em);
 
-        hallService.save(hall);
+        hall = hallService.save(hall);
 
         UriBuilder ub = uriInfo.getAbsolutePathBuilder();
         URI hallUri = ub.path("hall"+"/"+Integer.toString(hall.getId())).build();
@@ -124,7 +124,6 @@ public class HallResource {
 
         Hall dbhall = hallService.findHallById(hallId);
 
-        //Validation - Todo other validations for Seat, Sector and Hall
         if(dbhall == null){
             return Response.status(Response.Status.NOT_FOUND).build();
         }

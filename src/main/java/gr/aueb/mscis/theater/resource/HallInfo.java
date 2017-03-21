@@ -66,12 +66,12 @@ public class HallInfo {
 		this.sectors = sectors;
 	}
 	
-	public static List<HallInfo> wrap(List<Hall> halls) {
+	public static List<HallInfo> wrap(List<Hall> halls, boolean alldata) {
 
 		List<HallInfo> hallInfoList = new ArrayList<HallInfo>();
 
 		for (Hall h : halls) {
-			hallInfoList.add(new HallInfo(h,true));
+			hallInfoList.add(new HallInfo(h,alldata));
 		}
 
 		return hallInfoList;

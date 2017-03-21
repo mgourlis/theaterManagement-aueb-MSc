@@ -1,6 +1,7 @@
 package gr.aueb.mscis.theater.resource;
 
 import gr.aueb.mscis.theater.model.Play;
+import gr.aueb.mscis.theater.model.Role;
 
 import javax.persistence.EntityManager;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -8,7 +9,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Myron on 9/2/2017.
@@ -43,11 +46,11 @@ public class PlayInfo {
             this.roles = RoleInfo.wrap(play.getRoles());
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -65,6 +68,14 @@ public class PlayInfo {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<RoleInfo> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleInfo> roles) {
+        this.roles = roles;
     }
 
     public static PlayInfo wrap(Play b, Boolean alldata) {
@@ -95,6 +106,14 @@ public class PlayInfo {
 
         play.setTitle(title);
         play.setDescription(description);
+        Set<Role> inforoles = new HashSet<Role>();
+        for(RoleInfo r : roles){
+            Role role = r.getRole(em);
+            role.setPlay(play);
+            inforoles.add(role);
+        }
+        play.getRoles().clear();
+        play.getRoles().addAll(inforoles);
 
 
         return play;

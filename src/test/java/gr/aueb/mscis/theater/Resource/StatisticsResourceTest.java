@@ -1,21 +1,16 @@
-package gr.aueb.mscis.theater.Resource;
+package gr.aueb.mscis.theater.resource;
 
-import java.util.Calendar;
-import java.util.List;
-
-import javax.ws.rs.core.Application;
-
+import gr.aueb.mscis.theater.model.Play;
+import gr.aueb.mscis.theater.service.FlashMessageService;
+import gr.aueb.mscis.theater.service.FlashMessageServiceImpl;
+import gr.aueb.mscis.theater.service.PlayService;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Assert;
 import org.junit.Test;
 
-import gr.aueb.mscis.theater.model.Play;
-import gr.aueb.mscis.theater.resource.DebugExceptionMapper;
-import gr.aueb.mscis.theater.resource.StatisticsInfo;
-import gr.aueb.mscis.theater.resource.StatisticsResource;
-import gr.aueb.mscis.theater.service.FlashMessageService;
-import gr.aueb.mscis.theater.service.FlashMessageServiceImpl;
-import gr.aueb.mscis.theater.service.PlayService;
+import javax.ws.rs.core.Application;
+import java.util.Calendar;
+import java.util.List;
 
 public class StatisticsResourceTest extends TheaterResourceTest {
 

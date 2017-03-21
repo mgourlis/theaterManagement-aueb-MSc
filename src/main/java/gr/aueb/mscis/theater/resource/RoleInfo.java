@@ -3,6 +3,7 @@ package gr.aueb.mscis.theater.resource;
 import gr.aueb.mscis.theater.model.Role;
 import gr.aueb.mscis.theater.model.RoleType;
 
+import javax.persistence.EntityManager;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -86,5 +87,23 @@ public class RoleInfo {
 
         return roleInfoList;
 
+    }
+
+    public Role getRole(EntityManager em) {
+
+        Role role = null;
+
+        if (id != null) {
+            role = em.find(Role.class, id);
+        } else {
+            role = new Role();
+        }
+
+        role.setName(name);
+        role.setRoleType(roleType);
+        if(agent != null)
+            role.setAgent(agent.getAgent(em));
+
+        return role;
     }
 }
