@@ -28,11 +28,9 @@ public class PurchaseResourceTest extends TheaterResourceTest {
 	
 	@Override
 	protected Application configure() {
-		/*
-		 * 
-		 */
-		return new ResourceConfig(PurchaseResource.class, DebugExceptionMapper.class);
-	}
+
+        return new ResourceConfig(PurchaseResource.class, DebugExceptionMapper.class);
+    }
 
     @Test
     public void testCreateNewPurchase() {

@@ -30,7 +30,7 @@ public class PurchaseTest {
 	@Before
     public void setUp() throws Exception {
 		testDate = new Date();
-		purchase = new Purchase(testDate, "tameio", 3, 45.50);
+		purchase = new Purchase(testDate, "tameio", 3);
 		user1 = new User("user_fname", "user_lname", "email@aueb.gr", "passw0rd", "Female", new Date(), "6942424242");
 		user2 = new User("user2_fname", "user2_lname", "email2@aueb.gr", "pass2w0rd", "Female", new Date(), "6942424242");
 
@@ -102,10 +102,10 @@ public class PurchaseTest {
     	Assert.assertEquals(Integer.valueOf(1), purchase.getQuantity());
     }
 
-    @Test
-    public void getTotalAmount() throws Exception {
-    	Assert.assertEquals(Double.valueOf(45.50), purchase.getTotalAmount());
-    }
+//    @Test
+//    public void getTotalAmount() throws Exception {
+//    	Assert.assertEquals(Double.valueOf(45.50), purchase.getTotalAmount());
+//    }
     
     @Test
     public void setTotalAmount() throws Exception {
@@ -117,7 +117,7 @@ public class PurchaseTest {
     @Test
     public void isEqual() throws Exception {
     	purchase.setUser(user1);
-		Purchase newPurchase = new Purchase(testDate, "tameio", 3, 45.50);
+		Purchase newPurchase = new Purchase(testDate, "tameio", 3);
 		newPurchase.setUser(user1);
 		Assert.assertTrue(newPurchase.equals(purchase));
     }
@@ -125,7 +125,7 @@ public class PurchaseTest {
     @Test
     public void userNotEqual() throws Exception {
     	purchase.setUser(user1);
-		Purchase newPurchase = new Purchase(testDate, "tameio", 3, 45.50);
+		Purchase newPurchase = new Purchase(testDate, "tameio", 3);
 		newPurchase.setUser(user2);
 		Assert.assertFalse(newPurchase.equals(purchase));
     }
@@ -133,7 +133,7 @@ public class PurchaseTest {
     @Test
     public void wayOfPurchaseNotEqual() throws Exception {
     	purchase.setUser(user1);
-		Purchase newPurchase = new Purchase(testDate, "internet", 3, 45.50);
+		Purchase newPurchase = new Purchase(testDate, "internet", 3);
 		newPurchase.setUser(user1);
 		Assert.assertFalse(newPurchase.equals(purchase));
     }

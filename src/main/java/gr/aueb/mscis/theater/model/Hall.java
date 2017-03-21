@@ -1,8 +1,11 @@
 package gr.aueb.mscis.theater.model;
 
 import javax.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -81,6 +84,21 @@ public class Hall {
     }
 
     public void setSectors(Set<Sector> sectors) { this.sectors = sectors; }
+    /**
+     * Επιστρέφει το σύνολο των θέσεων από όλους τους τομείς
+     * @return σύνολο θέσεων
+     */
+    public Integer getTotalNumOfSeats() {
+        List<Sector> sectorList = new ArrayList<Sector>(sectors);
+        Integer totalNumOfSeats = 0;
+        
+        for (int i=0; i<sectorList.size(); i++)
+        	totalNumOfSeats += sectorList.get(i).getNumOfSeats();
+
+        return totalNumOfSeats;
+    }
+
+    
     /**
      * Εισάγει Τομέα στην αίθουσα
      * @param tempSector ο Τομέας

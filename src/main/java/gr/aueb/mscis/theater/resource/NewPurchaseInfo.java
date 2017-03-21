@@ -21,13 +21,13 @@ public class NewPurchaseInfo {
     private Integer showId;
     @XmlElement(name="userId")
     private Integer userId;
-	@XmlElementWrapper(name = "seatIdswrapper")
-	@XmlElement(name = "seatIds")
+    @XmlElementWrapper(name = "seatIdswrapper")
+    @XmlElement(name = "seatIds")
     private List<Integer> seatIds;
 
     public NewPurchaseInfo() {
 
-	}
+    }
     
     public NewPurchaseInfo(Integer showId, Integer userId, List<Integer> seatIds) {
         this.showId = showId;
@@ -35,42 +35,42 @@ public class NewPurchaseInfo {
         this.seatIds = seatIds;
     } 
     
-	public Integer getShowId() {
-		return showId;
-	}
+    public Integer getShowId() {
+        return showId;
+    }
 	
-	public void setShowId(Integer showId) {
-		this.showId = showId;
-	}
+    public void setShowId(Integer showId) {
+        this.showId = showId;
+    }
 
-	public Integer getUserId() {
-		return userId;
-	}
+    public Integer getUserId() {
+        return userId;
+    }
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
-	public List<Integer> getSeatIds() {
-		return seatIds;
-	}
+    public List<Integer> getSeatIds() {
+        return seatIds;
+    }
 
-	public void setSeatIds(List<Integer> seatIds) {
-		this.seatIds = seatIds;
-	}
+    public void setSeatIds(List<Integer> seatIds) {
+        this.seatIds = seatIds;
+    }
 
-	public List<Seat> getSeats(EntityManager em) {
+    public List<Seat> getSeats(EntityManager em) {
 
-		List<Seat> seatList = new ArrayList<Seat>();
-		Seat seat = new Seat();
-		
-		for (Integer sId : seatIds) {
-			seat = em.getReference(Seat.class, sId);
-			seatList.add(seat);
-		}
+        List<Seat> seatList = new ArrayList<Seat>();
+        Seat seat = new Seat();
+    
+        for (Integer sId : seatIds) {
+            seat = em.getReference(Seat.class, sId);
+            seatList.add(seat);
+        }
 
-		return seatList;
-	}
+        return seatList;
+    }
 
     public Purchase createNewPurchase(EntityManager em) {
 
@@ -83,11 +83,11 @@ public class NewPurchaseInfo {
         Show show = em.getReference(Show.class, showId);
         User user = em.getReference(User.class, userId);
 
-        purchase = new Purchase(new Date(), "internet", seats.size(), 5.0); //5.0: it will be fixed later
+        purchase = new Purchase(new Date(), "internet", seats.size());
         purchase.setUser(user);
         
         for (Seat s : seats) {
-			purchase.setTicket(new Ticket(show, s, new SerialNumberProviderImpl()));
+            purchase.setTicket(new Ticket(show, s, new SerialNumberProviderImpl()));
         }
 
         purchase = purchaseService.save(purchase);
