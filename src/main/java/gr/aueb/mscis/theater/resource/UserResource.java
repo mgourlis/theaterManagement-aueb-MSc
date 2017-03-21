@@ -23,7 +23,7 @@ public class UserResource {
     @Context
     UriInfo uriInfo;
 
-    @POST
+/*    @POST
     @Consumes("application/json")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response createUser(NewUserInfo newUserInfo) {
@@ -43,4 +43,5 @@ public class UserResource {
 		
 		return Response.created(newUserUri).build();
     }
+*/
 }

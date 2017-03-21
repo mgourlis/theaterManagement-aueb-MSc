@@ -2,13 +2,13 @@ package gr.aueb.mscis.theater.resource;
 
 import gr.aueb.mscis.theater.model.Show;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.xml.bind.annotation.*;
 //import gr.aueb.mscis.theater.model.Ticket;
 
 @XmlRootElement
@@ -39,7 +39,7 @@ public class ShowInfo {
 		this.date = show.getDate();
 		this.price = show.getPrice();
 		this.canceled = show.isCanceled();
-		this.play = PlayInfo.wrap(show.getPlay());
+		this.play = PlayInfo.wrap(show.getPlay(),false);
 		this.hall = new HallInfo(show.getHall(),false);
 //		this.tickets = tickets;
 	}

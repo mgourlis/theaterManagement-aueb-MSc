@@ -1,30 +1,6 @@
 package gr.aueb.mscis.theater.Resource;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response.Status;
-import javax.xml.bind.annotation.XmlElement;
-
-import org.glassfish.jersey.server.ResourceConfig;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import org.glassfish.jersey.server.ResourceConfig;
-
-import gr.aueb.mscis.theater.model.Play;
-import gr.aueb.mscis.theater.model.Seat;
-import gr.aueb.mscis.theater.model.Sector;
-import gr.aueb.mscis.theater.model.Show;
-import gr.aueb.mscis.theater.model.User;
+import gr.aueb.mscis.theater.model.*;
 import gr.aueb.mscis.theater.resource.DebugExceptionMapper;
 import gr.aueb.mscis.theater.resource.NewPurchaseInfo;
 import gr.aueb.mscis.theater.resource.PurchaseResource;
@@ -32,6 +8,20 @@ import gr.aueb.mscis.theater.service.FlashMessageService;
 import gr.aueb.mscis.theater.service.FlashMessageServiceImpl;
 import gr.aueb.mscis.theater.service.PlayService;
 import gr.aueb.mscis.theater.service.UserService;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.junit.Assert;
+import org.junit.Test;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Application;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 public class PurchaseResourceTest extends TheaterResourceTest {
 
@@ -90,7 +80,7 @@ public class PurchaseResourceTest extends TheaterResourceTest {
         seatIds.add(seatList.get(1).getId());
         seatIds.add(seatList.get(2).getId());
         Assert.assertEquals(3, seatIds.size());
-    
+
         NewPurchaseInfo newPurchaseInfo = new NewPurchaseInfo(showId, userId, seatIds);
     
         Response response = target("purchase").request().post(Entity.entity(newPurchaseInfo, MediaType.APPLICATION_JSON));

@@ -3,6 +3,9 @@ package gr.aueb.mscis.theater.resource;
 import gr.aueb.mscis.theater.model.Play;
 
 import javax.persistence.EntityManager;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +14,17 @@ import java.util.List;
  * Created by Myron on 9/2/2017.
  */
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class PlayInfo {
 
+    @XmlElement(name = "playid")
     private Integer id;
+    @XmlElement(name = "playtitle")
     private String title;
+    @XmlElement(name = "playdescription")
     private String description;
+    @XmlElement(name = "playroles")
+    private List<RoleInfo> roles;
 
     public PlayInfo() {
 
@@ -26,10 +35,12 @@ public class PlayInfo {
         this.description = description;
     }
 
-    public PlayInfo(Play play) {
+    public PlayInfo(Play play, Boolean alldata) {
         this.id = play.getId();
         this.title = play.getTitle();
         this.description = play.getDescription();
+        if(alldata)
+            this.roles = RoleInfo.wrap(play.getRoles());
     }
 
     public int getId() {
@@ -56,16 +67,16 @@ public class PlayInfo {
         this.description = description;
     }
 
-    public static PlayInfo wrap(Play b) {
-        return new PlayInfo(b);
+    public static PlayInfo wrap(Play b, Boolean alldata) {
+        return new PlayInfo(b,alldata);
     }
 
-    public static List<PlayInfo> wrap(List<Play> plays) {
+    public static List<PlayInfo> wrap(List<Play> plays, Boolean alldata) {
 
         List<PlayInfo> playInfoList = new ArrayList<>();
 
         for (Play b : plays) {
-            playInfoList.add(new PlayInfo(b));
+            playInfoList.add(new PlayInfo(b,alldata));
         }
 
         return playInfoList;

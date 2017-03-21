@@ -50,7 +50,7 @@ public class Ticket {
      * @param serial ο σειριακός αριθμός του εισιτηρίου
      */
     public Ticket(Show show, Seat seat, SerialNumberProvider serial) {
-        if(!show.getHall().equals(seat.getSector().getHall()))
+        if(!show.getHall().getName().equals(seat.getSector().getHall().getName()))
             throw new IllegalArgumentException("Not same Hall between show and seat");
         this.show = show;
         this.seat = seat;

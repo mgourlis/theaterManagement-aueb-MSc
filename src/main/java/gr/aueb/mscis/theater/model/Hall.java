@@ -133,7 +133,6 @@ public class Hall {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Hall hall = (Hall) o;
 
         return name.equals(hall.name);

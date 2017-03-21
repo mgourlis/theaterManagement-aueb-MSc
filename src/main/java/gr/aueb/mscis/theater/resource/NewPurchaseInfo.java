@@ -1,28 +1,18 @@
 package gr.aueb.mscis.theater.resource;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import gr.aueb.mscis.theater.model.*;
+import gr.aueb.mscis.theater.service.FlashMessageService;
+import gr.aueb.mscis.theater.service.FlashMessageServiceImpl;
+import gr.aueb.mscis.theater.service.PurchaseService;
+import gr.aueb.mscis.theater.service.SerialNumberProviderImpl;
 
 import javax.persistence.EntityManager;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.junit.Assert;
-
-import gr.aueb.mscis.theater.model.Hall;
-import gr.aueb.mscis.theater.model.Play;
-import gr.aueb.mscis.theater.model.Purchase;
-import gr.aueb.mscis.theater.model.Seat;
-import gr.aueb.mscis.theater.model.Show;
-import gr.aueb.mscis.theater.model.Ticket;
-import gr.aueb.mscis.theater.model.User;
-import gr.aueb.mscis.theater.service.FlashMessageService;
-import gr.aueb.mscis.theater.service.FlashMessageServiceImpl;
-import gr.aueb.mscis.theater.service.PurchaseService;
-import gr.aueb.mscis.theater.service.SerialNumberProvider;
-import gr.aueb.mscis.theater.service.SerialNumberProviderImpl;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @XmlRootElement
 public class NewPurchaseInfo {
@@ -97,7 +87,7 @@ public class NewPurchaseInfo {
         purchase.setUser(user);
         
         for (Seat s : seats) {
-            purchase.setTicket(new Ticket(show, s, new SerialNumberProviderImpl()));
+			purchase.setTicket(new Ticket(show, s, new SerialNumberProviderImpl()));
         }
 
         purchase = purchaseService.save(purchase);

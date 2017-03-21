@@ -14,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+import java.util.List;
 
 /**
  * Created by Myron on 9/2/2017.
@@ -26,9 +27,28 @@ public class PlayResource {
     UriInfo uriInfo;
 
     @GET
-    @Path("{playId:[0-9]*}")
     @Produces(MediaType.APPLICATION_JSON)
-    public PlayInfo getBookDetails(@PathParam("playId") int playId) {
+    public List<PlayInfo> getPlays() {
+
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+
+        FlashMessageService flashserv = new FlashMessageServiceImpl();
+
+        PlayService playService = new PlayService(flashserv);
+        List<Play> plays = playService.findAllPlays();
+
+        List<PlayInfo> playInfoes = PlayInfo.wrap(plays,true);
+
+        em.close();
+
+        return playInfoes;
+
+    }
+
+    @GET
+    @Path("{playId:[0-9]*}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public PlayInfo getPlayDetails(@PathParam("playId") int playId) {
 
         EntityManager em = JPAUtil.getCurrentEntityManager();
 
@@ -37,11 +57,14 @@ public class PlayResource {
         PlayService playService = new PlayService(flashserv);
         Play play = playService.findPlayById(playId);
 
-        PlayInfo playInfo = PlayInfo.wrap(play);
+        PlayInfo playInfo = PlayInfo.wrap(play,true);
 
         em.close();
 
         return playInfo;
 
     }
+
+
+
 }
