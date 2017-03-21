@@ -31,13 +31,19 @@ public class NewPurchaseInfo {
     private Integer showId;
     @XmlElement(name="userId")
     private Integer userId;
-//	@XmlElementWrapper(name = "")
+	@XmlElementWrapper(name = "seatIdswrapper")
 	@XmlElement(name = "seatIds")
     private List<Integer> seatIds;
 
     public NewPurchaseInfo() {
 
 	}
+    
+    public NewPurchaseInfo(Integer showId, Integer userId, List<Integer> seatIds) {
+        this.showId = showId;
+        this.userId = userId;
+        this.seatIds = seatIds;
+    } 
     
 	public Integer getShowId() {
 		return showId;

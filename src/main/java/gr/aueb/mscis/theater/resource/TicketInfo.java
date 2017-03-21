@@ -1,17 +1,14 @@
 package gr.aueb.mscis.theater.resource;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import gr.aueb.mscis.theater.model.Purchase;
-import gr.aueb.mscis.theater.model.Seat;
-import gr.aueb.mscis.theater.model.Show;
 import gr.aueb.mscis.theater.model.Ticket;
 
+import javax.xml.bind.annotation.*;
+
 @XmlRootElement
-//@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TicketInfo {
 
     @XmlElement(name="id")

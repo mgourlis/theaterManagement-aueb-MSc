@@ -37,7 +37,7 @@ public class PurchaseResource {
         PurchaseInfo.wrap(purchase);
 
 		UriBuilder ub = uriInfo.getAbsolutePathBuilder();
-		URI newPurchaseUri = ub.path(Integer.toString(purchase.getId())).build();
+		URI newPurchaseUri = ub.path("purchase"+"/"+Integer.toString(purchase.getId())).build();
 
         em.close();
 		

@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.xml.bind.annotation.*;
 //import gr.aueb.mscis.theater.model.Ticket;
 
 @XmlRootElement
-//@XmlAccessorType(XmlAccessType.FIELD)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ShowInfo {
 
 	@XmlElement(name="id")
