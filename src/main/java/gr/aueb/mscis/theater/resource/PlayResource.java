@@ -1,10 +1,10 @@
 package gr.aueb.mscis.theater.resource;
 
+import gr.aueb.mscis.theater.model.Hall;
 import gr.aueb.mscis.theater.model.Play;
+import gr.aueb.mscis.theater.model.Show;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
-import gr.aueb.mscis.theater.service.FlashMessageService;
-import gr.aueb.mscis.theater.service.FlashMessageServiceImpl;
-import gr.aueb.mscis.theater.service.PlayService;
+import gr.aueb.mscis.theater.service.*;
 
 import javax.persistence.EntityManager;
 import javax.ws.rs.*;
@@ -82,6 +82,40 @@ public class PlayResource {
         em.close();
 
         return Response.created(playUri).build();
+    }
+
+    @POST
+    @Path("createshowprogram")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public Response createShowProgram(ProgramInfo program){
+
+        EntityManager em = JPAUtil.getCurrentEntityManager();
+
+        FlashMessageService flashserv = new FlashMessageServiceImpl();
+
+        ShowService showService = new ShowService(flashserv);
+        HallService hallService = new HallService(flashserv);
+        PlayService playService = new PlayService(flashserv);
+
+        //Validate program data
+
+        Play play = playService.findPlayById(program.getPlayId());
+        Hall hall = hallService.findHallById(program.getHallid());
+
+        if(play == null || hall == null){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        List<Show> shows = showService.createProgram(play,hall,program.getStartdate(),program.getEnddate(),program.getPrice());
+
+        if(shows == null){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        if(shows.isEmpty()){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
+        return Response.ok().build();
     }
 
     @PUT

@@ -1,10 +1,10 @@
 package gr.aueb.mscis.theater.resource;
 
+import gr.aueb.mscis.theater.model.Hall;
 import gr.aueb.mscis.theater.model.Play;
+import gr.aueb.mscis.theater.model.Show;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
-import gr.aueb.mscis.theater.service.FlashMessageService;
-import gr.aueb.mscis.theater.service.FlashMessageServiceImpl;
-import gr.aueb.mscis.theater.service.PlayService;
+import gr.aueb.mscis.theater.service.*;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,6 +15,8 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -138,5 +140,38 @@ public class PlayResourceTest extends TheaterResourceTest{
 
         Assert.assertEquals(delplays.size(),plays.size()-1);
 
+    }
+
+    @Test
+    public  void testCreateProgramFromPlay(){
+        FlashMessageService flashserv = new FlashMessageServiceImpl();
+
+        PlayService playService = new PlayService(flashserv);
+        HallService hallService = new HallService(flashserv);
+        ShowService showService = new ShowService(flashserv);
+
+        List<Show> shows = showService.findAllShows();
+
+        Play play = playService.findAllPlays().get(1);
+        Hall hall = hallService.findAllHalls().get(1);
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE,100);
+        cal.set(Calendar.MILLISECOND,0);
+        cal.set(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH),0,0,0);
+
+        Date startdate = cal.getTime();
+        cal.add(Calendar.DATE,9);
+        Date enddate = cal.getTime();
+
+        ProgramInfo programInfo = new ProgramInfo(startdate,enddate,play.getId(),hall.getId(),15.0);
+
+        Response resp = target("play/createshowprogram").request().post(Entity.entity(programInfo, MediaType.APPLICATION_JSON));
+
+        Assert.assertEquals(200,resp.getStatus());
+
+        List<Show> newshows = showService.findAllShows();
+
+        Assert.assertEquals(shows.size()+10,newshows.size());
     }
 }
