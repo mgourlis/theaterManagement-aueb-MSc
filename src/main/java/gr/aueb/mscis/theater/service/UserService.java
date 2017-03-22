@@ -1,7 +1,10 @@
 package gr.aueb.mscis.theater.service;
 
+import gr.aueb.mscis.theater.model.Hall;
 import gr.aueb.mscis.theater.model.User;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
+
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -15,6 +18,20 @@ public class UserService {
         this.flashserv = flashserv;
     }
 
+    public List<User> findAllUsers() {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        List<User> results = null;
+        results = em.createQuery("select user from User user").getResultList();        
+        if (results.isEmpty()) {
+            flashserv.addMessage("No results found", FlashMessageType.Info);
+        }
+        tx.commit();
+
+        return results;
+    }
+    
 	public User findUserById(int id) {
 		return em.find(User.class, id);
 	}

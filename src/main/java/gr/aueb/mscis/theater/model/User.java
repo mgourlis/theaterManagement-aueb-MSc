@@ -197,6 +197,14 @@ public class User {
     }
 
     /**
+     * Προσθέτει ένα αντικείμενο τύπου UserCategory.
+     * @param userCategory Το αντικείμενο τύπου UserCategory
+     */
+    public void setUserCategory(UserCategory userCategory) {
+        this.userCategory = userCategory;
+    }
+    
+    /**
      * Επιστρέφει ένα αντικείμενο τύπου UserCategory.
      * @return Το αντικείμενο τύπου UserCategory
      */

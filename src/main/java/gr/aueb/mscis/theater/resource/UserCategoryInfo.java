@@ -6,12 +6,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
 import gr.aueb.mscis.theater.model.Play;
 import gr.aueb.mscis.theater.model.Purchase;
+import gr.aueb.mscis.theater.model.Sector;
 import gr.aueb.mscis.theater.model.Ticket;
 import gr.aueb.mscis.theater.model.User;
 import gr.aueb.mscis.theater.model.UserCategory;
@@ -31,19 +34,20 @@ public class UserCategoryInfo {
     private Date birthday;
 	@XmlElement(name="telephone")
     private String telephone;
-	@XmlElement(name="users")
-    private Set<User> users = new HashSet<User>();
+	@XmlElementWrapper(name = "UserInfoes")
+	@XmlElement(name="UserInfo")
+    private List<UserInfo> users;
     
 	public UserCategoryInfo() {		
 	}
 
-    public UserCategoryInfo(UserCategory userCategory) {
-		
+    public UserCategoryInfo(UserCategory userCategory) {		
 		this.id = userCategory.getId();
 		this.category = userCategory.getCategory();
         this.gender = userCategory.getGender();
         this.birthday = userCategory.getBirthday();
         this.telephone = userCategory.getTelephone();
+        this.users = UserInfo.wrap((List<User>) userCategory.getUsers());
     }
 
     public Integer getId() {
@@ -81,8 +85,50 @@ public class UserCategoryInfo {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
-	
-	
-	
 
+	public List<UserInfo> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<UserInfo> users) {
+		this.users = users;
+    }
+	
+    public static List<UserCategoryInfo> wrap(List<UserCategory> UserCategories) {
+
+		List<UserCategoryInfo> UserCategoryInfoList = new ArrayList<UserCategoryInfo>();
+
+		for (UserCategory u : UserCategories) {
+			UserCategoryInfoList.add(new UserCategoryInfo(u));
+		}
+
+		return UserCategoryInfoList;
+    }	
+	
+	public UserCategory getUserCategory(EntityManager em){
+
+		UserCategory userCategory = null;
+
+		if (id != null) {
+			userCategory = em.find(UserCategory.class, id);
+		} else {
+			userCategory = new UserCategory();
+		}
+		
+		userCategory.setCategory(category);
+        userCategory.setGender(gender);
+        userCategory.setBirthday(birthday);
+        userCategory.setTelephone(telephone);
+		List<User> newUsers = new ArrayList<User>();
+		for (UserInfo u : users){
+			User user = u.getUser(em);
+			user.setUserCategory(userCategory);
+			newUsers.add(user);
+		}
+		userCategory.getUsers().clear();
+		userCategory.getUsers().addAll(newUsers);
+
+		return userCategory;
+    }
+	
 }

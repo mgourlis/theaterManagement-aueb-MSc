@@ -123,4 +123,11 @@ public class UserCategory {
         this.telephone = telephone;
     }
 
+    /**
+     * Επιστρέφει σύνολο των Χρηστών που ανήκει σε αυτή την Κατηγορία
+     * @return σύνολο Χρηστών
+     */
+    public Set<User> getUsers() {
+        return users;
+    }
 }
