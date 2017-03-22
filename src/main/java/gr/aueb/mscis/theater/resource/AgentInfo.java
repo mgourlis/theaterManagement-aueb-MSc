@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * Created by myrgo on 20/3/2017.
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AgentInfo {

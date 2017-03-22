@@ -17,9 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-/**
- * Created by myrgo on 21/3/2017.
- */
+
 public class AgentResourceTest extends TheaterResourceTest{
 
     public AgentResourceTest() {
@@ -28,9 +26,6 @@ public class AgentResourceTest extends TheaterResourceTest{
 
     @Override
     protected Application configure() {
-		/*
-		 *
-		 */
         return new ResourceConfig(AgentResource.class, DebugExceptionMapper.class);
     }
 

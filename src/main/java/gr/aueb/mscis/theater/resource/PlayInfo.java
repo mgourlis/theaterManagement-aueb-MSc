@@ -13,9 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Myron on 9/2/2017.
- */
+
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PlayInfo {

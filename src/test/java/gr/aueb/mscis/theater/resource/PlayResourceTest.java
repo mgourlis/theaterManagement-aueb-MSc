@@ -19,9 +19,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by myrgo on 21/3/2017.
- */
 public class PlayResourceTest extends TheaterResourceTest{
 
     public PlayResourceTest() {

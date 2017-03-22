@@ -25,9 +25,6 @@ public class HallResourceTest extends TheaterResourceTest {
 	
 	@Override
 	protected Application configure() {
-		/*
-		 * 
-		 */
 		return new ResourceConfig(HallResource.class, DebugExceptionMapper.class);
 	}
 	

@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-//import gr.aueb.mscis.theater.model.Ticket;
+
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -30,9 +30,7 @@ public class ShowInfo {
 	private HallInfo hall;
 	@XmlElement(name="message")
 	private String message;
-//	@XmlElement(name="tickets")
-//	private Set<Ticket> tickets = new HashSet<Ticket>();
-	
+
 	public ShowInfo() {
 
 	}
@@ -44,7 +42,6 @@ public class ShowInfo {
 		this.canceled = show.isCanceled();
 		this.play = PlayInfo.wrap(show.getPlay(),false);
 		this.hall = new HallInfo(show.getHall(),false);
-//		this.tickets = tickets;
 	}
 
 	public int getId() {
@@ -94,14 +91,7 @@ public class ShowInfo {
 	public void setHall(HallInfo hall) {
 		this.hall = hall;
 	}
-//	
-//	public Set<Ticket> getTickets() {
-//		return tickets;
-//	}
-//	
-//	public void setTickets(Set<Ticket> tickets) {
-//		this.tickets = tickets;
-//	}
+
 
 
 	public String getMessage() {

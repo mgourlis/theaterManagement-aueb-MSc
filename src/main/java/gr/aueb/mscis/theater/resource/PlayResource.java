@@ -12,9 +12,6 @@ import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.List;
 
-/**
- * Created by Myron on 9/2/2017.
- */
 
 @Path("play")
 public class PlayResource {

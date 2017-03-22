@@ -12,9 +12,6 @@ import javax.ws.rs.core.*;
 import java.net.URI;
 import java.util.List;
 
-/**
- * Created by myrgo on 21/3/2017.
- */
 @Path("agent")
 public class AgentResource {
 

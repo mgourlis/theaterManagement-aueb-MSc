@@ -3,9 +3,6 @@ package gr.aueb.mscis.theater.resource;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
-/**
- * Created by myrgo on 22/3/2017.
- */
 @XmlRootElement
 public class ProgramInfo {
 

@@ -1,7 +1,34 @@
 package gr.aueb.mscis.theater.resource;
 
-/**
- * Created by Myron on 22/3/2017.
- */
-public class ShowResourceTest {
+
+import org.glassfish.jersey.server.ResourceConfig;
+import org.junit.Test;
+
+import javax.ws.rs.core.Application;
+
+public class ShowResourceTest extends TheaterResourceTest {
+
+    public ShowResourceTest() {
+        super();
+    }
+
+    @Override
+    protected Application configure() {
+        return new ResourceConfig(ShowResource.class, DebugExceptionMapper.class);
+    }
+
+    @Test
+    public void testSearchShowByName() {
+
+    }
+
+    @Test
+    public void testGetFreeSeats() {
+
+    }
+
+    @Test
+    public void testUpdateShow() {
+
+    }
 }

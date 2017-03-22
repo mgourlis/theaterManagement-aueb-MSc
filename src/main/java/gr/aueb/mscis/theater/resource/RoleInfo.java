@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by myrgo on 20/3/2017.
- */
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RoleInfo {
