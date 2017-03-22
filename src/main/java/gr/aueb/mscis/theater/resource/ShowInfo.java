@@ -2,6 +2,7 @@ package gr.aueb.mscis.theater.resource;
 
 import gr.aueb.mscis.theater.model.Show;
 
+import javax.persistence.EntityManager;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -27,6 +28,8 @@ public class ShowInfo {
 	private PlayInfo play;
 	@XmlElement(name="hall")
 	private HallInfo hall;
+	@XmlElement(name="message")
+	private String message;
 //	@XmlElement(name="tickets")
 //	private Set<Ticket> tickets = new HashSet<Ticket>();
 	
@@ -99,7 +102,16 @@ public class ShowInfo {
 //	public void setTickets(Set<Ticket> tickets) {
 //		this.tickets = tickets;
 //	}
-	
+
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	public static List<ShowInfo> wrap(List<Show> shows) {
 
 		List<ShowInfo> showInfoList = new ArrayList<ShowInfo>();
@@ -110,6 +122,14 @@ public class ShowInfo {
 
 		return showInfoList;
 
+	}
+
+	public Show getShow(EntityManager em){
+		Show show = null;
+
+
+
+		return show;
 	}
 	
 }

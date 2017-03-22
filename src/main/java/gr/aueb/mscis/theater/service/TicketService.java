@@ -15,6 +15,21 @@ public class TicketService {
         this.flashserv = flashserv;
     }
 
+    public Ticket findTicketBySerialNo(String serialNo) {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Ticket ticket = null;
+        try {
+            ticket = ((Ticket) em.createQuery("select t from Ticket t where t.serial = :serialno")
+                    .setParameter("serialno", serialNo).getSingleResult());
+        } catch (NoResultException ex) {
+            tx.rollback();
+            flashserv.addMessage("Ticket not found", FlashMessageType.Warning);
+        }
+        tx.commit();
+        return ticket;
+    }
+
     public Ticket save(Ticket ticket) {
         EntityTransaction tx = em.getTransaction();
         tx.begin();

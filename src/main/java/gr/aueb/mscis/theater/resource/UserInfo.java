@@ -14,9 +14,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
-import gr.aueb.mscis.theater.model.Purchase;
-import gr.aueb.mscis.theater.model.Sector;
-import gr.aueb.mscis.theater.model.User;
+import gr.aueb.mscis.theater.model.*;
 
 @XmlRootElement
 public class UserInfo {
@@ -31,11 +29,14 @@ public class UserInfo {
     private String email;
     @XmlElement(name="password")
     private String password;
-    @XmlElement(name="token")
-    private String token;
-	@XmlElementWrapper(name = "PurchaseInfoes")
-	@XmlElement(name = "PurchaseInfo")
-	private List<PurchaseInfo> purchases;
+	@XmlElement(name="category")
+	private UserType category;
+	@XmlElement(name="gender")
+	private String gender;
+	@XmlElement(name="birthday")
+	private Date birthday;
+	@XmlElement(name="telephone")
+	private String telephone;
 	
 	public UserInfo() {		
 	}
@@ -46,8 +47,6 @@ public class UserInfo {
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.token = user.getToken();
-		//this.purchases = PurchaseInfo.wrap(user.getPurchases());      ==>  Perimenw to "PurchaseInfo wrap(Purchase purchase)" sto PurchaseInfo 
     }
 	
 	public Integer getId() {
@@ -88,25 +87,41 @@ public class UserInfo {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}	
-	
-	public String getToken() {
-		return token;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
-	}	
-
-	public List<PurchaseInfo> getPurchases() {
-		return purchases;
+	public UserType getCategory() {
+		return category;
 	}
 
-	public void setPurchases(List<PurchaseInfo> purchases) {
-		this.purchases = purchases;
-    }
-	
-    public static List<UserInfo> wrap(List<User> Users) {
+	public void setCategory(UserType category) {
+		this.category = category;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
+
+	public static List<UserInfo> wrap(List<User> Users) {
 
 		List<UserInfo> UserInfoList = new ArrayList<UserInfo>();
 
@@ -117,30 +132,46 @@ public class UserInfo {
 		return UserInfoList;
     }
 
-	public User getUser(EntityManager em){
+	public User getNewUser(EntityManager em, UserType type){
 
-		User user = null;
-
-		if (id != null) {
-			user = em.find(User.class, id);
-		} else {
-			user = new User();
-		}
+		User user = new User();
 
 		user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
         user.setPassword(password);
-        user.setToken(token);
-		List<Purchase> newPurchases = new ArrayList<Purchase>();
-		for (PurchaseInfo p : purchases){
-			//Purchase purchase = p.getPurchase(em);     ==>  Perimenw to "Purchase getPurchase(EntityManager em)" sto PurchaseInfo
-			//purchase.setUser(user);
-			//newPurchases.add(purchase);
+		user.setUserCategory(new UserCategory(type));
+
+        if(type == UserType.Customer){
+			user.getUserCategory().setBirthday(birthday);
+			user.getUserCategory().setGender(gender);
+			user.getUserCategory().setTelephone(telephone);
 		}
-		user.getPurchases().clear();
-		user.getPurchases().addAll(newPurchases);
 
 		return user;
     }
+
+	public User getExistingUser(EntityManager em, UserType type){
+
+		User user = null;
+
+		if (id != null) {
+			user = em.find(User.class, id);
+		}
+
+		if(user != null) {
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
+			user.setPassword(password);
+			user.setUserCategory(new UserCategory(type));
+
+			if (type == UserType.Customer) {
+				user.getUserCategory().setBirthday(birthday);
+				user.getUserCategory().setGender(gender);
+				user.getUserCategory().setTelephone(telephone);
+			}
+		}
+
+		return user;
+	}
 }

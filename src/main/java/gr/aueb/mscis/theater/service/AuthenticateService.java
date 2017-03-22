@@ -47,12 +47,12 @@ public class AuthenticateService {
         return null;
     }
 
-    public User logout(int userId){
+    public User logout(int userId, String token){
         User user = userv.findUserById(userId);
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         if(user != null){
-            if(isAuthenticated(user.getId(),user.getToken()) != null){
+            if(isAuthenticated(userId,token) != null){
                 user.setToken(null);
                 em.merge(user);
                 em.flush();

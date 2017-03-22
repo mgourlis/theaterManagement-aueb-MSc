@@ -2,6 +2,7 @@ package gr.aueb.mscis.theater.service;
 
 import gr.aueb.mscis.theater.model.Hall;
 import gr.aueb.mscis.theater.model.User;
+import gr.aueb.mscis.theater.model.UserType;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
 
 import java.util.List;
@@ -18,12 +19,26 @@ public class UserService {
         this.flashserv = flashserv;
     }
 
-    public List<User> findAllUsers() {
+    public List<User> findAllCustomers() {
         EntityTransaction tx = em.getTransaction();
         tx.begin();
 
         List<User> results = null;
-        results = em.createQuery("select user from User user").getResultList();        
+        results = em.createQuery("select user from User user where user.userCategory.category = :cattype").setParameter("cattype", UserType.Customer).getResultList();
+        if (results.isEmpty()) {
+            flashserv.addMessage("No results found", FlashMessageType.Info);
+        }
+        tx.commit();
+
+        return results;
+    }
+
+    public List<User> findAllEmployees() {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+
+        List<User> results = null;
+        results = em.createQuery("select user from User user where user.userCategory.category != :cattype").setParameter("cattype", UserType.Customer).getResultList();
         if (results.isEmpty()) {
             flashserv.addMessage("No results found", FlashMessageType.Info);
         }

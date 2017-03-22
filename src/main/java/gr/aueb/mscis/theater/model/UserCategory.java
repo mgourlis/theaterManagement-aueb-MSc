@@ -50,6 +50,10 @@ public class UserCategory {
         this.telephone = telephone;
     }
 
+    public UserCategory(UserType category) {
+        this.category = category;
+    }
+
     /**
      * Επιστρέφει το id του αντικειμένου στη Βάση Δεδομένων.
      * Επιστρέφει Null αν το αντικείμενο δεν έχει ανασυρθεί από τη βάση.

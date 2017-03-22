@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import javax.ws.rs.core.Application;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -38,14 +39,15 @@ public class StatisticsResourceTest extends TheaterResourceTest {
         cal.set(Calendar.MILLISECOND, 0);
         cal.set(cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH),0,0,0);
 
-//        StatisticsInfo stats = target("statistics/"+play.get(0).getId())
-//                               .queryParam("start", cal.getTime())
-//                               .queryParam("end",   cal.getTime())
-//                               .request().get(StatisticsInfo.class);
-//
+        SimpleDateFormat formatter=new SimpleDateFormat("dd-MM-yyyy");
 
-        
-////		Assert.assertEquals();
+        StatisticsInfo stats = target("statistics/"+play.get(0).getId())
+                .queryParam("start", formatter.format(cal.getTime()))
+                .queryParam("end",   formatter.format(cal.getTime()))
+                .request().get(StatisticsInfo.class);
+
+        Assert.assertEquals(stats.getCompleteness(),0.0,0.0000000000001);
+        Assert.assertEquals(stats.getIncome(),0.0,0.0000000000001);
 
 	}
 }

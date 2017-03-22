@@ -1,5 +1,7 @@
 package gr.aueb.mscis.theater.resource;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -30,19 +32,28 @@ public class StatisticsResource {
     @Path("{playid:[0-9]*}")
     @Produces(MediaType.APPLICATION_JSON)
     public StatisticsInfo income(@PathParam("playid") int playId,
-                                 @QueryParam("start") Date startDate,
-                                 @QueryParam("end")   Date endDate) {
+                                 @QueryParam("start") String startDate,
+                                 @QueryParam("end")   String endDate) {
         
         EntityManager em = JPAUtil.getCurrentEntityManager();
         FlashMessageService flashserv = new FlashMessageServiceImpl();
 
         ShowService showService = new ShowService(flashserv);
         List<Show> shows = showService.findAllShowsByPlay(playId);
-        
-        StatisticsInfo newStatisticsInfo = new StatisticsInfo(0.0, 0.0);
-        newStatisticsInfo.getTheaterIncome(startDate, endDate, shows);
-        newStatisticsInfo.getTheaterCompleteness(startDate, endDate, shows);
-        
-        return newStatisticsInfo;
+
+        SimpleDateFormat formatter=new SimpleDateFormat("dd-MM-yyyy");
+        try {
+            Date a = formatter.parse(startDate);
+            Date b = formatter.parse(endDate);
+
+            StatisticsInfo newStatisticsInfo = new StatisticsInfo(0.0, 0.0);
+            newStatisticsInfo.getTheaterIncome(a, b, shows);
+            newStatisticsInfo.getTheaterCompleteness(a, b, shows);
+
+            return newStatisticsInfo;
+
+        } catch (ParseException e) {
+            return null;
+        }
     }
 }

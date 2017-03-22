@@ -56,4 +56,20 @@ public class StatisticsInfo {
 
         completeness = totalNumOfTickets/totalNumOfseats;        
     }
+
+    public double getIncome() {
+        return income;
+    }
+
+    public void setIncome(double income) {
+        this.income = income;
+    }
+
+    public double getCompleteness() {
+        return completeness;
+    }
+
+    public void setCompleteness(double completeness) {
+        this.completeness = completeness;
+    }
 }

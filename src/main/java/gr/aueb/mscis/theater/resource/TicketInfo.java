@@ -1,47 +1,43 @@
 package gr.aueb.mscis.theater.resource;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import gr.aueb.mscis.theater.model.Ticket;
 
+import javax.persistence.EntityManager;
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TicketInfo {
 
-    @XmlElement(name="id")
-    private Integer id;
-    @XmlElement(name="serial")
-    private String serial;
-    @XmlElement(name="price")
-    private double price;
-    @XmlElement(name="moneyReturn")
-    private boolean moneyReturn;
-    @XmlElement(name="active")
-    private boolean active;
-    @XmlElement(name="show")
-    private ShowInfo show;
-    @XmlElement(name="seat")
-    private SeatInfo seat;
-//    @XmlElement(name="purchase")
-//    private PurchaseInfo purchase;
-	
-    public TicketInfo() {
+	@XmlElement(name="id")
+	private Integer id;
+	@XmlElement(name="serial")
+	private String serial;
+	@XmlElement(name="price")
+	private double price;
+	@XmlElement(name="moneyReturn")
+	private boolean moneyReturn;
+	@XmlElement(name="active")
+	private boolean active;
+	@XmlElement(name="show")
+	private ShowInfo show;
+	@XmlElement(name="seat")
+	private SeatInfo seat;
+
+	public TicketInfo() {
 
 	}
 
 	public TicketInfo(Ticket ticket) {
-		super();
 		this.id = ticket.getId();
 		this.serial = ticket.getSerial();
 		this.price = ticket.getPrice();
-		this.moneyReturn = false;
-		this.active = true;
-//		this.show = ShowInfo.wrap(ticket.getShow());
-//		this.seat = SeatInfo.wrap(ticket.getSeat());
-//		this.purchase = SeatInfo.wrap(ticket.getPurchase());
+		this.moneyReturn = ticket.isMoneyReturn();
+		this.active = ticket.isActive();
+
+//		this.moneyReturn = false;
+//		this.active = true;
 	}
 
 	public Integer getId() {
@@ -84,28 +80,25 @@ public class TicketInfo {
 		this.active = active;
 	}
 
-//	public Show getShow() {
-//		return show;
-//	}
-//
-//	public void setShow(Show show) {
-//		this.show = show;
-//	}
-//
-//	public Seat getSeat() {
-//		return seat;
-//	}
-//
-//	public void setSeat(Seat seat) {
-//		this.seat = seat;
-//	}
-//
-//	public Purchase getPurchase() {
-//		return purchase;
-//	}
-//
-//	public void setPurchase(Purchase purchase) {
-//		this.purchase = purchase;
-//	}
-	
+	public static TicketInfo wrap(Ticket ticket) {
+		return new TicketInfo(ticket);
+	}
+
+	public Ticket getTicket(EntityManager em) {
+
+		Ticket ticket = null;
+
+		if (id != null) {
+			ticket = em.find(Ticket.class, id);
+		} else {
+			ticket = new Ticket();
+		}
+
+		ticket.setMoneyReturn(moneyReturn);
+		ticket.setActive(active);
+		ticket.setPrice(price);
+
+		return ticket;
+	}
+
 }
