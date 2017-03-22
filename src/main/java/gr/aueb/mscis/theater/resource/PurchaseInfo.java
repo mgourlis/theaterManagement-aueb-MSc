@@ -27,10 +27,8 @@ public class PurchaseInfo {
     private Double totalAmount;
     @XmlElement(name="wayOfPurchase")
     private String wayOfPurchase;
-//    @XmlElement(name="user")
-//    private UserInfo user;
-//    @XmlElement(name="")
-//    private Set<Ticket> tickets = new HashSet<Ticket>();
+    @XmlElement(name="user")
+    private UserInfo user;
     
 	public PurchaseInfo() {
 		
@@ -43,6 +41,7 @@ public class PurchaseInfo {
         this.quantity = purchase.getQuantity();
         this.totalAmount = purchase.getTotalAmount();
         this.wayOfPurchase = purchase.getWayOfPurchase();
+        this.user = new UserInfo(purchase.getUser());
     }
 	
 	public Integer getId() {
@@ -85,13 +84,13 @@ public class PurchaseInfo {
 		this.wayOfPurchase = wayOfPurchase;
 	}
 
-//	public User getUser() {
-//		return user;
-//	}
-//
-//	public void setUser(User user) {
-//		this.user = user;
-//	}
+	public UserInfo getUser() {
+		return user;
+	}
+
+	public void setUser(UserInfo user) {
+		this.user = user;
+	}
 
     public static PurchaseInfo wrap(Purchase purchase) {
 
