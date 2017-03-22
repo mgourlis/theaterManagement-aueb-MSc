@@ -58,7 +58,7 @@ public class AuthenticateTest {
     public void LogoutUser() throws Exception {
         customer1 = authserv.login(customer1.getEmail(),customer1.getPassword());
         Assert.assertNotNull(authserv.isAuthenticated(customer1.getId(),customer1.getToken()));
-        authserv.logout(customer1.getId());
+        authserv.logout(customer1.getId(),customer1.getToken());
         Assert.assertNull(authserv.isAuthenticated(customer1.getId(),customer1.getToken()));
 
     }
