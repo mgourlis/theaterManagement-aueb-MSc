@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import gr.aueb.mscis.theater.model.*;
 
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class UserInfo {
 
     @XmlElement(name="id")
