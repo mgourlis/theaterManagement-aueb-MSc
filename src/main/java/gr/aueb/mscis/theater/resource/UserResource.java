@@ -19,6 +19,7 @@ public class UserResource {
     UriInfo uriInfo;
     
     @GET
+    @Path("customers")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<UserInfo> getallCustomers() {
 
@@ -37,6 +38,7 @@ public class UserResource {
     }
 
     @GET
+    @Path("employees")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<UserInfo> getallEmployees() {
 
