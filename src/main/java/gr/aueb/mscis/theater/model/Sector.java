@@ -241,10 +241,12 @@ public class Sector {
         while (lit.hasNext()){
             Seat s = lit.next();
             int line = s.getLineNumber();
-            while (!s.isBooked(date) && s.isAvailable() && line == s.getLineNumber() && lit.hasNext()) {
+            while (!s.isBooked(date) && s.isAvailable() && line == s.getLineNumber()) {
                 freeSeats.add(s);
                 freeNum++;
                 if(freeNum == numberOfSeats) return  freeSeats;
+                if(!lit.hasNext())
+                    break;
                 s = lit.next();
             }
             freeNum = 0;

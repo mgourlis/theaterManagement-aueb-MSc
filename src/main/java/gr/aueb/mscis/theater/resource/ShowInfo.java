@@ -44,6 +44,7 @@ public class ShowInfo {
 		this.hall = new HallInfo(show.getHall(),false);
 	}
 
+
 	public int getId() {
 		return id;
 	}

@@ -1,6 +1,5 @@
 package gr.aueb.mscis.theater.resource;
 
-import gr.aueb.mscis.theater.model.Play;
 import gr.aueb.mscis.theater.model.Seat;
 import gr.aueb.mscis.theater.model.Sector;
 import gr.aueb.mscis.theater.model.Show;
@@ -49,7 +48,7 @@ public class ShowResource {
      * The number of seats is declared in numberOfSeats 
      */
     @GET
-    @Path("{showid:[0-9]*}")
+    @Path("seats/{showid:[0-9]*}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<SeatInfo> getFreeSeats(@PathParam("showid")    int showId,
                                        @QueryParam("sectorid") int sectorId,
