@@ -1,13 +1,11 @@
 package gr.aueb.mscis.theater.service;
 
-import gr.aueb.mscis.theater.model.Hall;
 import gr.aueb.mscis.theater.model.User;
 import gr.aueb.mscis.theater.model.UserType;
 import gr.aueb.mscis.theater.persistence.JPAUtil;
 
-import java.util.List;
-
 import javax.persistence.*;
+import java.util.List;
 
 public class UserService {
 
@@ -49,16 +47,6 @@ public class UserService {
     
 	public User findUserById(int id) {
 		return em.find(User.class, id);
-	}
-    
-	public User newUser(User user)
-	{
-		EntityTransaction tx = em.getTransaction();
-		tx.begin();
-		em.persist(user);
-		tx.commit();
-		
-		return user;
 	}
 
     public User findUserByEmail(String email)

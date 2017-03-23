@@ -8,7 +8,6 @@ import gr.aueb.mscis.theater.service.*;
 import javax.persistence.EntityManager;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.net.ResponseCache;
 import java.net.URI;
 import java.util.List;
 
@@ -57,16 +56,20 @@ public class UserResource {
     }
 
     @GET
-    @Path("{userId:[0-9]*}")
+    @Path("{email}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public UserInfo getUser(@PathParam("userId") int userId) {
+    public UserInfo getUser(@PathParam("email") String email) {
+
+        if(!emailValidation(email)){
+            return null;
+        }
 
         EntityManager em = JPAUtil.getCurrentEntityManager();
 
         FlashMessageService flashserv = new FlashMessageServiceImpl();
 
         UserService userService = new UserService(flashserv);
-        User user = userService.findUserById(userId);
+        User user = userService.findUserByEmail(email);
 
         UserInfo userInfo = null;
 
@@ -94,7 +97,7 @@ public class UserResource {
         user = userService.saveUser(user);
 
         UriBuilder ub = uriInfo.getAbsolutePathBuilder();
-        URI userUri = ub.path("user"+"/"+Integer.toString(user.getId())).build();
+        URI userUri = ub.path("user"+"/"+user.getEmail()).build();
 
         em.close();
 
@@ -104,19 +107,20 @@ public class UserResource {
     @POST
     @Path("employee")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response createEmployee(UserInfo h){
+    public Response createEmployee(@QueryParam("type") UserType type,
+                                   UserInfo h){
         EntityManager em = JPAUtil.getCurrentEntityManager();
 
         FlashMessageService flashserv = new FlashMessageServiceImpl();
 
         UserService userService = new UserService(flashserv);
 
-        User user = h.getNewUser(em,null);
+        User user = h.getNewUser(em,type);
 
         user = userService.saveUser(user);
 
         UriBuilder ub = uriInfo.getAbsolutePathBuilder();
-        URI userUri = ub.path("user"+"/"+Integer.toString(user.getId())).build();
+        URI userUri = ub.path("user"+"/"+user.getEmail()).build();
 
         em.close();
 
@@ -124,63 +128,37 @@ public class UserResource {
     }
 
     @PUT
-    @Path("customer/{userId:[0-9]*}")
+    @Path("{email}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response updateCustomer(UserInfo h){
+    public Response updateUser(@PathParam("email") String email,
+                                   UserInfo h) {
+
+        if(!emailValidation(email)){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
         EntityManager em = JPAUtil.getCurrentEntityManager();
 
         FlashMessageService flashserv = new FlashMessageServiceImpl();
 
         UserService userService = new UserService(flashserv);
 
-        User dbuser = userService.findUserById(h.getId());
+        User dbuser = userService.findUserByEmail(email);
 
         if(dbuser == null){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        User user = h.getExistingUser(em,UserType.Customer);
+        User user = h.getExistingUser(em);
 
         if(dbuser.getId() != user.getId()){
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        userService.saveUser(user);
+        User uptuser = userService.saveUser(user);
 
         UriBuilder ub = uriInfo.getAbsolutePathBuilder();
-        URI userUri = ub.path("user"+"/"+Integer.toString(user.getId())).build();
-
-        em.close();
-
-        return Response.ok(userUri).build();
-    }
-
-    @PUT
-    @Path("employee/{userId:[0-9]*}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response updateEmployee(UserInfo h){
-        EntityManager em = JPAUtil.getCurrentEntityManager();
-
-        FlashMessageService flashserv = new FlashMessageServiceImpl();
-
-        UserService userService = new UserService(flashserv);
-
-        User dbuser = userService.findUserById(h.getId());
-
-        if(dbuser == null){
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-
-        User user = h.getExistingUser(em,null);
-
-        if(dbuser.getId() != user.getId()){
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-
-        userService.saveUser(user);
-
-        UriBuilder ub = uriInfo.getAbsolutePathBuilder();
-        URI userUri = ub.path("user"+"/"+Integer.toString(user.getId())).build();
+        URI userUri = ub.path("user"+"/"+uptuser.getEmail()).build();
 
         em.close();
 
@@ -188,21 +166,26 @@ public class UserResource {
     }
 
     @DELETE
-    @Path("{userId:[0-9]*}")
-    public Response deleteUser(@PathParam("userId") int userId){
+    @Path("{email}")
+    public Response deleteUser(@PathParam("email") String email){
+        if(!emailValidation(email)){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+
         EntityManager em = JPAUtil.getCurrentEntityManager();
 
         FlashMessageService flashserv = new FlashMessageServiceImpl();
 
         UserService userService = new UserService(flashserv);
 
-        User dbuser = userService.findUserById(userId);
+        User dbuser = userService.findUserByEmail(email);
 
         if(dbuser == null){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
-        userService.deleteUser(userId);
+        if(!userService.deleteUser(dbuser.getId()))
+            return Response.status(Response.Status.BAD_REQUEST).build();
 
         em.close();
 
@@ -228,8 +211,8 @@ public class UserResource {
     }
 
     @GET
-    @Path("logout/{userId:[0-9]*}")
-    public Response logoutUser(@PathParam("userId") int userId,
+    @Path("logout/{email}")
+    public Response logoutUser(@PathParam("email") String email,
                                @QueryParam("token") String token){
 
         EntityManager em = JPAUtil.getCurrentEntityManager();
@@ -238,16 +221,21 @@ public class UserResource {
         SerialNumberProvider serialprov = new SerialNumberProviderImpl();
 
         AuthenticateService auth = new AuthenticateService(flashserv,serialprov);
+        UserService userService = new UserService(flashserv);
 
-        if(auth.logout(userId,token) == null)
+        User dbuser = userService.findUserByEmail(email);
+        if(dbuser == null)
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+
+        if(auth.logout(dbuser.getId(),token) == null)
             return Response.status(Response.Status.UNAUTHORIZED).build();
 
         return Response.ok().build();
     }
 
     @GET
-    @Path("authenticated/{userId:[0-9]*}")
-    public Response isAuthenicated(@PathParam("userId") int userId,
+    @Path("authenticated/{email}")
+    public Boolean isAuthenicated(@PathParam("email") String email,
                                @QueryParam("token") String token){
 
         EntityManager em = JPAUtil.getCurrentEntityManager();
@@ -256,10 +244,22 @@ public class UserResource {
         SerialNumberProvider serialprov = new SerialNumberProviderImpl();
 
         AuthenticateService auth = new AuthenticateService(flashserv,serialprov);
+        UserService userService = new UserService(flashserv);
 
-        if(auth.isAuthenticated(userId,token) == null)
-            return Response.ok(false).build();
+        User dbuser = userService.findUserByEmail(email);
+        if(dbuser == null)
+            return false;
 
-        return Response.ok(true).build();
+        if(auth.isAuthenticated(dbuser.getId(),token) == null)
+            return false;
+
+        return true;
+    }
+
+    private Boolean emailValidation(String email){
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
     }
 }

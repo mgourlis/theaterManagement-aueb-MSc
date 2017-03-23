@@ -36,8 +36,8 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private Set<Purchase> purchases = new HashSet<Purchase>();
 
-	@ManyToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="userCategory_id", nullable = true)
+	@OneToOne(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="userCategory_id", nullable = false)
     private UserCategory userCategory;
     
     /**

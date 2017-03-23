@@ -1,20 +1,18 @@
 
 package gr.aueb.mscis.theater.resource;
 
+import gr.aueb.mscis.theater.model.User;
+import gr.aueb.mscis.theater.model.UserCategory;
+import gr.aueb.mscis.theater.model.UserType;
+
+import javax.persistence.EntityManager;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import javax.xml.bind.annotation.*;
-import javax.persistence.EntityManager;
-
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-
-
-import gr.aueb.mscis.theater.model.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -152,7 +150,7 @@ public class UserInfo {
 		return user;
     }
 
-	public User getExistingUser(EntityManager em, UserType type){
+	public User getExistingUser(EntityManager em){
 
 		User user = null;
 
@@ -164,9 +162,9 @@ public class UserInfo {
 			user.setFirstName(firstName);
 			user.setLastName(lastName);
 			user.setPassword(password);
-			user.setUserCategory(new UserCategory(type));
+			user.setUserCategory(user.getUserCategory());
 
-			if (type == UserType.Customer) {
+			if (user.getUserCategory().getCategory() == UserType.Customer) {
 				user.getUserCategory().setBirthday(birthday);
 				user.getUserCategory().setGender(gender);
 				user.getUserCategory().setTelephone(telephone);

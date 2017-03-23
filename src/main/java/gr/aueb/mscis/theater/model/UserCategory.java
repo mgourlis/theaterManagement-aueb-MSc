@@ -26,8 +26,8 @@ public class UserCategory {
     @Column(name = "telephone", length = 255, nullable = true)
     private String telephone;
 	
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "userCategory")    
-    private Set<User> users = new HashSet<User>();
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "userCategory")
+    private User user;
 
 	/**
     * Προκαθορισμένος κατασκευαστής.
@@ -128,10 +128,10 @@ public class UserCategory {
     }
 
     /**
-     * Επιστρέφει σύνολο των Χρηστών που ανήκει σε αυτή την Κατηγορία
+     * Επιστρέφει τον Χρήστη που ανήκει σε αυτή την Κατηγορία
      * @return σύνολο Χρηστών
      */
-    public Set<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 }
