@@ -24,7 +24,7 @@ public class ShowResource {
     //Το σύστημα εμφανίζει λίστα με τις ημερομηνίες
     @GET
 	@Path("search")
-    @Produces(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	public List<ShowInfo> searchShowByName(@QueryParam("name") String name) {
 
         EntityManager em = JPAUtil.getCurrentEntityManager();
